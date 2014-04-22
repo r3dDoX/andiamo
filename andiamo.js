@@ -5,11 +5,14 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
+    var cheerio = Meteor.require('cheerio');
+    
     Meteor.methods({
         importData: function() {
-            var url = 'http://www.sfl.ch/superleague/matchcenter/';
+            var url = 'http://www.fifa.com/worldcup/matches/index.html',
+                $ = cheerio.load(Meteor.http.get(url).content);
 
-            return Meteor.http.get(url);
+            return $('.match-list .fixture .s-scoreText').text();
         }
     });
 }
