@@ -8,7 +8,7 @@ if (Meteor.isServer) {
     var cheerio = Meteor.require('cheerio');
     
     Meteor.methods({
-        importData: function() {
+        importMatches: function() {
             var url = 'http://www.fifa.com/worldcup/matches/index.html',
                 $ = cheerio.load(Meteor.http.get(url).content),
                 matches = new Array(),
@@ -35,6 +35,47 @@ if (Meteor.isServer) {
             });
 
             return matches;
+        },
+        importTables: function() {
+            var baseuri = 'http://www.fifa.com',
+                uri = baseuri + '/worldcup/groups/index.html',
+                $ = cheerio.load(Meteor.http.get(uri).content),
+                groups = new Array(),
+                actGroup,
+                actGroupNameLink,
+                actTeam,
+                actTeamNameLink;
+
+            $('#standings .group-wrap').each(function(index, groupElement) {
+                actGroup = {};
+                actGroup.teams = new Array();
+
+                actGroupNameLink = $('caption.caption-link a', groupElement);
+                actGroup.name = actGroupNameLink.text();
+                actGroup.link = baseuri + actGroupNameLink.attr('href');
+
+                $('table.tbl-standings tbody tr:not(.expandcol)', groupElement).each(function(index, teamElement) {
+                    actTeam = {};
+
+                    actTeamNameLink = $('td.tbl-teamname.teamname-link a', teamElement);
+                    actTeam.name = $('span.t-nText', actTeamNameLink).text();
+                    actTeam.link = baseuri + actTeamNameLink.attr('href');
+
+                    actTeam.matchPlayed = $('td.tbl-matchplayed span', teamElement).text();
+                    actTeam.win = $('td.tbl-win span', teamElement).text();
+                    actTeam.draw = $('td.tbl-draw span', teamElement).text();
+                    actTeam.lost = $('td.tbl-lost span', teamElement).text();
+                    actTeam.goalFor = $('td.tbl-goalfor span', teamElement).text();
+                    actTeam.goalAgainst = $('td.tbl-goalagainst span', teamElement).text();
+                    actTeam.points = $('td.tbl-pts span', teamElement).text();
+
+                    actGroup.teams.push(actTeam);
+                });
+
+                groups.push(actGroup);
+            });
+
+            return groups;
         }
     });
 }
