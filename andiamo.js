@@ -49,6 +49,7 @@ if (Meteor.isServer) {
                 actGroup = {};
                 actGroup.teams = new Array();
 
+                actGroup.id = $('table.tbl-standings').attr('id');
                 actGroupNameLink = $('caption.caption-link a', groupElement);
                 actGroup.name = actGroupNameLink.text();
                 actGroup.link = baseuri + actGroupNameLink.attr('href');
@@ -71,7 +72,7 @@ if (Meteor.isServer) {
                     actGroup.teams.push(actTeam);
                 });
 
-                TablesWorldCup.upsert({name: actGroup.name}, {$set: actGroup});
+                TablesWorldCup.upsert({id: actGroup.id}, {$set: actGroup});
             });
         }
     });
