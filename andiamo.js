@@ -2,9 +2,7 @@ MatchesWorldCup = new Meteor.Collection("matchesWorldCup");
 TablesWorldCup = new Meteor.Collection("tablesWorldCup");
 
 if (Meteor.isClient) {
-  Template.hello.greeting = function () {
-    return "Welcome to andiamo.";
-  };
+
 }
 
 if (Meteor.isServer) {
@@ -49,7 +47,7 @@ if (Meteor.isServer) {
                 actGroup = {};
                 actGroup.teams = new Array();
 
-                actGroup.id = $('table.tbl-standings').attr('id');
+                actGroup.id = $('table.tbl-standings', groupElement).attr('id');
                 actGroupNameLink = $('caption.caption-link a', groupElement);
                 actGroup.name = actGroupNameLink.text();
                 actGroup.link = baseuri + actGroupNameLink.attr('href');
