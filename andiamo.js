@@ -1,3 +1,6 @@
+MatchesWorldCup = new Meteor.Collection("matchesWorldCup");
+TablesWorldCup = new Meteor.Collection("tablesWorldCup");
+
 if (Meteor.isClient) {
   Template.hello.greeting = function () {
     return "Welcome to andiamo.";
@@ -11,7 +14,6 @@ if (Meteor.isServer) {
         importMatches: function() {
             var url = 'http://www.fifa.com/worldcup/matches/index.html',
                 $ = cheerio.load(Meteor.http.get(url).content),
-                matches = new Array(),
                 actMatch,
                 timeParts;
 
@@ -31,16 +33,13 @@ if (Meteor.isServer) {
                 actMatch.awayTeam = $('.away .t-nText', element).text();
                 actMatch.group = $('.mu-i-group', element).text();
 
-                matches.push(actMatch);
+                MatchesWorldCup.upsert({id: actMatch.id}, {$set: actMatch});
             });
-
-            return matches;
         },
         importTables: function() {
             var baseuri = 'http://www.fifa.com',
                 uri = baseuri + '/worldcup/groups/index.html',
                 $ = cheerio.load(Meteor.http.get(uri).content),
-                groups = new Array(),
                 actGroup,
                 actGroupNameLink,
                 actTeam,
@@ -72,10 +71,8 @@ if (Meteor.isServer) {
                     actGroup.teams.push(actTeam);
                 });
 
-                groups.push(actGroup);
+                TablesWorldCup.upsert({name: actGroup.name}, {$set: actGroup});
             });
-
-            return groups;
         }
     });
 }
