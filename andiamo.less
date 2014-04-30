@@ -1,11 +1,51 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.navbar {
+    margin-bottom: 0px !important;
+}
+
 .header {
     background: url('/field.jpg') white 50% 50% no-repeat;
-    box-shadow: inset 0px 0px 150px 0px rgba(0, 0, 0, 0.3);
+    background-size: 120%;
+    box-shadow: inset 0px 0px 150px 0px rgba(0, 0, 0, 0.5);
     padding: 2em 0 5em;
 
     h1  {
         margin-top: 2em;
         text-align: center;
         text-shadow: 0px 0px 5px rgba(255, 255, 255, 1);
+    }
+}
+
+.pages {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+
+    .page {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+
+        -webkit-transition: -webkit-transform .5s ease-in-out;
+        -webkit-transform: translateX(100%);
+
+        &.left {
+            -webkit-transform: translateX(-100%);
+        }
+
+        &.center {
+            -webkit-transform: translateX(0%);
+        }
+
+        &.right {
+            -webkit-transform: translateX(100%);
+        }
     }
 }
