@@ -11,16 +11,32 @@
                 <a class="navbar-brand" href="/pages/home" data-pageId="home">andiamo!</a>
             </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="collapse">
                 <ul class="nav navbar-nav">
                     {{#each menuElements}}
-                        <li class="{{#if isSelectedMenuElement pageId}}active{{/if}}">
-                            <a href="/pages/{{pageId}}" data-pageId="{{pageId}}">{{text}}</a>
-                        </li>
+                        {{#if children}}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    {{text}} <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    {{#each children}}
+                                        {{ > navbarElement }}
+                                    {{/each}}
+                                </ul>
+                            </li>
+                        {{else}}
+                            {{ > navbarElement }}
+                        {{/if}}
                     {{/each}}
                 </ul>
             </div>
         </div>
     </nav>
+</template>
+
+<template name="navbarElement">
+    <li class="{{#if isSelectedMenuElement pageId}}active{{/if}}">
+        <a href="/pages/{{pageId}}" data-pageId="{{pageId}}" class="elementLink">{{text}}</a>
+    </li>
 </template>
