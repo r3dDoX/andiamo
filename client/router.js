@@ -1,26 +1,32 @@
-var AndiamoRouter = Backbone.Router.extend({
+(function () {
+    'use strict';
 
-    routes: {
-        "pages/:page":   "pageTransition"
-    },
+    var AndiamoRouter = Backbone.Router.extend({
 
-    pageTransition: function(pageId) {
-        var page = $('#' + pageId),
-            fadeOut = (page.hasClass('right') ? 'left' : 'right'),
-            activePage = $('.page.center');
+        routes: {
+            "pages/:page": "pageTransition"
+        },
 
-        if (page.get(0) !== activePage.get(0)) {
-            Session.set('selectedMenuElement', pageId);
+        pageTransition: function (pageId) {
+            var page = $('#' + pageId),
+                fadeOut = (page.hasClass('right') ? 'left' : 'right'),
+                activePage = $('.page.center');
 
-            activePage.removeClass('center').addClass(fadeOut);
-            page.removeClass('left right').addClass('center');
+            if (page.get(0) !== activePage.get(0)) {
+                Session.set('selectedMenuElement', pageId);
+
+                activePage.removeClass('center').addClass(fadeOut);
+                page.removeClass('left right').addClass('center');
+            }
         }
-    }
 
-});
+    });
 
-Router = new AndiamoRouter();
+    Router = new AndiamoRouter();
 
-Meteor.startup(function () {
-  Backbone.history.start({pushState: true});
-});
+    Meteor.startup(function () {
+        Backbone.history.start({
+            pushState: true
+        });
+    });
+}());
