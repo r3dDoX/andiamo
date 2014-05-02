@@ -1,4 +1,5 @@
-(function () {
+/*global Backbone, Session, Meteor */
+(function (global) {
     'use strict';
 
     var AndiamoRouter = Backbone.Router.extend({
@@ -8,25 +9,28 @@
         },
 
         pageTransition: function (pageId) {
-            var page = $('#' + pageId),
-                fadeOut = (page.hasClass('right') ? 'left' : 'right'),
-                activePage = $('.page.center');
+            var page = document.getElementById(pageId),
+                fadeOut = (/\bright\b/.exec(page.className) ? 'left' : 'right'),
+                activePage = document.getElementsByClassName('page center')[0];
 
-            if (page.get(0) !== activePage.get(0)) {
+            if (page !== activePage) {
                 Session.set('selectedMenuElement', pageId);
 
-                activePage.removeClass('center').addClass(fadeOut);
-                page.removeClass('left right').addClass('center');
+                activePage.classList.remove('center');
+                activePage.classList.add(fadeOut);
+                page.classList.remove('left');
+                page.classList.remove('right');
+                page.classList.add('center');
             }
         }
 
     });
 
-    Router = new AndiamoRouter();
+    global.Router = new AndiamoRouter();
 
     Meteor.startup(function () {
         Backbone.history.start({
             pushState: true
         });
     });
-}());
+}(window));

@@ -1,3 +1,4 @@
+/*global Meteor */
 (function () {
     'use strict';
 

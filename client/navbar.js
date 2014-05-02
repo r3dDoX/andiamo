@@ -1,3 +1,4 @@
+/*global Template, Session, Router */
 (function () {
     'use strict';
 
