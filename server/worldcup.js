@@ -7,7 +7,7 @@
         TablesWorldCup = new Meteor.Collection("tablesWorldCup");
 
     Meteor.methods({
-        importMatches: function () {
+        importMatchesWorldCup: function () {
             var url = 'http://www.fifa.com/worldcup/matches/index.html',
                 $ = cheerio.load(Meteor.http.get(url).content),
                 actMatch,
@@ -29,15 +29,11 @@
                 actMatch.awayTeam = $('.away .t-nText', element).text();
                 actMatch.group = $('.mu-i-group', element).text();
 
-                MatchesWorldCup.upsert({
-                    id: actMatch.id
-                }, {
-                    $set: actMatch
-                });
+                MatchesWorldCup.upsert({ id: actMatch.id }, { $set: actMatch });
             });
         },
 
-        importTables: function () {
+        importTablesWorldCup: function () {
             var baseuri = 'http://www.fifa.com',
                 uri = baseuri + '/worldcup/groups/index.html',
                 $ = cheerio.load(Meteor.http.get(uri).content),
@@ -73,11 +69,7 @@
                     actGroup.teams.push(actTeam);
                 });
 
-                TablesWorldCup.upsert({
-                    id: actGroup.id
-                }, {
-                    $set: actGroup
-                });
+                TablesWorldCup.upsert({ id: actGroup.id }, { $set: actGroup });
             });
         }
     });
