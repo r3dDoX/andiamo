@@ -1,3 +1,4 @@
+/*jslint node: true */
 /*global Backbone, Session, Meteor */
 'use strict';
 

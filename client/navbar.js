@@ -1,3 +1,4 @@
+/*jslint node: true */
 /*global Template, Session, Router */
 'use strict';
 
