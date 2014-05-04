@@ -4,10 +4,9 @@
 
     var cheerio = Meteor.require('cheerio'),
         MatchesWorldCup = new Meteor.Collection("matchesWorldCup"),
-        TablesWorldCup = new Meteor.Collection("tablesWorldCup");
-
-    Meteor.methods({
-        importMatchesWorldCup: function () {
+        TablesWorldCup = new Meteor.Collection("tablesWorldCup"),
+        
+        parseMatches = function () {
             var url = 'http://www.fifa.com/worldcup/matches/index.html',
                 $ = cheerio.load(Meteor.http.get(url).content),
                 actMatch,
@@ -32,8 +31,8 @@
                 MatchesWorldCup.upsert({ id: actMatch.id }, { $set: actMatch });
             });
         },
-
-        importTablesWorldCup: function () {
+        
+        parseTables = function () {
             var baseuri = 'http://www.fifa.com',
                 uri = baseuri + '/worldcup/groups/index.html',
                 $ = cheerio.load(Meteor.http.get(uri).content),
@@ -71,6 +70,11 @@
 
                 TablesWorldCup.upsert({ id: actGroup.id }, { $set: actGroup });
             });
-        }
+        };
+
+    // Export Methods
+    Meteor.methods({
+        importMatchesWorldCup: parseMatches,
+        importTablesWorldCup: parseTables
     });
 }());

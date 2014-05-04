@@ -33,10 +33,9 @@
             });
 
             return teams;
-        };
+        },
 
-    Meteor.methods({
-        importMatchesSuperLeague: function () {
+        parseMatches = function () {
             var uri = 'http://www.sfl.ch/superleague/matchcenter/',
                 $ = cheerio.load(Meteor.http.get(uri).content),
                 teams,
@@ -63,6 +62,10 @@
                     MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
                 });
             });
-        }
+        };
+
+    // Export Method
+    Meteor.methods({
+        importMatchesSuperLeague: parseMatches
     });
 }());
