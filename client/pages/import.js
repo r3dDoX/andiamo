@@ -3,5 +3,5 @@
 'use strict';
 
 Template.import.leagues = function () {
-    return [];
+    return leaguesImports;
 }

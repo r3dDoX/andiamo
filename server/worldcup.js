@@ -70,10 +70,17 @@ var cheerio = Meteor.require('cheerio'),
 
             TablesWorldCup.upsert({ id: actGroup.id }, { $set: actGroup });
         });
+    },
+    
+    startParsing = function () {
+        parseTables();
+        parseMatches();
     };
 
 // Export Methods
-Meteor.methods({
-    importMatchesWorldCup: parseMatches,
-    importTablesWorldCup: parseTables
+Meteor.startup(function () {
+    leaguesImports.push({
+        'name': 'World Cup',
+        'import': startParsing
+    });
 });

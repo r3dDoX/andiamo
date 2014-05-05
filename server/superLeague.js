@@ -65,6 +65,9 @@ var cheerio = Meteor.require('cheerio'),
     };
 
 // Export Method
-Meteor.methods({
-    importMatchesSuperLeague: parseMatches
+Meteor.startup(function () {
+    leaguesImports.push({
+        'name': 'Super League',
+        'import': parseMatches
+    });
 });
