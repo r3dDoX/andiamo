@@ -17,6 +17,10 @@ Template.navbar.menuElements = function () {
                     pageId: 'superLeague'
                 }
             ]
+        },
+        {
+            text: 'Import',
+            pageId: 'import'
         }
     ];
 };
