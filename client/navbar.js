@@ -19,8 +19,8 @@ Template.navbar.menuElements = function () {
             ]
         },
         {
-            text: 'Import',
-            pageId: 'import'
+            text: 'Imports',
+            pageId: 'imports'
         }
     ];
 };

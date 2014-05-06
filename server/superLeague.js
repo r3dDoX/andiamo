@@ -68,6 +68,6 @@ var cheerio = Meteor.require('cheerio'),
 Meteor.startup(function () {
     leaguesImports.push({
         'name': 'Super League',
-        'import': parseMatches
+        id : 'superLeague'
     });
 });

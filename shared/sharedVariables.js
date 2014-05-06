@@ -1,5 +1,10 @@
 /*jslint node: true */
-/*global leaguesImports:true */
+/*global Meteor, leaguesImports:true */
 
 leaguesImports = [];
-//TODO make this reactive
+
+Meteor.methods({
+    leaguesImports : function () {
+        return leaguesImports;
+    }
+});

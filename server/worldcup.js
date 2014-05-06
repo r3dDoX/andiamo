@@ -81,6 +81,6 @@ var cheerio = Meteor.require('cheerio'),
 Meteor.startup(function () {
     leaguesImports.push({
         'name': 'World Cup',
-        'import': startParsing
+        id : 'worldCup'
     });
 });
