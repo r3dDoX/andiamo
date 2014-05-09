@@ -70,7 +70,7 @@ var cheerio = Meteor.require('cheerio'),
         });
     },
     
-    startParsing = function () {
+    importWorldcup = function () {
         parseTables();
         parseMatches();
     };
@@ -78,4 +78,13 @@ var cheerio = Meteor.require('cheerio'),
 //publish collections
 Meteor.publish('matchesWorldcup', function () {
     return MatchesWorldcup.find();
+});
+
+Meteor.publish('tablesWorldcup', function () {
+    return TablesWorldcup.find();
+});
+
+//export Methods
+Meteor.methods({
+    'importWorldcup': importWorldcup
 });
