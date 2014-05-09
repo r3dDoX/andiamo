@@ -1,10 +1,8 @@
 /*jslint node: true */
-/*global Meteor, leaguesImports:true */
+/*global Meteor, MatchesSuperLeague:true, TablesSuperLeague:true, MatchesWorldcup:true, TablesWorldcup:true */
 
-leaguesImports = [];
+MatchesSuperLeague = new Meteor.Collection('matchesSuperLeague');
+TablesSuperLeague = new Meteor.Collection('tablesSuperLeague');
 
-Meteor.methods({
-    leaguesImports : function () {
-        return leaguesImports;
-    }
-});
+MatchesWorldcup = new Meteor.Collection("matchesWorldcup");
+TablesWorldcup = new Meteor.Collection("tablesWorldcup");

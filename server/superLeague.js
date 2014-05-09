@@ -1,10 +1,8 @@
 /*jslint node: true */
-/*global Meteor */
+/*global Meteor, MatchesSuperLeague, TablesSuperLeague */
 'use strict';
 
 var cheerio = Meteor.require('cheerio'),
-    MatchesSuperLeague = new Meteor.Collection("matchesSuperLeague"),
-    TablesSuperLeague = new Meteor.Collection("tablesSuperLeague"),
 
     parseTables = function ($) {
         var teams = {},
@@ -62,12 +60,22 @@ var cheerio = Meteor.require('cheerio'),
                 MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
             });
         });
+    },
+    
+    importSuperLeague = function () {
+        parseMatches();
     };
 
-// Export Method
-Meteor.startup(function () {
-    leaguesImports.push({
-        'name': 'Super League',
-        id : 'superLeague'
-    });
+//publish collections
+Meteor.publish('matchesSuperLeague', function () {
+    return MatchesSuperLeague.find();
+});
+
+Meteor.publish('tablesSuperLeague', function () {
+    return TablesSuperLeague.find();
+});
+
+//export Methods
+Meteor.methods({
+    'importSuperLeague': importSuperLeague
 });

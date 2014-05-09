@@ -3,8 +3,6 @@
 'use strict';
 
 var cheerio = Meteor.require('cheerio'),
-    MatchesWorldCup = new Meteor.Collection("matchesWorldCup"),
-    TablesWorldCup = new Meteor.Collection("tablesWorldCup"),
 
     parseMatches = function () {
         var url = 'http://www.fifa.com/worldcup/matches/index.html',
@@ -28,7 +26,7 @@ var cheerio = Meteor.require('cheerio'),
             actMatch.awayTeam = $('.away .t-nText', element).text();
             actMatch.group = $('.mu-i-group', element).text();
 
-            MatchesWorldCup.upsert({ id: actMatch.id }, { $set: actMatch });
+            MatchesWorldcup.upsert({ id: actMatch.id }, { $set: actMatch });
         });
     },
 
@@ -68,7 +66,7 @@ var cheerio = Meteor.require('cheerio'),
                 actGroup.teams.push(actTeam);
             });
 
-            TablesWorldCup.upsert({ id: actGroup.id }, { $set: actGroup });
+            TablesWorldcup.upsert({ id: actGroup.id }, { $set: actGroup });
         });
     },
     
@@ -77,10 +75,7 @@ var cheerio = Meteor.require('cheerio'),
         parseMatches();
     };
 
-// Export Methods
-Meteor.startup(function () {
-    leaguesImports.push({
-        'name': 'World Cup',
-        id : 'worldCup'
-    });
+//publish collections
+Meteor.publish('matchesWorldcup', function () {
+    return MatchesWorldcup.find();
 });

@@ -10,7 +10,7 @@ Template.navbar.menuElements = function () {
             children: [
                 {
                     text: 'Worldcup',
-                    pageId: 'worldCup'
+                    pageId: 'worldcup'
                 },
                 {
                     text: 'Super League',
@@ -19,8 +19,18 @@ Template.navbar.menuElements = function () {
             ]
         },
         {
-            text: 'Imports',
-            pageId: 'imports'
+            text: 'Import',
+            pageId: 'import',
+            children: [
+                {
+                    text: 'Super League',
+                    pageId: 'importSuperLeague'
+                },
+                {
+                    text: 'Worldcup',
+                    pageId: 'importWorldcup'
+                }
+            ]
         }
     ];
 };
