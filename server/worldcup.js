@@ -1,5 +1,5 @@
 /*jslint node: true */
-/*global Meteor */
+/*global Meteor, MatchesWorldcup, TablesWorldcup */
 'use strict';
 
 var cheerio = Meteor.require('cheerio'),
