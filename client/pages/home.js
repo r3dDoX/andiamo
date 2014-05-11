@@ -2,24 +2,25 @@
 /*global Template */
 'use strict';
 
-var scrollBgPic = function (event) {
-    var pagesElement = document.getElementById('pages'),
-        bgPic = pagesElement.getElementsByClassName('header')[0],
-        initialPositionY = 50,
-        newPositionY;
+var scrollElementId = 'home',
+    scrollBgPic = function (event) {
+        var pageElement = document.getElementById(scrollElementId),
+            bgPic = pageElement.getElementsByClassName('header')[0],
+            initialPositionY = 50,
+            newPositionY;
 
-    // stop scroll of bg if pic is out of the viewport
-    if (bgPic && pagesElement.scrollTop < bgPic.clientHeight) {
-        bgPic.style.backgroundPositionY = initialPositionY - pagesElement.scrollTop / 20 + '%';
-    }
-};
+        // stop scroll of bg if pic is out of the viewport
+        if (bgPic && pageElement.scrollTop < bgPic.clientHeight) {
+            bgPic.style.backgroundPositionY = initialPositionY - pageElement.scrollTop / 20 + '%';
+        }
+    };
 
 Template.home.rendered = function () {
-    document.getElementById('pages').addEventListener('scroll', scrollBgPic);
-    document.getElementById('pages').addEventListener('touchmove', scrollBgPic);
+    document.getElementById(scrollElementId).addEventListener('scroll', scrollBgPic);
+    document.getElementById(scrollElementId).addEventListener('touchmove', scrollBgPic);
 };
 
 Template.home.destroyed = function () {
-    document.getElementById('pages').removeEventListener('scroll', scrollBgPic);
-    document.getElementById('pages').removeEventListener('touchmove', scrollBgPic);
+    document.getElementById(scrollElementId).removeEventListener('scroll', scrollBgPic);
+    document.getElementById(scrollElementId).removeEventListener('touchmove', scrollBgPic);
 };
