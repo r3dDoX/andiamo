@@ -43,8 +43,9 @@ if (Meteor.isServer) {
                 $ = cheerio.load(Meteor.http.get(uri).content),
                 teams,
                 matchday,
+                actMatch,
                 dateParts,
-                actMatch;
+                scoreParts;
 
             teams = parseTables($);
 
@@ -61,6 +62,17 @@ if (Meteor.isServer) {
                     dateParts[2] = Number(dateParts[2]) - 1; //JavaScript Months start at 0
                     dateParts[3] = '20' + dateParts[3]; //JavaScript parses two digit years as 19**
                     actMatch.date = new Date(dateParts[3], dateParts[2], dateParts[1], dateParts[4], dateParts[5]);
+                    
+                    scoreParts = $('.score', matchElement).text().split(':');
+                    if (isNaN(Number(scoreParts[0]))) {
+                        actMatch.homeScore = undefined;
+                        actMatch.awayScore = undefined;
+                        actMatch.isFinished = false;
+                    } else {
+                        actMatch.homeScore = Number(scoreParts[0]);
+                        actMatch.awayScore = Number(scoreParts[1]);
+                        actMatch.isFinished = true;
+                    }
 
                     MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
                 });

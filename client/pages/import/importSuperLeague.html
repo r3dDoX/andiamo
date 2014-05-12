@@ -31,6 +31,9 @@
                             <th>Date</th>
                             <th>Home</th>
                             <th>Away</th>
+                            <th>HomeScore</th>
+                            <th>AwayScore</th>
+                            <th></th>
                         </thead>
                         <tbody>
                             {{#each matches}}
@@ -38,6 +41,9 @@
                                     <td>{{date}}</td>
                                     <td>{{homeTeam}}</td>
                                     <td>{{awayTeam}}</td>
+                                    <td>{{homeScore}}</td>
+                                    <td>{{awayScore}}</td>
+                                    <td>{{isFinished}}</td>
                                 </tr>
                             {{/each}}
                         </tbody>
