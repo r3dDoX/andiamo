@@ -1,26 +1,20 @@
 /*jslint node: true */
-/*global Template */
+/*global Meteor */
 'use strict';
 
 var scrollElementId = 'home',
-    scrollBgPic = function (event) {
-        var pageElement = document.getElementById(scrollElementId),
-            bgPic = pageElement.getElementsByClassName('header')[0],
-            initialPositionY = 50,
-            newPositionY;
-
-        // stop scroll of bg if pic is out of the viewport
+    initialPositionY = 50,
+    scrollBgPic = function (pageElement, bgPic, event) {
         if (bgPic && pageElement.scrollTop < bgPic.clientHeight) {
-            bgPic.style.backgroundPositionY = initialPositionY - pageElement.scrollTop / 20 + '%';
+            bgPic.style.backgroundPositionY = (initialPositionY - pageElement.scrollTop / 20) + '%';
         }
     };
 
-Template.home.rendered = function () {
-    document.getElementById(scrollElementId).addEventListener('scroll', scrollBgPic);
-    document.getElementById(scrollElementId).addEventListener('touchmove', scrollBgPic);
-};
-
-Template.home.destroyed = function () {
-    document.getElementById(scrollElementId).removeEventListener('scroll', scrollBgPic);
-    document.getElementById(scrollElementId).removeEventListener('touchmove', scrollBgPic);
-};
+Meteor.startup(function () {
+    var pageElement = document.getElementById(scrollElementId),
+        bgPic = pageElement.getElementsByClassName('header')[0],
+        scrollBgPicPartial = scrollBgPic.bind(this, pageElement, bgPic);
+    
+    document.getElementById(scrollElementId).addEventListener('scroll', scrollBgPicPartial);
+    document.getElementById(scrollElementId).addEventListener('touchmove', scrollBgPicPartial);
+});
