@@ -9,3 +9,5 @@ http
 npm
 less
 backbone
+accounts-base
+accounts-password
