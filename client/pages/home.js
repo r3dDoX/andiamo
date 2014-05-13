@@ -6,7 +6,7 @@ var scrollElementId = 'home',
     initialPositionY = 50,
     scrollBgPic = function (pageElement, bgPic, event) {
         if (bgPic && pageElement.scrollTop < bgPic.clientHeight) {
-            bgPic.style.backgroundPositionY = (initialPositionY - pageElement.scrollTop / 20) + '%';
+            bgPic.style.backgroundPositionY = (initialPositionY - pageElement.scrollTop / 25) + '%';
         }
     };
 
