@@ -1,8 +1,9 @@
 /*jslint node: true */
-/*global Meteor, MatchesSuperLeague:true, TablesSuperLeague:true */
+/*global Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true */
 
 MatchesSuperLeague = new Meteor.Collection('matchesSuperLeague');
 TablesSuperLeague = new Meteor.Collection('tablesSuperLeague');
+TipsSuperLeague = new Meteor.Collection('tipsSuperLeague');
 
 if (Meteor.isServer) {
     'use strict';
@@ -90,6 +91,10 @@ if (Meteor.isServer) {
 
     Meteor.publish('tablesSuperLeague', function () {
         return TablesSuperLeague.find();
+    });
+    
+    Meteor.publish('tipsSuperLeague', function () {
+        return TipsSuperLeague.find();
     });
 
     //export Methods
