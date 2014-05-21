@@ -9,8 +9,13 @@ Template.loginForm.events({
             passwordInput = loginForm.querySelector('input[name=password]'),
             callback = function (error) {
                 if (error) {
-                    emailInput.parentNode.classList.add('has-error');
-                    passwordInput.parentNode.classList.add('has-error');
+                    if (error.reason === 'Incorrect password') {
+                        passwordInput.parentNode.classList.add('has-error');
+                        emailInput.parentNode.classList.remove('has-error');
+                    } else {
+                        passwordInput.parentNode.classList.remove('has-error');
+                        emailInput.parentNode.classList.add('has-error');
+                    }
                 } else {
                     emailInput.parentNode.classList.add('has-success');
                     passwordInput.parentNode.classList.add('has-success');
@@ -38,7 +43,7 @@ Template.registrationForm.events({
             Accounts.createUser({
                 'username' : registrationForm.querySelector('input[name=username]').value,
                 'email' : registrationForm.querySelector('input[name=email]').value,
-                'password' : password
+                'password' : password.value
             });
         } else {
             password.parentNode.classList.add('has-error');
@@ -54,8 +59,8 @@ Template.registrationForm.rendered = function () {
     registrationForm.querySelector('input[name=username]').addEventListener('keyup', function (event) {
         var usernameInputContainer = event.target.parentNode,
             username = event.target.value,
-            checkUsernameCallback = function (result) {
-                if (result) {
+            checkUsernameCallback = function (error, success) {
+                if (success) {
                     usernameInputContainer.classList.remove('has-success');
                     usernameInputContainer.classList.add('has-error');
                 } else {

@@ -4,6 +4,6 @@
 
 Meteor.methods({
     checkUsername : function (username) {
-        Meteor.users.findOne({ 'username' : username });
+        return Meteor.users.findOne({ 'username' : username });
     }
 });

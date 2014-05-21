@@ -1,5 +1,5 @@
 /*jslint node: true */
-/*global Template, Session, Router */
+/*global Meteor, Template, Session, Router */
 'use strict';
 
 Template.navbar.menuElements = function () {
@@ -40,10 +40,13 @@ Template.navbarElement.isSelectedMenuElement = function (actualId) {
 };
 
 Template.navbar.events({
-    'click a.navbar-brand, click a.elementLink': function (event) {
+    'click a.navbar-brand, click a.elementLink' : function (event) {
         event.preventDefault();
         Router.navigate("pages/" + event.target.getAttribute('data-pageId'), {
             trigger: true
         });
+    },
+    'click #logout' : function (event) {
+        Meteor.logout();
     }
 });

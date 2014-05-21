@@ -2,14 +2,14 @@
 /*global Backbone, Session, Meteor */
 'use strict';
 
-if (Meteor.user()) {
-    var AndiamoRouter = Backbone.Router.extend({
+var AndiamoRouter = Backbone.Router.extend({
 
-        routes: {
-            "pages/:page": "pageTransition"
-        },
+    routes: {
+        "pages/:page": "pageTransition"
+    },
 
-        pageTransition: function (pageId) {
+    pageTransition: function (pageId) {
+        if (Meteor.user()) {
             var page = document.getElementById(pageId),
                 fadeOut = (/\bright\b/.exec(page.className) ? 'left' : 'right'),
                 activePage = document.getElementsByClassName('page center')[0];
@@ -24,14 +24,14 @@ if (Meteor.user()) {
                 page.classList.add('center');
             }
         }
+    }
 
+});
+
+window.Router = new AndiamoRouter();
+
+Meteor.startup(function () {
+    Backbone.history.start({
+        pushState: true
     });
-
-    window.Router = new AndiamoRouter();
-
-    Meteor.startup(function () {
-        Backbone.history.start({
-            pushState: true
-        });
-    });
-}
+});
