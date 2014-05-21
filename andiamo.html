@@ -10,13 +10,17 @@
 </head>
 
 <body>
-    {{ > navbar }}
+    {{#if currentUser}}
+        {{ > navbar }}
 
-    <div id="pages" class="pages">
-        {{ > home }}
-        {{ > worldcup }}
-        {{ > superLeague }}
-        {{ > importSuperLeague }}
-        {{ > importWorldcup }}
-    </div>
+        <div id="pages" class="pages">
+            {{ > home }}
+            {{ > worldcup }}
+            {{ > superLeague }}
+            {{ > importSuperLeague }}
+            {{ > importWorldcup }}
+        </div>
+    {{else}}
+        {{ > login }}
+    {{/if}}
 </body>

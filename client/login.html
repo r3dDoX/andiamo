@@ -1,0 +1,55 @@
+<template name="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="well">
+                    {{ > loginForm }}
+                    {{ > registrationForm }}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="loginForm">
+    <form role="form" id="loginForm" name="loginForm">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password">
+        </div>
+        <button id="submitLogin" type="button" class="btn btn-primary btn-block">Login</button>
+    </form>
+</template>
+
+<template name="registrationForm">
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+            <button id="showRegistration" type="button" class="btn btn-default btn-block">Register</button>
+            <br />
+        </div>
+    </div>
+    <form role="form" id="registrationForm" name="registrationForm" class="hidden">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="email" class="form-control" name="username" placeholder="Choose a Username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="repeatPassword">Repeat Password</label>
+            <input type="password" class="form-control" name="repeatPassword" placeholder="Repeat Password">
+        </div>
+        <button id="submitRegistration" type="button" class="btn btn-primary btn-block">Register</button>
+    </form>
+</template>
