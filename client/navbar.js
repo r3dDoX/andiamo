@@ -9,13 +9,14 @@ Template.navbar.menuElements = function () {
             pageId: 'myTips',
             children: [
                 {
-                    text: 'Worldcup',
-                    pageId: 'worldcup'
-                },
-                {
                     text: 'Super League',
                     pageId: 'superLeague'
+                },
+                {
+                    text: 'Worldcup',
+                    pageId: 'worldcup'
                 }
+                
             ]
         },
         {
