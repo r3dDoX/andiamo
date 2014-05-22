@@ -1,5 +1,5 @@
 /*jslint node: true */
-/*global Template */
+/*global Meteor, Template */
 'use strict';
 
 var scrollElementId = 'home',
@@ -17,4 +17,8 @@ Template.home.rendered = function () {
     
     document.getElementById(scrollElementId).addEventListener('scroll', scrollBgPicPartial);
     document.getElementById(scrollElementId).addEventListener('touchmove', scrollBgPicPartial);
+};
+
+Template.home.users = function () {
+    return Meteor.users.find().fetch();
 };
