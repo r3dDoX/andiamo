@@ -23,6 +23,11 @@ Template.loginForm.events({
             };
         
         Meteor.loginWithPassword(emailInput.value, passwordInput.value, callback);
+    },
+    'keydown input' : function (event) {
+        if (event.which === 13) {
+            document.getElementById('submitLogin').click();
+        }
     }
 });
 
@@ -48,6 +53,11 @@ Template.registrationForm.events({
         } else {
             password.parentNode.classList.add('has-error');
             repeatPassword.parentNode.classList.add('has-error');
+        }
+    },
+    'keydown input' : function (event) {
+        if (event.which === 13) {
+            document.getElementById('submitRegistration').click();
         }
     }
 });
