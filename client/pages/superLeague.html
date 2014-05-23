@@ -3,15 +3,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div id="superLeagueMatches" class="owl-carousel">
-                        {{#each matches}}
-                            <div class="owl-item">
-                                <div class="match">
-                                    {{homeTeam}}
-                                </div>
-                            </div>
-                        {{/each}}
-                    </div>
+                    {{#each matches}}
+                        <div class="match">
+                            {{homeTeam}}
+                        </div>
+                    {{/each}}
                 </div>
             </div>
         </div>
