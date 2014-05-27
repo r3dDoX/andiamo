@@ -17,3 +17,15 @@
         {{ > login }}
     {{/if}}
 </body>
+
+<template name="loggedIn">
+    {{ > navbar }}
+
+    <div id="pages" class="pages">
+        {{ > home }}
+        {{ > worldcup }}
+        {{ > superLeague }}
+        {{ > importSuperLeague }}
+        {{ > importWorldcup }}
+    </div>
+</template>
