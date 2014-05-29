@@ -58,6 +58,7 @@ if (Meteor.isServer) {
                     actTeamNameLink = $('td.tbl-teamname.teamname-link a', teamElement);
                     actTeam.name = $('span.t-nText', actTeamNameLink).text();
                     actTeam.link = baseuri + actTeamNameLink.attr('href');
+                    actTeam.imgSrc = $('img', actTeamNameLink).attr('src');
 
                     actTeam.matchPlayed = $('td.tbl-matchplayed span', teamElement).text();
                     actTeam.win = $('td.tbl-win span', teamElement).text();
