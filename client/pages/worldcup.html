@@ -5,20 +5,63 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="nav nav-pills nav-justified">
-                        {{#each pills}}
-                            {{ > pillElement }}
-                        {{/each}}
+                        <li class="active">
+                            <a href="#general" data-toggle="pill">General</a>
+                        </li>
+                        <li>
+                            <a href="#nextMatches" data-toggle="pill">Next Matches</a>
+                        </li>
+                        <li>
+                            <a href="#allTips" data-toggle="pill">All Tips</a>
+                        </li>
                     </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="general">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    {{> matchWorldcup}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="nextMatches">
+                            dfsdfdfsdf
+                        </div>
+                        <div class="tab-pane" id="allTips">
+                            ölasdfö
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<template name="pillElement">
-    <li class="{{#if isSelectedPill}}active{{/if}}">
-        <a href="#{{id}}">
-            {{title}}
-        </a>
-    </li>
+<template name="matchWorldcup">
+    {{#each matches}}
+        <div class="panel panel-default match-worldcup">
+            <div class="panel-body">
+                {{ > teamWorldcup teamName=homeTeam group=group }}
+                <hr />
+                {{ > teamWorldcup teamName=awayTeam group=group }}
+            </div>
+        </div>
+    {{/each}}
+</template>
+
+<template name="teamWorldcup">
+    <div class="row team">
+        <div class="col-xs-2">
+            {{#with team group teamName}}
+                <img src="{{imgSrc}}" />
+            {{/with}}
+        </div>
+        <div class="col-xs-7">
+            <p class="lead">
+                {{teamName}}
+            </p>
+        </div>
+        <div class="col-xs-3">
+            <input class="form-control" type="number" name="awayTeam" placeholder="0" />
+        </div>
+    </div>
 </template>

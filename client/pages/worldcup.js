@@ -1,30 +1,13 @@
 /*jslint node: true */
-/*global Session, Template */
+/*global MatchesWorldcup, TablesWorldcup, Session, Template */
 'use strict';
 
-var sessionKeyPill = 'selectedWorldcupPill';
-
-Template.worldcup.pills = function () {
-    return [
-        { id: "general", title: "General" },
-        { id: "nextMatches", title: "Next Matches" },
-        { id: "allTips", title: "All Tips" }
-    ];
+Template.matchWorldcup.matches = function () {
+    return MatchesWorldcup.find().fetch();
 };
 
-Template.worldcup.rendered = function () {
-    if (!Session.get(sessionKeyPill)) {
-        Session.set(sessionKeyPill, 'general');
-    }
+Template.teamWorldcup.team = function (groupName, teamName) {
+    return TablesWorldcup.findOne({name: groupName}).teams.filter(function (it) {
+        return it.name === teamName;
+    })[0];
 };
-
-
-Template.pillElement.isSelectedPill = function () {
-    return Session.get(sessionKeyPill) === this.id;
-};
-
-Template.pillElement.events({
-    "click a": function () {
-        Session.set(sessionKeyPill, this.id);
-    }
-});
