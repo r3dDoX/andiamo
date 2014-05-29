@@ -19,7 +19,7 @@
                         <div class="tab-pane active" id="general">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    {{> matchWorldcup}}
+                                    {{> matchWorldcup group='Group A'}}
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
 </template>
 
 <template name="matchWorldcup">
-    {{#each matches}}
+    {{#each matches group}}
         <div class="panel panel-default match-worldcup">
             <div class="panel-body">
                 {{ > teamWorldcup teamName=homeTeam group=group }}

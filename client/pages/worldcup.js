@@ -2,8 +2,8 @@
 /*global MatchesWorldcup, TablesWorldcup, Session, Template */
 'use strict';
 
-Template.matchWorldcup.matches = function () {
-    return MatchesWorldcup.find().fetch();
+Template.matchWorldcup.matches = function (groupName) {
+    return MatchesWorldcup.find({group: groupName}).fetch();
 };
 
 Template.teamWorldcup.team = function (groupName, teamName) {
