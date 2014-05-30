@@ -3,7 +3,10 @@
 'use strict';
 
 Template.matchWorldcup.matches = function (groupName) {
-    return MatchesWorldcup.find({group: groupName}).fetch();
+    return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(function (it) {
+        it.date = it.date.toLocaleString();
+        return it;
+    });
 };
 
 Template.teamWorldcup.team = function (groupName, teamName) {

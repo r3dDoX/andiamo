@@ -17,9 +17,39 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="general">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    {{> matchWorldcup group='Group A'}}
+                            <div class="panel-group" id="mainAccordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
+                                                Group Stage
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="groupStage" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-xs-12 text-center">
+                                                    <ul class="pagination">
+                                                        <li><a href="#">&laquo;</a></li>
+                                                        <li><a href="#">A</a></li>
+                                                        <li><a href="#">B</a></li>
+                                                        <li><a href="#">C</a></li>
+                                                        <li><a href="#">D</a></li>
+                                                        <li><a href="#">E</a></li>
+                                                        <li><a href="#">F</a></li>
+                                                        <li><a href="#">G</a></li>
+                                                        <li><a href="#">H</a></li>
+                                                        <li><a href="#">&raquo;</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                {{> matchWorldcup group='Group A'}}
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -38,11 +68,19 @@
 
 <template name="matchWorldcup">
     {{#each matches group}}
-        <div class="panel panel-default match-worldcup">
-            <div class="panel-body">
-                {{ > teamWorldcup teamName=homeTeam group=group }}
-                <hr />
-                {{ > teamWorldcup teamName=awayTeam group=group }}
+        <div class="col-sm-6">
+            <div class="panel panel-default match-worldcup">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        {{date}}
+                        <small class="pull-right">{{location.venue}}</small>
+                    </h4>
+                </div>
+                <div class="panel-body">
+                    {{ > teamWorldcup teamName=homeTeam group=group }}
+                    <hr />
+                    {{ > teamWorldcup teamName=awayTeam group=group }}
+                </div>
             </div>
         </div>
     {{/each}}
