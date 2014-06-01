@@ -17,12 +17,6 @@ var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
         });
     };
 
-Template.groupsWorldcup.rendered = function () {
-    if (!Session.get(sessionKeyGroup)) {
-        Session.set(sessionKeyGroup, groups[0]);
-    }
-};
-
 Template.groupsWorldcup.events({
     'click .pagination a': function () {
         Session.set(sessionKeyGroup, this);
@@ -38,7 +32,8 @@ Template.groupsWorldcup.groups = function () {
 };
 
 Template.groupsWorldcup.isSelectedGroup = function () {
-    return Session.get(sessionKeyGroup) === this;
+    var sessionGroup = Session.get(sessionKeyGroup) || groups[0];
+    return sessionGroup === this;
 };
 
 Template.groupTableWorldcup.table = function () {
