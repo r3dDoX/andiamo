@@ -197,9 +197,9 @@
                 </h4>
             </div>
             <div class="panel-body">
-                {{ > teamWorldcup teamName=homeTeam }}
+                {{ > teamWorldcup match=. side='homeTeam' }}
                 <hr />
-                {{ > teamWorldcup teamName=awayTeam }}
+                {{ > teamWorldcup match=. side='awayTeam' }}
             </div>
         </div>
     </div>
@@ -208,7 +208,7 @@
 <template name="teamWorldcup">
     <div class="row team">
         <div class="col-xs-2">
-            {{#with team teamName}}
+            {{#with team}}
                 <img src="{{imgSrc}}" />
             {{/with}}
         </div>
@@ -218,7 +218,7 @@
             </p>
         </div>
         <div class="col-xs-3">
-            <input class="form-control" type="number" name="awayTeam" placeholder="0" />
+            <input class="form-control" type="number" name="awayTeam" placeholder="0" min="0" value="{{tip}}" />
         </div>
     </div>
 </template>

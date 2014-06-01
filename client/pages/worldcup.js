@@ -1,5 +1,5 @@
 /*jslint node: true */
-/*global MatchesWorldcup, TablesWorldcup, Session, Template */
+/*global MatchesWorldcup, TablesWorldcup, TipsWorldcup, Session, Template, Meteor */
 'use strict';
 
 var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
@@ -10,6 +10,7 @@ var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     semiFinals = 'Semi-finals',
     smallFinal = 'Play-off for third place',
     bigFinal = 'Final',
+    
     mapDateToString = function (it) {
         it.date = it.date.toLocaleString();
         return it;
@@ -33,8 +34,10 @@ Template.groupsWorldcup.groups = function () {
 };
 
 Template.groupsWorldcup.isSelectedGroup = function () {
-    var sessionGroup = Session.get(sessionKeyGroup) || groups[0];
-    return sessionGroup === this;
+    if (!Session.get(sessionKeyGroup)) {
+        Session.set(sessionKeyGroup, groups[0]);
+    }
+    return Session.get(sessionKeyGroup) === this;
 };
 
 Template.groupTableWorldcup.table = function () {
@@ -54,12 +57,38 @@ Template.nextMatchesWorldcup.matches = function () {
     return MatchesWorldcup.find({date: {$gte: now}}, {sort: {date: 1}, limit: 8}).fetch().map(mapDateToString);
 };
 
-Template.teamWorldcup.team = function (teamName) {
-    var table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
+Template.matchWorldcup.created = function () {
+    this.data.tip = TipsWorldcup.findOne({ match: this.data.id, user: Meteor.userId() }, { fields:  { '_id': 0 }});
+};
+
+Template.matchWorldcup.events({
+    'keyup input, change input': function (event) {
+        var inputElement = event.target,
+            tip = this.match.tip || { match: this.match.id, user: Meteor.userId() };
+        
+        tip[this.side] = inputElement.value;
+
+        Meteor.call('saveTip', tip, function (error, result) { if (error) { console.log(error); } });
+    }
+});
+
+Template.teamWorldcup.team = function () {
+    var teamName = this.match[this.side],
+        table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
     
     if (!table) {
         return {};
     }
     
     return table.teams.filter(function (it) { return it.name === teamName; })[0];
+};
+
+Template.teamWorldcup.teamName = function () {
+    return this.match[this.side];
+};
+
+Template.teamWorldcup.tip = function () {
+    if (this.match.tip) {
+        return this.match.tip[this.side];
+    }
 };
