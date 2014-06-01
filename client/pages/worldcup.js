@@ -10,11 +10,12 @@ var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     semiFinals = 'Semi-finals',
     smallFinal = 'Play-off for third place',
     bigFinal = 'Final',
+    mapDateToString = function (it) {
+        it.date = it.date.toLocaleString();
+        return it;
+    },
     matchesForGroup = function (groupName) {
-        return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(function (it) {
-            it.date = it.date.toLocaleString();
-            return it;
-        });
+        return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(mapDateToString);
     };
 
 Template.groupsWorldcup.events({
@@ -45,10 +46,7 @@ Template.quarterFinalsWorldcup.matches = matchesForGroup.bind(undefined, quarter
 Template.semiFinalsWorldcup.matches = matchesForGroup.bind(undefined, semiFinals);
 
 Template.finalsWorldcup.matches = function () {
-    return MatchesWorldcup.find({$or: [{group: smallFinal}, {group: bigFinal}]}, {sort: {date: 1}}).fetch().map(function (it) {
-        it.date = it.date.toLocaleString();
-        return it;
-    });
+    return MatchesWorldcup.find({$or: [{group: smallFinal}, {group: bigFinal}]}, {sort: {date: 1}}).fetch().map(mapDateToString);
 };
 
 Template.teamWorldcup.team = function (teamName) {

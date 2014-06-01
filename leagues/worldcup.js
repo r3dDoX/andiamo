@@ -1,8 +1,9 @@
 /*jslint node: true */
-/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true */
+/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, TipsWorldcup:true */
 
-MatchesWorldcup = new Meteor.Collection("matchesWorldcup");
-TablesWorldcup = new Meteor.Collection("tablesWorldcup");
+MatchesWorldcup = new Meteor.Collection('matchesWorldcup');
+TablesWorldcup = new Meteor.Collection('tablesWorldcup');
+TipsWorldcup = new Meteor.Collection('tipsWorldcup');
 
 if (Meteor.isServer) {
     'use strict';
