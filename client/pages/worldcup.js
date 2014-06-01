@@ -3,7 +3,19 @@
 'use strict';
 
 var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
-    sessionKeyGroup = 'selectedGroup';
+    sessionKeyGroup = 'selectedGroup',
+    groupPrefix = 'Group ',
+    roundOf16 = 'Round of 16',
+    quarterFinals = 'Quarter-finals',
+    semiFinals = 'Semi-finals',
+    smallFinal = 'Play-off for third place',
+    bigFinal = 'Final',
+    matchesForGroup = function (groupName) {
+        return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(function (it) {
+            it.date = it.date.toLocaleString();
+            return it;
+        });
+    };
 
 Template.groupsWorldcup.rendered = function () {
     if (!Session.get(sessionKeyGroup)) {
@@ -17,6 +29,10 @@ Template.groupsWorldcup.events({
     }
 });
 
+Template.groupsWorldcup.matches = function () {
+    return matchesForGroup(groupPrefix + Session.get(sessionKeyGroup));
+};
+
 Template.groupsWorldcup.groups = function () {
     return groups;
 };
@@ -25,15 +41,27 @@ Template.groupsWorldcup.isSelectedGroup = function () {
     return Session.get(sessionKeyGroup) === this;
 };
 
-Template.groupMatchesWorldcup.matches = function () {
-    return MatchesWorldcup.find({group: 'Group ' + Session.get(sessionKeyGroup)}, {sort: {date: 1}}).fetch().map(function (it) {
+Template.groupTableWorldcup.table = function () {
+    return TablesWorldcup.findOne({name: groupPrefix + Session.get(sessionKeyGroup)});
+};
+
+Template.roundOf16Worldcup.matches = matchesForGroup.bind(undefined, roundOf16);
+Template.quarterFinalsWorldcup.matches = matchesForGroup.bind(undefined, quarterFinals);
+Template.semiFinalsWorldcup.matches = matchesForGroup.bind(undefined, semiFinals);
+
+Template.finalsWorldcup.matches = function () {
+    return MatchesWorldcup.find({$or: [{group: smallFinal}, {group: bigFinal}]}, {sort: {date: 1}}).fetch().map(function (it) {
         it.date = it.date.toLocaleString();
         return it;
     });
 };
 
-Template.teamWorldcup.team = function (groupName, teamName) {
-    return TablesWorldcup.findOne({name: groupName}).teams.filter(function (it) {
-        return it.name === teamName;
-    })[0];
+Template.teamWorldcup.team = function (teamName) {
+    var table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
+    
+    if (!table) {
+        return {};
+    }
+    
+    return table.teams.filter(function (it) { return it.name === teamName; })[0];
 };

@@ -31,6 +31,7 @@
                                         <div class="panel-body">
                                             {{ > groupsWorldcup }}
                                         </div>
+                                        {{ > groupTableWorldcup }}
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
@@ -44,7 +45,7 @@
                                     </div>
                                     <div id="roundOf16" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            asdf
+                                            {{ > roundOf16Worldcup }}
                                         </div>
                                     </div>
                                 </div>
@@ -59,7 +60,7 @@
                                     </div>
                                     <div id="quarterFinals" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            asdf
+                                            {{ > quarterFinalsWorldcup }}
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +75,7 @@
                                     </div>
                                     <div id="semiFinals" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            asdf
+                                            {{ > semiFinalsWorldcup }}
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +90,7 @@
                                     </div>
                                     <div id="finals" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            asdf
+                                            {{ > finalsWorldcup }}
                                         </div>
                                     </div>
                                 </div>
@@ -121,34 +122,87 @@
         </div>
     </div>
     <div class="row">
-        {{ > groupMatchesWorldcup }}
+        {{#each matches}}
+            {{ > matchWorldcup }}
+        {{/each}}
     </div>
 </template>
 
-<template name="groupMatchesWorldcup">
+<template name="groupTableWorldcup">
+    {{#with table}}
+        <table class="table group-table">
+            <thead>
+                <tr>
+                    <th>Teams</th>
+                    <th class="text-center">Played</th>
+                    <th class="text-center">Wins</th>
+                    <th class="text-center">Draws</th>
+                    <th class="text-center">Losses</th>
+                    <th class="text-center">Points</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each teams}}
+                    <tr>
+                        <td><img src="{{imgSrc}}" />&nbsp;&nbsp;{{name}}</td>
+                        <td class="text-center">{{matchPlayed}}</td>
+                        <td class="text-center">{{win}}</td>
+                        <td class="text-center">{{draw}}</td>
+                        <td class="text-center">{{lost}}</td>
+                        <td class="text-center">{{points}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    {{/with}}
+</template>
+
+<template name="roundOf16Worldcup">
     {{#each matches}}
-        <div class="col-sm-6">
-            <div class="panel panel-default match-worldcup">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        {{date}}
-                        <small class="pull-right">{{location.venue}}</small>
-                    </h4>
-                </div>
-                <div class="panel-body">
-                    {{ > teamWorldcup teamName=homeTeam group=group }}
-                    <hr />
-                    {{ > teamWorldcup teamName=awayTeam group=group }}
-                </div>
+        {{ > matchWorldcup }}
+    {{/each}}
+</template>
+
+<template name="quarterFinalsWorldcup">
+    {{#each matches}}
+        {{ > matchWorldcup }}
+    {{/each}}
+</template>
+
+<template name="semiFinalsWorldcup">
+    {{#each matches}}
+        {{ > matchWorldcup }}
+    {{/each}}
+</template>
+
+<template name="finalsWorldcup">
+    {{#each matches}}
+        {{ > matchWorldcup }}
+    {{/each}}
+</template>
+
+<template name="matchWorldcup">
+    <div class="col-sm-6">
+        <div class="panel panel-default match-worldcup">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    {{date}}
+                    <small class="pull-right">{{location.venue}}</small>
+                </h4>
+            </div>
+            <div class="panel-body">
+                {{ > teamWorldcup teamName=homeTeam }}
+                <hr />
+                {{ > teamWorldcup teamName=awayTeam }}
             </div>
         </div>
-    {{/each}}
+    </div>
 </template>
 
 <template name="teamWorldcup">
     <div class="row team">
         <div class="col-xs-2">
-            {{#with team group teamName}}
+            {{#with team teamName}}
                 <img src="{{imgSrc}}" />
             {{/with}}
         </div>
