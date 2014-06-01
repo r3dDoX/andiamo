@@ -49,6 +49,11 @@ Template.finalsWorldcup.matches = function () {
     return MatchesWorldcup.find({$or: [{group: smallFinal}, {group: bigFinal}]}, {sort: {date: 1}}).fetch().map(mapDateToString);
 };
 
+Template.nextMatchesWorldcup.matches = function () {
+    var now = new Date();
+    return MatchesWorldcup.find({date: {$gte: now}}, {sort: {date: 1}, limit: 8}).fetch().map(mapDateToString);
+};
+
 Template.teamWorldcup.team = function (teamName) {
     var table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
     

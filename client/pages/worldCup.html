@@ -97,7 +97,7 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="nextMatches">
-                            dfsdfdfsdf
+                            {{ > nextMatchesWorldcup }}
                         </div>
                         <div class="tab-pane" id="allTips">
                             ölasdfö
@@ -176,6 +176,12 @@
 </template>
 
 <template name="finalsWorldcup">
+    {{#each matches}}
+        {{ > matchWorldcup }}
+    {{/each}}
+</template>
+
+<template name="nextMatchesWorldcup">
     {{#each matches}}
         {{ > matchWorldcup }}
     {{/each}}
