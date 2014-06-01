@@ -79,6 +79,10 @@ if (Meteor.isServer) {
         importWorldcup = function () {
             parseTables();
             parseMatches();
+        },
+        
+        saveTip = function (tip) {
+            TipsWorldcup.upsert({ match: tip.match, user: tip.user }, { $set: tip });
         };
 
     //publish collections
@@ -89,9 +93,20 @@ if (Meteor.isServer) {
     Meteor.publish('tablesWorldcup', function () {
         return TablesWorldcup.find();
     });
+    
+    Meteor.publish('tipsWorldcup', function () {
+        return TipsWorldcup.find();
+    });
 
     //export Methods
     Meteor.methods({
-        'importWorldcup': importWorldcup
+        'importWorldcup': importWorldcup,
+        'saveTip': saveTip
     });
+}
+
+if (Meteor.isClient) {
+    Meteor.subscribe('matchesWorldcup');
+    Meteor.subscribe('tablesWorldcup');
+    Meteor.subscribe('tipsWorldcup');
 }
