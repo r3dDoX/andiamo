@@ -29,25 +29,67 @@
                                     </div>
                                     <div id="groupStage" class="panel-collapse collapse in">
                                         <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-xs-12 text-center">
-                                                    <ul class="pagination">
-                                                        <li><a href="#">&laquo;</a></li>
-                                                        <li><a href="#">A</a></li>
-                                                        <li><a href="#">B</a></li>
-                                                        <li><a href="#">C</a></li>
-                                                        <li><a href="#">D</a></li>
-                                                        <li><a href="#">E</a></li>
-                                                        <li><a href="#">F</a></li>
-                                                        <li><a href="#">G</a></li>
-                                                        <li><a href="#">H</a></li>
-                                                        <li><a href="#">&raquo;</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                {{> matchWorldcup group='Group A'}}
-                                            </div>
+                                            {{ > groupsWorldcup }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#roundOf16">
+                                                Round of 16
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="roundOf16" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            asdf
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#quarterFinals">
+                                                Quarter Finals
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="quarterFinals" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            asdf
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#semiFinals">
+                                                Semi Finals
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="semiFinals" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            asdf
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#finals">
+                                                Finals
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="finals" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            asdf
                                         </div>
                                     </div>
                                 </div>
@@ -66,8 +108,25 @@
     </div>
 </template>
 
-<template name="matchWorldcup">
-    {{#each matches group}}
+<template name="groupsWorldcup">
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            <ul class="pagination">
+                {{#each groups}}
+                    <li class="{{#if isSelectedGroup}}active{{/if}}">
+                        <a href="#">{{.}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        {{ > groupMatchesWorldcup }}
+    </div>
+</template>
+
+<template name="groupMatchesWorldcup">
+    {{#each matches}}
         <div class="col-sm-6">
             <div class="panel panel-default match-worldcup">
                 <div class="panel-heading">
@@ -94,7 +153,7 @@
             {{/with}}
         </div>
         <div class="col-xs-7">
-            <p class="lead">
+            <p class="lead" title="{{teamName}}">
                 {{teamName}}
             </p>
         </div>
