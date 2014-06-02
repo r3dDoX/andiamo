@@ -197,28 +197,44 @@
                 </h4>
             </div>
             <div class="panel-body">
-                {{ > teamWorldcup match=. side='homeTeam' }}
+                <div class="row team">
+                    <div class="col-xs-2">
+                        {{ > imageTeamWorldcup teamName=homeTeam}}
+                    </div>
+                    <div class="col-xs-7">
+                        <p class="lead" title="{{homeTeam}}">
+                            {{homeTeam}}
+                        </p>
+                    </div>
+                    <div class="col-xs-3">
+                        {{#with tip}}
+                            <input class="form-control" type="number" name="homeTeam" placeholder="0" min="0" value="{{homeTeam}}">
+                        {{/with}}
+                    </div>
+                </div>
                 <hr />
-                {{ > teamWorldcup match=. side='awayTeam' }}
+                <div class="row team">
+                    <div class="col-xs-2">
+                        {{ > imageTeamWorldcup teamName=awayTeam}}
+                    </div>
+                    <div class="col-xs-7">
+                        <p class="lead" title="{{awayTeam}}">
+                            {{awayTeam}}
+                        </p>
+                    </div>
+                    <div class="col-xs-3">
+                        {{#with tip}}
+                            <input class="form-control" type="number" name="awayTeam" placeholder="0" min="0" value="{{awayTeam}}">
+                        {{/with}}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
-<template name="teamWorldcup">
-    <div class="row team">
-        <div class="col-xs-2">
-            {{#with team}}
-                <img src="{{imgSrc}}" />
-            {{/with}}
-        </div>
-        <div class="col-xs-7">
-            <p class="lead" title="{{teamName}}">
-                {{teamName}}
-            </p>
-        </div>
-        <div class="col-xs-3">
-            <input class="form-control" type="number" name="awayTeam" placeholder="0" min="0" value="{{tip}}">
-        </div>
-    </div>
+<template name="imageTeamWorldcup">
+    {{#with team teamName}}
+        <img src="{{imgSrc}}" />
+    {{/with}}
 </template>

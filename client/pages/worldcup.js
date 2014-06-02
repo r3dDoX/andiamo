@@ -90,9 +90,17 @@ Template.matchWorldcup.created = function () {
 Template.matchWorldcup.events({
     'keyup input, change input': function (event) {
         var inputElement = event.target,
-            tip = this.match.tip || { match: this.match.id, user: Meteor.userId() };
+            tip = this;
+            
+        if (!tip.match) {
+            tip = { match: this.match.id, user: Meteor.userId() };
+        }
         
-        tip[this.side] = inputElement.value;
+        /*jslint nomen: true*/
+        delete tip._id;//Won't update with _id set
+        /*jslint nomen: false*/
+        
+        tip[inputElement.name] = inputElement.value;
 
         Meteor.call('saveTip', tip, function (error, result) {
             if (error) {
@@ -104,26 +112,18 @@ Template.matchWorldcup.events({
     }
 });
 
+Template.matchWorldcup.tip = function () {
+    return TipsWorldcup.findOne({ match: this.id, user: Meteor.userId() }) || {};
+};
 
-// -------------------------------- TEAM --------------------------------
+// -------------------------------- IMAGE --------------------------------
 
-Template.teamWorldcup.team = function () {
-    var teamName = this.match[this.side],
-        table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
+Template.imageTeamWorldcup.team = function (teamName) {
+    var table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
     
     if (!table) {
         return {};
     }
     
     return table.teams.filter(function (it) { return it.name === teamName; })[0];
-};
-
-Template.teamWorldcup.teamName = function () {
-    return this.match[this.side];
-};
-
-Template.teamWorldcup.tip = function () {
-    if (this.match.tip) {
-        return this.match.tip[this.side];
-    }
 };
