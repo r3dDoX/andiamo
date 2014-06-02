@@ -9,25 +9,15 @@ var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     quarterFinals = 'Quarter-finals',
     semiFinals = 'Semi-finals',
     smallFinal = 'Play-off for third place',
-    bigFinal = 'Final',
-    
-    mapDateToString = function (it) {
-        it.date = it.date.toLocaleString();
-        return it;
-    },
-    matchesForGroup = function (groupName) {
-        return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(mapDateToString);
-    };
+    bigFinal = 'Final';
+
+// -------------------------------- GROUP STAGE --------------------------------
 
 Template.groupsWorldcup.events({
     'click .pagination a': function () {
         Session.set(sessionKeyGroup, this);
     }
 });
-
-Template.groupsWorldcup.matches = function () {
-    return matchesForGroup(groupPrefix + Session.get(sessionKeyGroup));
-};
 
 Template.groupsWorldcup.groups = function () {
     return groups;
@@ -44,6 +34,21 @@ Template.groupTableWorldcup.table = function () {
     return TablesWorldcup.findOne({name: groupPrefix + Session.get(sessionKeyGroup)});
 };
 
+// -------------------------------- MATCHES --------------------------------
+
+function mapDateToString(it) {
+    it.date = it.date.toLocaleString();
+    return it;
+}
+
+function matchesForGroup(groupName) {
+    return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(mapDateToString);
+}
+
+Template.groupsWorldcup.matches = function () {
+    return matchesForGroup(groupPrefix + Session.get(sessionKeyGroup));
+};
+
 Template.roundOf16Worldcup.matches = matchesForGroup.bind(undefined, roundOf16);
 Template.quarterFinalsWorldcup.matches = matchesForGroup.bind(undefined, quarterFinals);
 Template.semiFinalsWorldcup.matches = matchesForGroup.bind(undefined, semiFinals);
@@ -53,9 +58,30 @@ Template.finalsWorldcup.matches = function () {
 };
 
 Template.nextMatchesWorldcup.matches = function () {
-    var now = new Date();
-    return MatchesWorldcup.find({date: {$gte: now}}, {sort: {date: 1}, limit: 8}).fetch().map(mapDateToString);
+    return MatchesWorldcup.find({date: {$gte: new Date()}}, {sort: {date: 1}, limit: 8}).fetch().map(mapDateToString);
 };
+
+
+// -------------------------------- MATCH -------------------------------- 
+
+function toggleFadeEffect(element, className) {
+    var classList = element.parentNode.classList,
+        removeSuccessStyle = function (event) {
+            classList.remove('has-success');
+            element.removeEventListener(removeSuccessStyle);
+        };
+    
+    classList.add('has-success');
+    element.addEventListener('transitionend', removeSuccessStyle);
+}
+
+function showSuccessfulSave(element) {
+    toggleFadeEffect(element, 'has-success');
+}
+
+function showErrorSave(element, error) {
+    toggleFadeEffect(element, 'has-error');
+}
 
 Template.matchWorldcup.created = function () {
     this.data.tip = TipsWorldcup.findOne({ match: this.data.id, user: Meteor.userId() }, { fields:  { '_id': 0 }});
@@ -68,9 +94,18 @@ Template.matchWorldcup.events({
         
         tip[this.side] = inputElement.value;
 
-        Meteor.call('saveTip', tip, function (error, result) { if (error) { console.log(error); } });
+        Meteor.call('saveTip', tip, function (error, result) {
+            if (error) {
+                showErrorSave(inputElement, error);
+            } else {
+                showSuccessfulSave(inputElement);
+            }
+        });
     }
 });
+
+
+// -------------------------------- TEAM --------------------------------
 
 Template.teamWorldcup.team = function () {
     var teamName = this.match[this.side],
