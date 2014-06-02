@@ -91,10 +91,6 @@ Template.matchWorldcup.events({
     'keyup input, change input': function (event) {
         var inputElement = event.target,
             tip = this;
-            
-        if (!tip.match) {
-            tip = { match: this.match.id, user: Meteor.userId() };
-        }
         
         /*jslint nomen: true*/
         delete tip._id;//Won't update with _id set
@@ -113,7 +109,7 @@ Template.matchWorldcup.events({
 });
 
 Template.matchWorldcup.tip = function () {
-    return TipsWorldcup.findOne({ match: this.id, user: Meteor.userId() }) || {};
+    return TipsWorldcup.findOne({ match: this.id, user: Meteor.userId() }) || { match: this.id, user: Meteor.userId() };
 };
 
 // -------------------------------- IMAGE --------------------------------
