@@ -92,19 +92,23 @@ Template.matchWorldcup.events({
         var inputElement = event.target,
             tip = this;
         
-        /*jslint nomen: true*/
-        delete tip._id;//Won't update with _id set
-        /*jslint nomen: false*/
-        
-        tip[inputElement.name] = inputElement.value;
+        if (isNaN(Number(inputElement.value))) {
+            showErrorSave(inputElement, 'Value is not number');
+        } else {
+            /*jslint nomen: true*/
+            delete tip._id; //Won't update with _id set
+            /*jslint nomen: false*/
 
-        Meteor.call('saveTip', tip, function (error, result) {
-            if (error) {
-                showErrorSave(inputElement, error);
-            } else {
-                showSuccessfulSave(inputElement);
-            }
-        });
+            tip[inputElement.name] = Number(inputElement.value);
+
+            Meteor.call('saveTip', tip, function (error, result) {
+                if (error) {
+                    showErrorSave(inputElement, error);
+                } else {
+                    showSuccessfulSave(inputElement);
+                }
+            });
+        }
     }
 });
 
