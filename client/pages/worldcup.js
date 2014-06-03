@@ -127,3 +127,17 @@ Template.imageTeamWorldcup.team = function (teamName) {
     
     return table.teams.filter(function (it) { return it.name === teamName; })[0];
 };
+
+// -------------------------------- ALL TIPS --------------------------------
+
+Template.allTipsWorldcup.matches = function () {
+    return MatchesWorldcup.find({date: {$lt: new Date()}}, {fields: {id: 1, homeTeam: 1, awayTeam: 1}, sort: {date: 1}, limit: 20}).fetch();
+};
+
+Template.allTipsWorldcup.users = function () {
+    return Meteor.users.find({}, {fields: {'_id': 1, username: 1}}).fetch();
+};
+
+Template.allTipsWorldcup.tip = function (matchId) {
+    return TipsWorldcup.findOne({user: this._id, match: matchId}) || {};
+};

@@ -100,7 +100,7 @@
                             {{ > nextMatchesWorldcup }}
                         </div>
                         <div class="tab-pane" id="allTips">
-                            ölasdfö
+                            {{ > allTipsWorldcup }}
                         </div>
                     </div>
                 </div>
@@ -237,4 +237,35 @@
     {{#with team teamName}}
         <img src="{{imgSrc}}" />
     {{/with}}
+</template>
+
+<template name="allTipsWorldcup">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Match</th>
+                    {{#each users}}
+                        <th class="text-center">{{username}}</th>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each matches}}
+                    <tr>
+                        <td>{{homeTeam}} - {{awayTeam}}</td>
+                        {{#each users}}
+                            {{#with tip ../id}}
+                                <td class="text-center">{{homeTeam}} - {{awayTeam}}</td>
+                            {{/with}}
+                        {{/each}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template name="userTipWorldcup">
+
 </template>
