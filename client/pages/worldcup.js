@@ -1,4 +1,4 @@
-/*jslint node: true */
+/*jslint node: true, nomen: true*/
 /*global MatchesWorldcup, TablesWorldcup, TipsWorldcup, Session, Template, Meteor */
 'use strict';
 
@@ -92,12 +92,10 @@ Template.matchWorldcup.events({
         var inputElement = event.target,
             tip = this;
         
-        if (isNaN(Number(inputElement.value))) {
+        if (isNaN(inputElement.value)) {
             showErrorSave(inputElement, 'Value is not number');
         } else {
-            /*jslint nomen: true*/
             delete tip._id; //Won't update with _id set
-            /*jslint nomen: false*/
 
             tip[inputElement.name] = Number(inputElement.value);
 

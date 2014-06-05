@@ -22,17 +22,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each users }}
-                                <tr>
-                                    <td>1</td>
-                                    <td>{{username}}</td>
-                                    <td>1080</td>
-                                </tr>
-                            {{/each}}
+                            {{ > standingsTable }}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+</template>
+
+<template name="standingsTable">
+    {{#each userRankings}}
+        <tr>
+            <td>{{rank}}</td>
+            <td>{{username}}</td>
+            <td>{{points}}</td>
+        </tr>
+    {{/each}}
 </template>

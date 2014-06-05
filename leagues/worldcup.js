@@ -1,4 +1,4 @@
-/*jslint node: true */
+/*jslint node: true, nomen: true */
 /*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, TipsWorldcup:true */
 
 MatchesWorldcup = new Meteor.Collection('matchesWorldcup');
