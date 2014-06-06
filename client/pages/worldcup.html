@@ -135,9 +135,9 @@
                 <tr>
                     <th>Teams</th>
                     <th class="text-center">Played</th>
-                    <th class="text-center">Wins</th>
-                    <th class="text-center">Draws</th>
-                    <th class="text-center">Losses</th>
+                    <th class="text-center hidden-xs">Wins</th>
+                    <th class="text-center hidden-xs">Draws</th>
+                    <th class="text-center hidden-xs">Losses</th>
                     <th class="text-center">Points</th>
                 </tr>
             </thead>
@@ -146,9 +146,9 @@
                     <tr>
                         <td><img src="{{imgSrc}}" />&nbsp;&nbsp;{{name}}</td>
                         <td class="text-center">{{matchPlayed}}</td>
-                        <td class="text-center">{{win}}</td>
-                        <td class="text-center">{{draw}}</td>
-                        <td class="text-center">{{lost}}</td>
+                        <td class="text-center hidden-xs">{{win}}</td>
+                        <td class="text-center hidden-xs">{{draw}}</td>
+                        <td class="text-center hidden-xs">{{lost}}</td>
                         <td class="text-center">{{points}}</td>
                     </tr>
                 {{/each}}
@@ -193,20 +193,20 @@
             <div class="panel-heading">
                 <h4 class="panel-title">
                     {{date}}
-                    <small class="pull-right">{{location.venue}}</small>
+                    <small class="pull-right hidden-xs">{{location.venue}}</small>
                 </h4>
             </div>
             <div class="panel-body">
                 <div class="row team">
-                    <div class="col-xs-2">
+                    <div class="col-xs-3 col-sm-2">
                         {{ > imageTeamWorldcup teamName=homeTeam}}
                     </div>
-                    <div class="col-xs-7">
+                    <div class="col-xs-6 col-sm-7">
                         <p class="lead" title="{{homeTeam}}">
                             {{homeTeam}}
                         </p>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-3 col-sm-3">
                         {{#with tip}}
                             <input class="form-control" type="number" name="homeTeam" placeholder="#" min="0" value="{{homeTeam}}">
                         {{/with}}
@@ -214,15 +214,15 @@
                 </div>
                 <hr />
                 <div class="row team">
-                    <div class="col-xs-2">
+                    <div class="col-xs-3 col-sm-2">
                         {{ > imageTeamWorldcup teamName=awayTeam}}
                     </div>
-                    <div class="col-xs-7">
+                    <div class="col-xs-6 col-sm-7">
                         <p class="lead" title="{{awayTeam}}">
                             {{awayTeam}}
                         </p>
                     </div>
-                    <div class="col-xs-3">
+                    <div class="col-xs-3 col-sm-3">
                         {{#with tip}}
                             <input class="form-control" type="number" name="awayTeam" placeholder="#" min="0" value="{{awayTeam}}">
                         {{/with}}
