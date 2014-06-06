@@ -17,7 +17,7 @@ if (Meteor.isServer) {
 
             $('.match-list .fixture').each(function (index, element) {
                 actMatch = {};
-                actMatch.id = $(element).attr('id');
+                actMatch.id = $(element).data('id');
                 actMatch.date = new Date($('.mu-i-date', element).text() + " UTC");
 
                 timeParts = $('.s-date-HHmm', element).data('timeutc').split(':');
