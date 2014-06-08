@@ -6,32 +6,11 @@ Template.navbar.menuElements = function () {
     return [
         {
             text: 'My Tips',
-            pageId: 'myTips',
-            children: [
-                {
-                    text: 'Super League',
-                    pageId: 'superLeague'
-                },
-                {
-                    text: 'Worldcup',
-                    pageId: 'worldcup'
-                }
-                
-            ]
+            pageId: 'worldcup'
         },
         {
             text: 'Import',
-            pageId: 'import',
-            children: [
-                {
-                    text: 'Super League',
-                    pageId: 'importSuperLeague'
-                },
-                {
-                    text: 'Worldcup',
-                    pageId: 'importWorldcup'
-                }
-            ]
+            pageId: 'importWorldcup'
         }
     ];
 };
