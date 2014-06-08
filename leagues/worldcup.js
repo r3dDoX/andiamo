@@ -86,7 +86,7 @@ if (Meteor.isServer) {
             var now = new Date(),
                 match = MatchesWorldcup.findOne({ id: tip.match});
             
-            if (now > match.date) {
+            if (now >= match.date) {
                 throw new Meteor.Error(500, "The Match has already begun. You cannot tip anymore!");
             }
             

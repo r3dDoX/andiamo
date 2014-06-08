@@ -107,6 +107,13 @@ Template.matchWorldcup.events({
                 }
             });
         }
+    },
+    
+    'mousedown input, touchstart input, focus input': function (event) {
+        if (MatchesWorldcup.findOne({id: this.match}, {fields: {date: 1}}).date <= new Date()) {
+            event.preventDefault();
+            event.target.disabled = 'disabled';
+        }
     }
 });
 
