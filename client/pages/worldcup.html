@@ -21,6 +21,21 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#ranking">
+                                                Ranking
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="ranking" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            {{ > rankingWorldcup }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
                                                 Group Stage
                                                 <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
@@ -107,6 +122,43 @@
             </div>
         </div>
     </div>
+</template>
+
+<template name="rankingWorldcup">
+    <div class="row">
+        <div class="col-sm-4">
+            <form class="form-inline" role="form">
+                <label class="control-label" for="rankingFirst">First&nbsp;</label>
+                {{ > rankingSelectboxWorldcup rank='first' }}
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <form class="form-inline" role="form">
+                <label class="control-label" for="rankingSecond">Second&nbsp;</label>
+                {{ > rankingSelectboxWorldcup rank='second' }}
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <form class="form-inline" role="form">
+                <label class="control-label" for="rankingThird">Third&nbsp;</label>
+                {{ > rankingSelectboxWorldcup rank='third' }}
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="rankingSelectboxWorldcup">
+    {{#with rank}}
+        <select class="form-control" id="rankingFirst" name="{{.}}">
+            {{#each teams . }}
+                {{#if selected}}
+                    <option selected="selected">{{name}}</option>
+                {{else}}
+                    <option>{{name}}</option>
+                {{/if}}
+            {{/each}}
+        </select>
+    {{/with}}
 </template>
 
 <template name="groupsWorldcup">

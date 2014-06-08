@@ -41,20 +41,28 @@ body {
 
         &.left {
             -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
         }
 
         &.center {
             -webkit-transform: translateX(0%);
+            transform: translateX(0%);
         }
 
         &.right {
             -webkit-transform: translateX(100%);
+            transform: translateX(100%);
         }
     }
 }
 
 .nav.nav-pills {
     margin-bottom: 15px;
+}
+
+#ranking .has-success select {
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
 }
 
 #groupStage table {

@@ -91,6 +91,18 @@ if (Meteor.isServer) {
             }
             
             TipsWorldcup.upsert({ match: tip.match, user: tip.user }, { $set: tip });
+        },
+        
+        saveRankingTip = function (tip) {
+            check(tip, Object);
+            var now = new Date(),
+                lastGroupMatchDate = MatchesWorldcup.findOne({group: 'Group A'}, {sort: {date: -1}, fields: {date: 1}});
+            
+            if (now >= lastGroupMatchDate.date) {
+                throw new Meteor.Error(500, "The Group Stage is already over. You cannot tip anymore!");
+            }
+            
+            TipsWorldcup.upsert({ user: tip.user, rank: tip.rank}, { $set: tip });
         };
 
     //publish collections
@@ -109,7 +121,8 @@ if (Meteor.isServer) {
     //export Methods
     Meteor.methods({
         'importWorldcup': importWorldcup,
-        'saveTip': saveTip
+        'saveTip': saveTip,
+        'saveRankingTip': saveRankingTip
     });
 }
 

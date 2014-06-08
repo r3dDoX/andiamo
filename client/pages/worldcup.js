@@ -11,6 +11,70 @@ var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     smallFinal = 'Play-off for third place',
     bigFinal = 'Final';
 
+// -------------------------------- HELPERS --------------------------------
+
+function toggleFadeEffect(element, className) {
+    var classList = element.parentNode.classList,
+        removeSuccessStyle = function (event) {
+            classList.remove('has-success');
+            element.removeEventListener(removeSuccessStyle);
+        };
+    
+    classList.add('has-success');
+    element.addEventListener('transitionend', removeSuccessStyle);
+}
+
+function showSuccessfulSave(element) {
+    toggleFadeEffect(element, 'has-success');
+}
+
+function showErrorSave(element, error) {
+    toggleFadeEffect(element, 'has-error');
+}
+
+// -------------------------------- RANKING --------------------------------
+
+Template.rankingWorldcup.events({
+    'change select': function (event) {
+        var selectElement = event.target,
+            tip = TipsWorldcup.findOne({user: Meteor.userId(), rank: selectElement.name}) || {user: Meteor.userId(), rank: selectElement.name};
+        
+        tip.team = selectElement.value;
+        
+        delete tip._id; //Won't update with _id set
+        
+        Meteor.call('saveRankingTip', tip, function (error, result) {
+            if (error) {
+                showErrorSave(selectElement, error);
+            } else {
+                showSuccessfulSave(selectElement);
+            }
+        });
+    }
+});
+
+Template.rankingSelectboxWorldcup.teams = function (rank) {
+    var tables = TablesWorldcup.find({}, {fields: {teams: 1}}).fetch(),
+        tip = TipsWorldcup.findOne({user: Meteor.userId(), rank: rank}),
+        teams = [];
+        
+    tables.forEach(function (tableElement, index, array) {
+        tableElement.teams.forEach(function (team, index, array) {
+            var teamObject = {name: team.name};
+            
+            if (tip && tip.team === team.name) {
+                teamObject.selected = true;
+            }
+            
+            teams.push(teamObject);
+        });
+    });
+    
+    return teams.sort(function (a, b) {
+        return a.name.localeCompare(b.name);
+    });
+};
+
 // -------------------------------- GROUP STAGE --------------------------------
 
 Template.groupsWorldcup.events({
@@ -63,25 +127,6 @@ Template.nextMatchesWorldcup.matches = function () {
 
 
 // -------------------------------- MATCH -------------------------------- 
-
-function toggleFadeEffect(element, className) {
-    var classList = element.parentNode.classList,
-        removeSuccessStyle = function (event) {
-            classList.remove('has-success');
-            element.removeEventListener(removeSuccessStyle);
-        };
-    
-    classList.add('has-success');
-    element.addEventListener('transitionend', removeSuccessStyle);
-}
-
-function showSuccessfulSave(element) {
-    toggleFadeEffect(element, 'has-success');
-}
-
-function showErrorSave(element, error) {
-    toggleFadeEffect(element, 'has-error');
-}
 
 Template.matchWorldcup.created = function () {
     this.data.tip = TipsWorldcup.findOne({ match: this.data.id, user: Meteor.userId() }, { fields:  { '_id': 0 }});
