@@ -1,5 +1,5 @@
-/*jslint node: true */
-/*global Meteor, Template */
+/*jslint node: true, nomen: true, plusplus: true */
+/*global Meteor, Template, MatchesWorldcup:true, TipsWorldcup:true */
 'use strict';
 
 var scrollElementId = 'home',
@@ -11,7 +11,7 @@ var scrollElementId = 'home',
         }
     },
     
-    compareScore = function(homeTeam, awayTeam) {
+    compareScore = function (homeTeam, awayTeam) {
         return homeTeam < awayTeam ? -1 : homeTeam > awayTeam ? 1 : 0;
     },
 
@@ -36,12 +36,12 @@ var scrollElementId = 'home',
 
     sortStandingsTable = function (standingsTable) {
         standingsTable.sort(function (a, b) {
-            return a.points - b.points
+            return a.points - b.points;
         });
     },
 
     standingsTable = function () {
-        var usersWithRanking = Meteor.users.find({}, {fields: {_id: 1, username: 1}}).fetch(),
+        var usersWithRanking = Meteor.users.find({}).fetch(),
             rank = 1;
 
         usersWithRanking.map(function (user) {
