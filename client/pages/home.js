@@ -33,6 +33,51 @@ var scrollElementId = 'home',
 
         return points;
     },
+    
+    getPointsFromFinalsTips = function (user) {
+        var points = 0,
+            first,
+            second,
+            third,
+            tip,
+            bigFinal = MatchesWorldcup.findOne({group: 'Final', isFinished: true}),
+            smallFinal = MatchesWorldcup.findOne({group: 'Play-off for third place', isFinished: true});
+        
+        if (bigFinal) {
+            if (bigFinal.homeScore > bigFinal.awayScore) {
+                first = bigFinal.homeTeam;
+                second = bigFinal.awayTeam;
+            } else {
+                first = bigFinal.awayTeam;
+                second = bigFinal.homeTeam;
+            }
+            
+            tip =  TipsWorldcup.findOne({user: user._id, rank: 'first'});
+            if (tip && tip.team === first) {
+                points += 30;
+            }
+            
+            tip = TipsWorldcup.findOne({user: user._id, rank: 'second'});
+            if (tip && tip.team === second) {
+                points += 20;
+            }
+        }
+        
+        if (smallFinal) {
+            if (smallFinal.homeScore > smallFinal.awayScore) {
+                third = smallFinal.homeTeam;
+            } else {
+                third = smallFinal.awayTeam;
+            }
+
+            tip = TipsWorldcup.findOne({user: user._id, rank: 'third'});
+            if (tip && tip.team === third) {
+                points += 10;
+            }
+        }
+        
+        return points;
+    },
 
     sortStandingsTable = function (standingsTable) {
         standingsTable.sort(function (a, b) {
@@ -51,6 +96,8 @@ var scrollElementId = 'home',
             tips.forEach(function (element, index, array) {
                 points += getPointsFromMatchTip(element);
             });
+            
+            points += getPointsFromFinalsTips(user);
 
             user.points = points;
             return user;
