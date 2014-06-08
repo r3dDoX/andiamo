@@ -9,3 +9,4 @@ npm
 less
 backbone
 accounts-password
+audit-argument-checks
