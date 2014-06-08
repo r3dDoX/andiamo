@@ -1,5 +1,5 @@
 /*jslint node: true, nomen: true */
-/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, TipsWorldcup:true */
+/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, TipsWorldcup:true, check */
 
 MatchesWorldcup = new Meteor.Collection('matchesWorldcup');
 TablesWorldcup = new Meteor.Collection('tablesWorldcup');
@@ -82,6 +82,7 @@ if (Meteor.isServer) {
         },
         
         saveTip = function (tip) {
+            check(tip, Object);
             var now = new Date(),
                 match = MatchesWorldcup.findOne({ id: tip.match});
             
