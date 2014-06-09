@@ -50,6 +50,13 @@ Template.rankingWorldcup.events({
                 showSuccessfulSave(selectElement);
             }
         });
+    },
+    
+    'mousedown select, touchstart select, focus select': function (event) {
+        if (MatchesWorldcup.findOne({group: /Group\s[A-H]/}, {sort: {date: -1}, fields: {date: 1}}).date <= new Date()) {
+            event.preventDefault();
+            event.target.disabled = 'disabled';
+        }
     }
 });
 
@@ -122,7 +129,7 @@ Template.finalsWorldcup.matches = function () {
 };
 
 Template.nextMatchesWorldcup.matches = function () {
-    return MatchesWorldcup.find({date: {$gte: new Date()}}, {sort: {date: 1}, limit: 8}).fetch().map(mapDateToString);
+    return MatchesWorldcup.find({date: {$gte: new Date()}}, {sort: {date: 1}, limit: 10}).fetch().map(mapDateToString);
 };
 
 
