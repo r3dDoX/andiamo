@@ -5,6 +5,7 @@
 var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     sessionKeyGroup = 'selectedGroup',
     groupPrefix = 'Group ',
+    groupRegex = /Group\s[A-H]/,
     roundOf16 = 'Round of 16',
     quarterFinals = 'Quarter-finals',
     semiFinals = 'Semi-finals',
@@ -32,6 +33,58 @@ function showErrorSave(element, error) {
     toggleFadeEffect(element, 'has-error');
 }
 
+function isGroupStage() {
+    var lastGroupMatch = MatchesWorldcup.findOne({group: groupRegex}, {sort: {date: -1}, fields: {date: 1}});
+
+    if (lastGroupMatch) {
+        return lastGroupMatch.date > new Date();
+    }
+}
+
+function isRoundOf16() {
+    var lastGroupMatch = MatchesWorldcup.findOne({group: groupRegex}, {sort: {date: -1}, fields: {date: 1}}),
+        lastMatch =  MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: -1}, fields: {date: 1}}),
+        date = new Date();
+    
+    if (lastGroupMatch && lastMatch) {
+        return date > lastGroupMatch.date && date <= lastMatch.date;
+    }
+}
+
+function isQuarterFinals() {
+    var lastRoundOf16Match = MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: -1}, fields: {date: 1}}),
+        lastQuarterFinalMatch = MatchesWorldcup.findOne({group: quarterFinals}, {sort: {date: -1}, fields: {date: 1}}),
+        date = new Date();
+    
+    if (lastRoundOf16Match && lastQuarterFinalMatch) {
+        return date > lastRoundOf16Match.date && date <= lastQuarterFinalMatch.date;
+    }
+}
+
+function isSemiFinals() {
+    var lastQuartFinalMatch = MatchesWorldcup.findOne({group: quarterFinals}, {sort: {date: -1}, fields: {date: 1}}),
+        lastSemiFinalMatch = MatchesWorldcup.findOne({group: semiFinals}, {sort: {date: -1}, fields: {date: 1}}),
+        date = new Date();
+    
+    if (lastQuartFinalMatch && lastSemiFinalMatch) {
+        return date > lastQuartFinalMatch.date && date <= lastSemiFinalMatch.date;
+    }
+}
+
+function isFinals() {
+    var lastSemiFinalsMatch =  MatchesWorldcup.findOne({group: semiFinals}, {sort: {date: -1}, fields: {date: 1}});
+
+    if (lastSemiFinalsMatch) {
+        return lastSemiFinalsMatch.date < new Date();
+    }
+}
+
+Template.worldcup.isGroupStage = isGroupStage;
+Template.worldcup.isRoundOf16 = isRoundOf16;
+Template.worldcup.isQuarterFinals = isQuarterFinals;
+Template.worldcup.isSemiFinals = isSemiFinals;
+Template.worldcup.isFinals = isFinals;
+
 // -------------------------------- RANKING --------------------------------
 
 Template.rankingWorldcup.events({
@@ -53,7 +106,7 @@ Template.rankingWorldcup.events({
     },
     
     'mousedown select, touchstart select, focus select': function (event) {
-        if (MatchesWorldcup.findOne({group: /Group\s[A-H]/}, {sort: {date: -1}, fields: {date: 1}}).date <= new Date()) {
+        if (!isGroupStage()) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }

@@ -27,7 +27,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="ranking" class="panel-collapse collapse in">
+                                    <div id="ranking" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
                                         <div class="panel-body">
                                             {{ > rankingWorldcup }}
                                         </div>
@@ -42,7 +42,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="groupStage" class="panel-collapse collapse in">
+                                    <div id="groupStage" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
                                         <div class="panel-body">
                                             {{ > groupsWorldcup }}
                                         </div>
@@ -58,7 +58,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="roundOf16" class="panel-collapse collapse">
+                                    <div id="roundOf16" class="panel-collapse collapse{{#if isRoundOf16}} in{{/if}}">
                                         <div class="panel-body">
                                             {{ > roundOf16Worldcup }}
                                         </div>
@@ -73,7 +73,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="quarterFinals" class="panel-collapse collapse">
+                                    <div id="quarterFinals" class="panel-collapse collapse{{#if isQuarterFinals}} in{{/if}}">
                                         <div class="panel-body">
                                             {{ > quarterFinalsWorldcup }}
                                         </div>
@@ -88,7 +88,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="semiFinals" class="panel-collapse collapse">
+                                    <div id="semiFinals" class="panel-collapse collapse{{#if isSemiFinals}} in{{/if}}">
                                         <div class="panel-body">
                                             {{ > semiFinalsWorldcup }}
                                         </div>
@@ -103,7 +103,7 @@
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="finals" class="panel-collapse collapse">
+                                    <div id="finals" class="panel-collapse collapse{{#if isFinals}} in{{/if}}">
                                         <div class="panel-body">
                                             {{ > finalsWorldcup }}
                                         </div>
