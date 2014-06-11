@@ -260,7 +260,7 @@
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         {{#with tip}}
-                            <input class="form-control" type="number" name="homeTeam" placeholder="#" min="0" value="{{homeTeam}}">
+                            <input class="form-control" disabled={{../isFinished}} type="number" name="homeTeam" placeholder="#" min="0" value="{{homeTeam}}">
                         {{/with}}
                     </div>
                 </div>
@@ -276,7 +276,7 @@
                     </div>
                     <div class="col-xs-3 col-sm-3">
                         {{#with tip}}
-                            <input class="form-control" type="number" name="awayTeam" placeholder="#" min="0" value="{{awayTeam}}">
+                            <input class="form-control" disabled={{../isFinished}} type="number" name="awayTeam" placeholder="#" min="0" value="{{awayTeam}}">
                         {{/with}}
                     </div>
                 </div>
