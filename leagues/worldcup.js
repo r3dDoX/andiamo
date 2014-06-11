@@ -13,25 +13,40 @@ if (Meteor.isServer) {
             var url = 'http://www.fifa.com/worldcup/matches/index.html',
                 $ = cheerio.load(Meteor.http.get(url).content),
                 actMatch,
-                timeParts;
+                timeAttr,
+                timeParts,
+                scoreParts;
 
-            $('.match-list .fixture').each(function (index, element) {
+            $('.match-list .mu').each(function (index, element) {
                 actMatch = {};
                 actMatch.id = $(element).data('id');
                 actMatch.date = new Date($('.mu-i-date', element).text() + " UTC");
 
-                timeParts = $('.s-date-HHmm', element).data('timeutc').split(':');
-                actMatch.date.setUTCHours(timeParts[0], timeParts[1]);
+                timeAttr = $('.s-date-HHmm', element).data('timeutc');
+                
+                if (timeAttr) {
+                    timeParts = timeAttr.split(':');
+                    actMatch.date.setUTCHours(timeParts[0], timeParts[1]);
 
-                actMatch.location = {};
-                actMatch.location.stadium = $('.mu-i-stadium', element).text();
-                actMatch.location.venue = $('.mu-i-venue', element).text();
+                    actMatch.location = {};
+                    actMatch.location.stadium = $('.mu-i-stadium', element).text();
+                    actMatch.location.venue = $('.mu-i-venue', element).text();
 
-                actMatch.homeTeam = $('.home .t-nText', element).text();
-                actMatch.awayTeam = $('.away .t-nText', element).text();
-                actMatch.group = $('.mu-i-group', element).text();
+                    actMatch.homeTeam = $('.home .t-nText', element).text();
+                    actMatch.awayTeam = $('.away .t-nText', element).text();
+                    actMatch.group = $('.mu-i-group', element).text();
+                    
+                    if (!$(element).hasClass('live') && !$(element).hasClass('fixture')) {
+                        scoreParts = $('.s-scoreText', element).text().split(':');
+                        actMatch.homeScore = scoreParts[0];
+                        actMatch.awayScore = scoreParts[1];
+                        actMatch.isFinished = true;
+                    } else {
+                        actMatch.isFinished = false;
+                    }
 
-                MatchesWorldcup.upsert({ id: actMatch.id }, { $set: actMatch });
+                    MatchesWorldcup.upsert({ id: actMatch.id }, { $set: actMatch });
+                }
             });
         },
 
