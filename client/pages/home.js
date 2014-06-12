@@ -87,7 +87,7 @@ var scrollElementId = 'home',
 
     standingsTable = function () {
         var usersWithRanking = Meteor.users.find({}).fetch(),
-            rank = 1,
+            rank = 0,
             lastPoints;
 
         usersWithRanking.map(function (user) {
@@ -110,8 +110,10 @@ var scrollElementId = 'home',
             if (element.points === lastPoints) {
                 element.rank = rank;
             } else {
-                element.rank = rank++;
+                element.rank = ++rank;
+                lastPoints = element.points;
             }
+            
             return element;
         });
 
