@@ -1,5 +1,5 @@
 /*jslint node: true */
-/*global Meteor, Template, Session, Router */
+/*global Meteor, Template, Session, Router, $ */
 'use strict';
 
 Template.navbar.menuElements = function () {
@@ -21,8 +21,16 @@ Template.navbarElement.isSelectedMenuElement = function (actualId) {
 
 Template.navbar.events({
     'click a.navbar-brand, click a.elementLink' : function (event) {
+        var linkElement = $(event.target),
+            collapseElement = linkElement.parents('.navbar-collapse');
+        
         event.preventDefault();
-        Router.navigate("pages/" + event.target.getAttribute('data-pageId'), {
+        
+        if (collapseElement.hasClass('in')) {
+            collapseElement.removeClass('in');
+        }
+        
+        Router.navigate("pages/" + linkElement.attr('data-pageId'), {
             trigger: true
         });
     },
