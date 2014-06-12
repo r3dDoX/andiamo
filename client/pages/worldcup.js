@@ -245,7 +245,7 @@ Template.allTipsWorldcup.matches = function () {
 };
 
 Template.allTipsWorldcup.users = function () {
-    return Meteor.users.find({}, {fields: {'_id': 1, username: 1}}).fetch();
+    return Meteor.users.find({}, {fields: {'_id': 1, username: 1}, sort: {username: 1}}).fetch();
 };
 
 Template.allTipsWorldcup.tip = function (matchId) {
