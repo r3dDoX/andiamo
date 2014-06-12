@@ -22,11 +22,17 @@ if (Meteor.isServer) {
                 actMatch.id = $(element).data('id');
                 actMatch.date = new Date($('.mu-i-date', element).text() + " UTC");
 
-                timeAttr = $('.s-date-HHmm', element).data('timeutc');
-                
-                if (timeAttr && actMatch.id) {
-                    timeParts = timeAttr.split(':');
-                    actMatch.date.setUTCHours(timeParts[0], timeParts[1]);
+                if (actMatch.id && !$(element).hasClass('live')) {
+                    timeAttr = $('.s-date-HHmm', element).data('timeutc');
+                    
+                    if (timeAttr) {
+                        timeParts = timeAttr.split(':');
+                        actMatch.date = new Date($('.mu-i-date', element).text() + " UTC");
+                        actMatch.date.setUTCHours(timeParts[0], timeParts[1]);
+                    } else {
+                        actMatch.date = MatchesWorldcup.findOne({id: actMatch.id}, {fields: {date: 1}}).date;
+                    }
+                    
 
                     actMatch.location = {};
                     actMatch.location.stadium = $('.mu-i-stadium', element).text();
@@ -36,8 +42,8 @@ if (Meteor.isServer) {
                     actMatch.awayTeam = $('.away .t-nText', element).text();
                     actMatch.group = $('.mu-i-group', element).text();
                     
-                    if (!$(element).hasClass('live') && !$(element).hasClass('fixture')) {
-                        scoreParts = $('.s-scoreText', element).text().split(':');
+                    if ($(element).hasClass('result')) {
+                        scoreParts = $('.s-scoreText', element).text().split('-');
                         actMatch.homeScore = Number(scoreParts[0]);
                         actMatch.awayScore = Number(scoreParts[1]);
                         actMatch.isFinished = true;
