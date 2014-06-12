@@ -24,7 +24,7 @@ if (Meteor.isServer) {
 
                 timeAttr = $('.s-date-HHmm', element).data('timeutc');
                 
-                if (timeAttr) {
+                if (timeAttr && actMatch.id) {
                     timeParts = timeAttr.split(':');
                     actMatch.date.setUTCHours(timeParts[0], timeParts[1]);
 
