@@ -81,7 +81,7 @@ var scrollElementId = 'home',
 
     sortStandingsTable = function (standingsTable) {
         standingsTable.sort(function (a, b) {
-            return a.points - b.points;
+            return b.points - a.points;
         });
     },
 
