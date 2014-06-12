@@ -38,8 +38,8 @@ if (Meteor.isServer) {
                     
                     if (!$(element).hasClass('live') && !$(element).hasClass('fixture')) {
                         scoreParts = $('.s-scoreText', element).text().split(':');
-                        actMatch.homeScore = scoreParts[0];
-                        actMatch.awayScore = scoreParts[1];
+                        actMatch.homeScore = Number(scoreParts[0]);
+                        actMatch.awayScore = Number(scoreParts[1]);
                         actMatch.isFinished = true;
                     } else {
                         actMatch.isFinished = false;
