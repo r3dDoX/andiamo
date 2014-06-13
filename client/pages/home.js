@@ -11,29 +11,6 @@ var scrollElementId = 'home',
         }
     },
     
-    compareScore = function (homeTeam, awayTeam) {
-        return homeTeam < awayTeam ? -1 : homeTeam > awayTeam ? 1 : 0;
-    },
-
-    getPointsFromMatchTip = function (tip) {
-        var match = MatchesWorldcup.findOne({id: tip.match, isFinished: true}),
-            points = 0;
-
-        if (match && compareScore(match.homeScore, match.awayScore) === compareScore(tip.homeTeam, tip.awayTeam)) {
-            points += 2;
-
-            if (match.homeScore - match.awayScore === tip.homeTeam - tip.awayTeam) {
-                points += 1;
-
-                if (match.homeScore === tip.homeTeam && match.awayScore === tip.awayTeam) {
-                    points += 2;
-                }
-            }
-        }
-
-        return points;
-    },
-    
     getPointsFromFinalsTips = function (user) {
         var points = 0,
             first,
@@ -84,6 +61,10 @@ var scrollElementId = 'home',
             return b.points - a.points;
         });
     },
+    
+    countPoints = function (sum, item) {
+        return (sum.points || sum) + item.points;
+    },
 
     standingsTable = function () {
         var usersWithRanking = Meteor.users.find({}).fetch(),
@@ -91,12 +72,8 @@ var scrollElementId = 'home',
             lastPoints;
 
         usersWithRanking.map(function (user) {
-            var tips = TipsWorldcup.find({user: user._id}),
-                points = 0;
-
-            tips.forEach(function (element, index, array) {
-                points += getPointsFromMatchTip(element);
-            });
+            var tips = TipsWorldcup.find({user: user._id, points: {$exists: true}}).fetch() || [],
+                points = tips.reduce(countPoints, 0);
             
             points += getPointsFromFinalsTips(user);
 
