@@ -226,6 +226,18 @@ Template.matchWorldcup.tip = function () {
     return TipsWorldcup.findOne({ match: this.id, user: Meteor.userId() }) || { match: this.id, user: Meteor.userId() };
 };
 
+Template.matchWorldcup.getCssClass = function (points) {
+    switch (this.points) {
+    case 0:
+        return 'bg-danger';
+    case 2:
+    case 3:
+        return 'bg-warning';
+    case 5:
+        return 'bg-success';
+    }
+};
+
 // -------------------------------- IMAGE --------------------------------
 
 Template.imageTeamWorldcup.team = function (teamName) {

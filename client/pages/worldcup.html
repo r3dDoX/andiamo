@@ -248,39 +248,37 @@
                     <small class="pull-right hidden-xs">{{location.venue}}</small>
                 </h4>
             </div>
-            <div class="panel-body">
-                <div class="row team">
-                    <div class="col-xs-3 col-sm-2">
-                        {{ > imageTeamWorldcup teamName=homeTeam}}
-                    </div>
-                    <div class="col-xs-6 col-sm-7">
-                        <p class="lead" title="{{homeTeam}}">
-                            {{homeTeam}}
-                        </p>
-                    </div>
-                    <div class="col-xs-3 col-sm-3">
-                        {{#with tip}}
+            {{#with tip}}
+                <div class="panel-body {{getCssClass}}">
+                    <div class="row team">
+                        <div class="col-xs-3 col-sm-2">
+                            {{ > imageTeamWorldcup teamName=../homeTeam}}
+                        </div>
+                        <div class="col-xs-6 col-sm-7">
+                            <p class="lead" title="{{homeTeam}}">
+                                {{../homeTeam}}
+                            </p>
+                        </div>
+                        <div class="col-xs-3 col-sm-3">
                             <input class="form-control" disabled={{../isFinished}} type="number" name="homeTeam" placeholder="#" min="0" value="{{homeTeam}}">
-                        {{/with}}
+                        </div>
                     </div>
-                </div>
-                <hr />
-                <div class="row team">
-                    <div class="col-xs-3 col-sm-2">
-                        {{ > imageTeamWorldcup teamName=awayTeam}}
-                    </div>
-                    <div class="col-xs-6 col-sm-7">
-                        <p class="lead" title="{{awayTeam}}">
-                            {{awayTeam}}
-                        </p>
-                    </div>
-                    <div class="col-xs-3 col-sm-3">
-                        {{#with tip}}
+                    <hr />
+                    <div class="row team">
+                        <div class="col-xs-3 col-sm-2">
+                            {{ > imageTeamWorldcup teamName=../awayTeam}}
+                        </div>
+                        <div class="col-xs-6 col-sm-7">
+                            <p class="lead" title="{{awayTeam}}">
+                                {{../awayTeam}}
+                            </p>
+                        </div>
+                        <div class="col-xs-3 col-sm-3">
                             <input class="form-control" disabled={{../isFinished}} type="number" name="awayTeam" placeholder="#" min="0" value="{{awayTeam}}">
-                        {{/with}}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {{/with}}
         </div>
     </div>
 </template>
