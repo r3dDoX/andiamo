@@ -100,7 +100,12 @@ var scrollElementId = 'home',
 Template.home.rendered = function () {
     var pageElement = document.getElementById(scrollElementId),
         bgPic = pageElement.getElementsByClassName('header')[0],
-        scrollBgPicPartial = scrollBgPic.bind(this, pageElement, bgPic);
+        scrollBgPicPartial = scrollBgPic.bind(this, pageElement, bgPic),
+        width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    
+    if (width > 768) { // if xs device, don't load big Pic
+        bgPic.style.backgroundImage = 'url("/arena.jpg")';
+    }
     
     document.getElementById(scrollElementId).addEventListener('scroll', scrollBgPicPartial);
     document.getElementById(scrollElementId).addEventListener('touchmove', scrollBgPicPartial);
