@@ -257,7 +257,7 @@ Template.allTipsWorldcup.getCssClass = function (points) {
     
     switch (points) {
     case 0:
-        return cssClass + 'lable-danger';
+        return cssClass + 'label-danger';
     case 2:
     case 3:
         return cssClass + 'label-warning';
