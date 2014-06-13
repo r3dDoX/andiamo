@@ -251,3 +251,19 @@ Template.allTipsWorldcup.users = function () {
 Template.allTipsWorldcup.tip = function (matchId) {
     return TipsWorldcup.findOne({user: this._id, match: matchId}) || {};
 };
+
+Template.allTipsWorldcup.getCssClass = function (points) {
+    var cssClass = 'label ';
+    
+    switch (points) {
+    case 0:
+        return cssClass + 'lable-error';
+    case 2:
+    case 3:
+        return cssClass + 'label-warning';
+    case 5:
+        return cssClass + 'label-success';
+    default:
+        return cssClass + 'label-default';
+    }
+};

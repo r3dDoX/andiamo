@@ -308,7 +308,9 @@
                         <td>{{homeTeam}} {{homeScore}} - {{awayScore}} {{awayTeam}}</td>
                         {{#each users}}
                             {{#with tip ../id}}
-                                <td class="text-center">{{homeTeam}} - {{awayTeam}}</td>
+                                <td class="text-center">
+                                    <span class="{{getCssClass points}}">{{homeTeam}} - {{awayTeam}}</span>
+                                </td>
                             {{/with}}
                         {{/each}}
                     </tr>
