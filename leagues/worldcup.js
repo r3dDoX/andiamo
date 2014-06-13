@@ -16,7 +16,7 @@ if (Meteor.isServer) {
         getPointsFromMatchTip = function (match, tip) {
             var points = 0;
 
-            if (match && compareScore(match.homeScore, match.awayScore) === compareScore(tip.homeTeam, tip.awayTeam)) {
+            if (compareScore(match.homeScore, match.awayScore) === compareScore(tip.homeTeam, tip.awayTeam)) {
                 points += 2;
 
                 if (match.homeScore - match.awayScore === tip.homeTeam - tip.awayTeam) {
