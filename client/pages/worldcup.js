@@ -241,7 +241,7 @@ Template.imageTeamWorldcup.team = function (teamName) {
 // -------------------------------- ALL TIPS --------------------------------
 
 Template.allTipsWorldcup.matches = function () {
-    return MatchesWorldcup.find({date: {$lt: new Date()}}, {fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1}, sort: {date: 1}}).fetch();
+    return MatchesWorldcup.find({date: {$lt: new Date()}}, {fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1}, sort: {date: -1}}).fetch();
 };
 
 Template.allTipsWorldcup.users = function () {
