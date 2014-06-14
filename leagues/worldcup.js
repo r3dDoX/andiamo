@@ -60,6 +60,9 @@ if (Meteor.isServer) {
                         timeParts = timeAttr.split(':');
                         actMatch.date = new Date($('.mu-i-date', element).text() + " UTC");
                         actMatch.date.setUTCHours(timeParts[0], timeParts[1]);
+                        if (timeParts[0] < 12) {
+                            actMatch.date.setDate(actMatch.date.getDate() + 1);
+                        }
                     } else {
                         actMatch.date = MatchesWorldcup.findOne({id: actMatch.id}, {fields: {date: 1}}).date;
                     }
