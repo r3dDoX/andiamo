@@ -2,28 +2,38 @@
 /*global Accounts, Meteor, Template */
 'use strict';
 
+var usernameTimeout,
+    errorClass = 'has-error',
+    successClass = 'has-success';
+
+// -------------------------------- LOGIN --------------------------------
+
+function showLoginResult(passwordInput, emailInput, error) {
+    if (error) {
+        if (error.reason === 'Incorrect password') {
+            passwordInput.parentNode.classList.add(errorClass);
+            emailInput.parentNode.classList.remove(errorClass);
+        } else {
+            passwordInput.parentNode.classList.remove(errorClass);
+            emailInput.parentNode.classList.add(errorClass);
+        }
+    } else {
+        emailInput.parentNode.classList.add(successClass);
+        passwordInput.parentNode.classList.add(successClass);
+    }
+}
+
+function checkFormAndLogin(event) {
+    var loginForm = document.getElementById('loginForm'),
+        emailInput = loginForm.querySelector('input[name=email]'),
+        passwordInput = loginForm.querySelector('input[name=password]');
+    
+    Meteor.loginWithPassword(emailInput.value, passwordInput.value, showLoginResult.bind(undefined, passwordInput, emailInput));
+}
+
 Template.loginForm.events({
-    'click #submitLogin' : function () {
-        var loginForm = document.getElementById('loginForm'),
-            emailInput = loginForm.querySelector('input[name=email]'),
-            passwordInput = loginForm.querySelector('input[name=password]'),
-            callback = function (error) {
-                if (error) {
-                    if (error.reason === 'Incorrect password') {
-                        passwordInput.parentNode.classList.add('has-error');
-                        emailInput.parentNode.classList.remove('has-error');
-                    } else {
-                        passwordInput.parentNode.classList.remove('has-error');
-                        emailInput.parentNode.classList.add('has-error');
-                    }
-                } else {
-                    emailInput.parentNode.classList.add('has-success');
-                    passwordInput.parentNode.classList.add('has-success');
-                }
-            };
-        
-        Meteor.loginWithPassword(emailInput.value, passwordInput.value, callback);
-    },
+    'click #submitLogin' : checkFormAndLogin,
+    
     'keydown input' : function (event) {
         if (event.which === 13) {
             document.getElementById('submitLogin').click();
@@ -31,61 +41,60 @@ Template.loginForm.events({
     }
 });
 
+// -------------------------------- REGISTRATION --------------------------------
+
+function registerNewUser() {
+    var registrationForm = document.getElementById('registrationForm'),
+        password = registrationForm.querySelector('input[name=password]'),
+        repeatPassword = registrationForm.querySelector('input[name=repeatPassword]');
+
+    if (password.value && password.value === repeatPassword.value) {
+        password.parentNode.classList.remove(errorClass);
+        repeatPassword.parentNode.classList.remove(errorClass);
+
+        Accounts.createUser({
+            'username' : registrationForm.querySelector('input[name=username]').value,
+            'email' : registrationForm.querySelector('input[name=email]').value,
+            'password' : password.value
+        });
+    } else {
+        password.parentNode.classList.add(errorClass);
+        repeatPassword.parentNode.classList.add(errorClass);
+    }
+}
+
+function showUsernameCheckResult(usernameInputContainer, error, success) {
+    if (success) {
+        usernameInputContainer.classList.remove(successClass);
+        usernameInputContainer.classList.add(errorClass);
+    } else {
+        usernameInputContainer.classList.add(successClass);
+        usernameInputContainer.classList.remove(errorClass);
+    }
+}
+
+function checkUsernameAvailability(event) {
+    if (usernameTimeout) {
+        clearTimeout(usernameTimeout);
+        usernameTimeout = undefined;
+    }
+
+    usernameTimeout = setTimeout(function () {
+        Meteor.call('checkUsername', event.target.value, showUsernameCheckResult.bind(undefined, event.target.parentNode));
+    }, 500);
+}
+
 Template.registrationForm.events({
     'click #showRegistration' : function () {
         document.getElementById('registrationForm').classList.remove('hidden');
     },
     
-    'click #submitRegistration' : function () {
-        var registrationForm = document.getElementById('registrationForm'),
-            password = registrationForm.querySelector('input[name=password]'),
-            repeatPassword = registrationForm.querySelector('input[name=repeatPassword]');
-        
-        if (password.value !== '' && password.value === repeatPassword.value) {
-            password.parentNode.classList.remove('has-error');
-            repeatPassword.parentNode.classList.remove('has-error');
-            
-            Accounts.createUser({
-                'username' : registrationForm.querySelector('input[name=username]').value,
-                'email' : registrationForm.querySelector('input[name=email]').value,
-                'password' : password.value
-            });
-        } else {
-            password.parentNode.classList.add('has-error');
-            repeatPassword.parentNode.classList.add('has-error');
-        }
-    },
+    'click #submitRegistration' : registerNewUser,
+    
     'keydown input' : function (event) {
         if (event.which === 13) {
             document.getElementById('submitRegistration').click();
         }
-    }
+    },
+    'keyup input[name=username]' : checkUsernameAvailability
 });
-
-Template.registrationForm.rendered = function () {
-    var usernameTimeout,
-        registrationForm = document.getElementById('registrationForm');
-    
-    registrationForm.querySelector('input[name=username]').addEventListener('keyup', function (event) {
-        var usernameInputContainer = event.target.parentNode,
-            username = event.target.value,
-            checkUsernameCallback = function (error, success) {
-                if (success) {
-                    usernameInputContainer.classList.remove('has-success');
-                    usernameInputContainer.classList.add('has-error');
-                } else {
-                    usernameInputContainer.classList.add('has-success');
-                    usernameInputContainer.classList.remove('has-error');
-                }
-            };
-        
-        if (usernameTimeout) {
-            clearTimeout(usernameTimeout);
-            usernameTimeout = undefined;
-        }
-        
-        usernameTimeout = setTimeout(function () {
-            Meteor.call('checkUsername', username, checkUsernameCallback);
-        }, 500);
-    });
-};
