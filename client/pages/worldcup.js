@@ -219,6 +219,10 @@ Template.matchWorldcup.events({
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
+    },
+    
+    'click input': function (event) {
+        event.target.select();
     }
 });
 
