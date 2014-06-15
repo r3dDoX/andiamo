@@ -103,7 +103,7 @@ Template.home.rendered = function () {
         scrollBgPicPartial = scrollBgPic.bind(this, pageElement, bgPic),
         width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
     
-    if (width > 768) { // if xs device, don't load big Pic
+    if (width >= 768) { // if xs device, don't load big Pic
         bgPic.style.backgroundImage = 'url("/arena.jpg")';
     }
     
