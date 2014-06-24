@@ -149,7 +149,7 @@
 
 <template name="rankingSelectboxWorldcup">
     {{#with rank}}
-        <select class="form-control" id="rankingFirst" name="{{.}}">
+        <select class="form-control" id="rankingFirst" name="{{.}}" disabled={{canTipRanking}} >
             {{#each teams . }}
                 {{#if selected}}
                     <option selected="selected">{{name}}</option>

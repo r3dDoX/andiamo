@@ -135,6 +135,8 @@ Template.rankingSelectboxWorldcup.teams = function (rank) {
     });
 };
 
+Template.rankingSelectboxWorldcup.canTipRanking = !isGroupStage;
+
 // -------------------------------- GROUP STAGE --------------------------------
 
 Template.groupsWorldcup.events({
