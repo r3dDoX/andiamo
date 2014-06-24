@@ -253,6 +253,13 @@ if (Meteor.isServer) {
         'saveTip': saveTip,
         'saveRankingTip': saveRankingTip
     });
+    
+    //make indexes to speed up queries
+    Meteor.startup(function () {
+        MatchesWorldcup._ensureIndex({'id': 1, 'date': 1, 'isFinished': 1});
+        TablesWorldcup._ensureIndex({'id': 1});
+        TipsWorldcup._ensureIndex({'match': 1, 'user': 1});
+    });
 }
 
 if (Meteor.isClient) {
