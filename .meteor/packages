@@ -5,8 +5,9 @@
 
 standard-app-packages
 http
-npm
 less
 backbone
 accounts-password
 audit-argument-checks
+kadira
+npm
