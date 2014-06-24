@@ -244,7 +244,7 @@ Template.matchWorldcup.getCssClass = function (points) {
 
 // -------------------------------- IMAGE --------------------------------
 
-Template.imageTeamWorldcup.team = function (teamName) {
+Template.imageTeamWorldcup.teamFlag = function (teamName) {
     return FlagsWorldcup.findOne({ team: teamName }, { fields: { imgSrc: 1 }});
 };
 

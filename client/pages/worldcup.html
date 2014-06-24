@@ -196,7 +196,7 @@
             <tbody>
                 {{#each teams}}
                     <tr>
-                        <td><img src="{{imgSrc}}" />&nbsp;&nbsp;{{name}}</td>
+                        <td>{{ > imageTeamWorldcup teamName=name}}&nbsp;&nbsp;{{name}}</td>
                         <td class="text-center">{{matchPlayed}}</td>
                         <td class="text-center hidden-xs">{{win}}</td>
                         <td class="text-center hidden-xs">{{draw}}</td>
@@ -284,7 +284,7 @@
 </template>
 
 <template name="imageTeamWorldcup">
-    {{#with team teamName}}
+    {{#with teamFlag teamName}}
         <img src="{{imgSrc}}" />
     {{/with}}
 </template>
