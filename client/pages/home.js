@@ -34,6 +34,7 @@ Template.standingsTable.userRankings = function () {
             userStanding.rank = rank;
         } else {
             userStanding.rank = ++rank;
+            lastPoints = userStanding.points;
         }
         
         return userStanding;
