@@ -1,5 +1,5 @@
 /*jslint node: true, nomen: true*/
-/*global MatchesWorldcup, TablesWorldcup, TipsWorldcup, Session, Template, Meteor */
+/*global MatchesWorldcup, TablesWorldcup, FlagsWorldcup, TipsWorldcup, Session, Template, Meteor */
 'use strict';
 
 var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
@@ -245,13 +245,7 @@ Template.matchWorldcup.getCssClass = function (points) {
 // -------------------------------- IMAGE --------------------------------
 
 Template.imageTeamWorldcup.team = function (teamName) {
-    var table = TablesWorldcup.findOne({teams: {$elemMatch: {name: teamName}}});
-    
-    if (!table) {
-        return {};
-    }
-    
-    return table.teams.filter(function (it) { return it.name === teamName; })[0];
+    return FlagsWorldcup.findOne({ team: teamName }, { fields: { imgSrc: 1 }});
 };
 
 // -------------------------------- ALL TIPS --------------------------------

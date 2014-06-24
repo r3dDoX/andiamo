@@ -1,8 +1,9 @@
 /*jslint node: true, nomen: true */
-/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, TipsWorldcup:true, StandingsWorldcup:true, check */
+/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, FlagsWorldcup:true, TipsWorldcup:true, StandingsWorldcup:true, check */
 
 MatchesWorldcup = new Meteor.Collection('matchesWorldcup');
 TablesWorldcup = new Meteor.Collection('tablesWorldcup');
+FlagsWorldcup = new Meteor.Collection('flagsWorldcup');
 TipsWorldcup = new Meteor.Collection('tipsWorldcup');
 StandingsWorldcup = new Meteor.Collection('standingsWorldcup');
 
@@ -100,7 +101,8 @@ if (Meteor.isServer) {
                 actGroup,
                 actGroupNameLink,
                 actTeam,
-                actTeamNameLink;
+                actTeamNameLink,
+                flagObject;
 
             $('#standings .group-wrap').each(function (index, groupElement) {
                 actGroup = {};
@@ -117,7 +119,12 @@ if (Meteor.isServer) {
                     actTeamNameLink = $('td.tbl-teamname.teamname-link a', teamElement);
                     actTeam.name = $('span.t-nText', actTeamNameLink).text();
                     actTeam.link = baseuri + actTeamNameLink.attr('href');
-                    actTeam.imgSrc = $('img', actTeamNameLink).data('src') || $('img', actTeamNameLink).attr('src');
+                    
+                    flagObject = {
+                        team: actTeam.name,
+                        imgSrc: $('img', actTeamNameLink).data('src') || $('img', actTeamNameLink).attr('src')
+                    };
+                    FlagsWorldcup.upsert({ team: flagObject.team }, {$set: flagObject});
 
                     actTeam.matchPlayed = $('td.tbl-matchplayed span', teamElement).text();
                     actTeam.win = $('td.tbl-win span', teamElement).text();
@@ -246,6 +253,10 @@ if (Meteor.isServer) {
     Meteor.publish('standingsWorldcup', function () {
         return StandingsWorldcup.find();
     });
+    
+    Meteor.publish('flagsWorldcup', function () {
+        return FlagsWorldcup.find();
+    });
 
     //export Methods
     Meteor.methods({
@@ -258,6 +269,7 @@ if (Meteor.isServer) {
     Meteor.startup(function () {
         MatchesWorldcup._ensureIndex({'id': 1, 'date': 1, 'isFinished': 1});
         TablesWorldcup._ensureIndex({'id': 1});
+        FlagsWorldcup._ensureIndex({'team': 1});
         TipsWorldcup._ensureIndex({'match': 1, 'user': 1});
     });
 }
@@ -267,4 +279,5 @@ if (Meteor.isClient) {
     Meteor.subscribe('tablesWorldcup');
     Meteor.subscribe('tipsWorldcup');
     Meteor.subscribe('standingsWorldcup');
+    Meteor.subscribe('flagsWorldcup');
 }
