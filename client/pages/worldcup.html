@@ -1,126 +1,128 @@
 <template name="worldcup">
     <div id="worldcup" class="page right">
-        <div class="container">
-            <div class="row">&nbsp;</div>
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="nav nav-pills nav-justified">
-                        <li class="active">
-                            <a href="#general" data-toggle="pill">General</a>
-                        </li>
-                        <li>
-                            <a href="#nextMatches" data-toggle="pill">Next Matches</a>
-                        </li>
-                        <li>
-                            <a href="#allTips" data-toggle="pill">All Tips</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="general">
-                            <div class="panel-group" id="mainAccordion">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#ranking">
-                                                Ranking
-                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="ranking" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
-                                        <div class="panel-body">
-                                            {{ > rankingWorldcup }}
+        {{#if isShown}}
+            <div class="container">
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="active">
+                                <a id="pillGeneral" href="#general" data-toggle="pill">General</a>
+                            </li>
+                            <li>
+                                <a id="pillNextMatches" href="#nextMatches" data-toggle="pill">Next Matches</a>
+                            </li>
+                            <li>
+                                <a id="pillAllTips" href="#allTips" data-toggle="pill">All Tips</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="general">
+                                <div class="panel-group" id="mainAccordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#ranking">
+                                                    Ranking
+                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="ranking" class="panel-collapse collapse{{#if canTipRanking}} in{{/if}}">
+                                            <div class="panel-body">
+                                                {{ > rankingWorldcup }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
-                                                Group Stage
-                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="groupStage" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
-                                        <div class="panel-body">
-                                            {{ > groupsWorldcup }}
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
+                                                    Group Stage
+                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                                </a>
+                                            </h4>
                                         </div>
-                                        {{ > groupTableWorldcup }}
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#roundOf16">
-                                                Round of 16
-                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="roundOf16" class="panel-collapse collapse{{#if isRoundOf16}} in{{/if}}">
-                                        <div class="panel-body">
-                                            {{ > roundOf16Worldcup }}
+                                        <div id="groupStage" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
+                                            <div class="panel-body">
+                                                {{ > groupsWorldcup }}
+                                            </div>
+                                            {{ > groupTableWorldcup }}
                                         </div>
                                     </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#quarterFinals">
-                                                Quarter Finals
-                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="quarterFinals" class="panel-collapse collapse{{#if isQuarterFinals}} in{{/if}}">
-                                        <div class="panel-body">
-                                            {{ > quarterFinalsWorldcup }}
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#roundOf16">
+                                                    Round of 16
+                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="roundOf16" class="panel-collapse collapse{{#if isRoundOf16}} in{{/if}}">
+                                            <div class="panel-body">
+                                                {{ > roundOf16Worldcup }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#semiFinals">
-                                                Semi Finals
-                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="semiFinals" class="panel-collapse collapse{{#if isSemiFinals}} in{{/if}}">
-                                        <div class="panel-body">
-                                            {{ > semiFinalsWorldcup }}
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#quarterFinals">
+                                                    Quarter Finals
+                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="quarterFinals" class="panel-collapse collapse{{#if isQuarterFinals}} in{{/if}}">
+                                            <div class="panel-body">
+                                                {{ > quarterFinalsWorldcup }}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#finals">
-                                                Finals
-                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                            </a>
-                                        </h4>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#semiFinals">
+                                                    Semi Finals
+                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="semiFinals" class="panel-collapse collapse{{#if isSemiFinals}} in{{/if}}">
+                                            <div class="panel-body">
+                                                {{ > semiFinalsWorldcup }}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div id="finals" class="panel-collapse collapse{{#if isFinals}} in{{/if}}">
-                                        <div class="panel-body">
-                                            {{ > finalsWorldcup }}
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#finals">
+                                                    Finals
+                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="finals" class="panel-collapse collapse{{#if isFinals}} in{{/if}}">
+                                            <div class="panel-body">
+                                                {{ > finalsWorldcup }}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="nextMatches">
-                            {{ > nextMatchesWorldcup }}
-                        </div>
-                        <div class="tab-pane" id="allTips">
-                            {{ > allTipsWorldcup }}
+                            <div class="tab-pane" id="nextMatches">
+                                {{ > nextMatchesWorldcup }}
+                            </div>
+                            <div class="tab-pane" id="allTips">
+                                {{ > allTipsWorldcup }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {{/if}}
     </div>
 </template>
 
@@ -242,9 +244,11 @@
 </template>
 
 <template name="nextMatchesWorldcup">
-    {{#each matches}}
-        {{ > matchWorldcup }}
-    {{/each}}
+    {{#if isShown}}
+        {{#each matches}}
+            {{ > matchWorldcup }}
+        {{/each}}
+    {{/if}}
 </template>
 
 <template name="matchWorldcup">
@@ -298,30 +302,32 @@
 </template>
 
 <template name="allTipsWorldcup">
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Match</th>
-                    {{#each users}}
-                        <th class="text-center">{{username}}</th>
-                    {{/each}}
-                </tr>
-            </thead>
-            <tbody>
-                {{#each matches}}
+    {{#if isShown}}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{homeTeam}} {{homeScore}} - {{awayScore}} {{awayTeam}}</td>
+                        <th>Match</th>
                         {{#each users}}
-                            {{#with tip ../id}}
-                                <td class="text-center">
-                                    <span class="{{getCssClass points}}">{{homeTeam}} - {{awayTeam}}</span>
-                                </td>
-                            {{/with}}
+                            <th class="text-center">{{username}}</th>
                         {{/each}}
                     </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {{#each matches}}
+                        <tr>
+                            <td>{{homeTeam}} {{homeScore}} - {{awayScore}} {{awayTeam}}</td>
+                            {{#each users}}
+                                {{#with tip ../id}}
+                                    <td class="text-center">
+                                        <span class="{{getCssClass points}}">{{homeTeam}} - {{awayTeam}}</span>
+                                    </td>
+                                {{/with}}
+                            {{/each}}
+                        </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    {{/if}}
 </template>

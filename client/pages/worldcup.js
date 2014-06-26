@@ -2,7 +2,11 @@
 /*global MatchesWorldcup, TablesWorldcup, FlagsWorldcup, TipsWorldcup, Session, Template, Meteor */
 'use strict';
 
-var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+var hasBeenShown = false,
+    nextMatchesHasBeenShown = false,
+    allTipsHasBeenShown = false,
+    pillSessionKey = 'selectedWorldcupPill',
+    groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     sessionKeyGroup = 'selectedGroup',
     groupPrefix = 'Group ',
     groupRegex = /Group\s[A-H]/,
@@ -11,6 +15,39 @@ var groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     semiFinals = 'Semi-finals',
     smallFinal = 'Play-off for third place',
     bigFinal = 'Final';
+
+// -------------------------------- SHOW -----------------------------------
+
+Template.worldcup.events({
+    'click .nav-pills a': function (event) {
+        var pillId = event.target.id;
+        Session.set(pillSessionKey, pillId);
+    }
+});
+
+Template.worldcup.isShown = function () {
+    if (!hasBeenShown && Session.get('selectedMenuElement') === 'worldcup') {
+        hasBeenShown = true;
+    }
+    
+    return hasBeenShown;
+};
+
+Template.nextMatchesWorldcup.isShown = function () {
+    if (!nextMatchesHasBeenShown && Session.get(pillSessionKey) === 'pillNextMatches') {
+        nextMatchesHasBeenShown = true;
+    }
+    
+    return nextMatchesHasBeenShown;
+};
+
+Template.allTipsWorldcup.isShown = function () {
+    if (!allTipsHasBeenShown && Session.get(pillSessionKey) === 'pillAllTips') {
+        allTipsHasBeenShown = true;
+    }
+    
+    return allTipsHasBeenShown;
+};
 
 // -------------------------------- HELPERS --------------------------------
 
@@ -92,6 +129,7 @@ Template.worldcup.isRoundOf16 = isRoundOf16;
 Template.worldcup.isQuarterFinals = isQuarterFinals;
 Template.worldcup.isSemiFinals = isSemiFinals;
 Template.worldcup.isFinals = isFinals;
+Template.worldcup.canTipRanking = canTipRanking;
 
 // -------------------------------- RANKING --------------------------------
 
