@@ -79,6 +79,14 @@ function isFinals() {
     }
 }
 
+function canTipRanking() {
+    var firstRoundOf16Match = MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: -1}, fields: {date: 1}});
+    
+    if (firstRoundOf16Match) {
+        return firstRoundOf16Match.date > new Date();
+    }
+}
+
 Template.worldcup.isGroupStage = isGroupStage;
 Template.worldcup.isRoundOf16 = isRoundOf16;
 Template.worldcup.isQuarterFinals = isQuarterFinals;
@@ -106,7 +114,7 @@ Template.rankingWorldcup.events({
     },
     
     'mousedown select, touchstart select, focus select': function (event) {
-        if (!isGroupStage()) {
+        if (!canTipRanking()) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
@@ -135,7 +143,7 @@ Template.rankingSelectboxWorldcup.teams = function (rank) {
     });
 };
 
-Template.rankingSelectboxWorldcup.canTipRanking = !isGroupStage;
+Template.rankingSelectboxWorldcup.cannotTipRanking = !canTipRanking;
 
 // -------------------------------- GROUP STAGE --------------------------------
 
