@@ -238,7 +238,6 @@ if (Meteor.isServer) {
         },
         
         checkIfHasToImport = function () {
-            console.log('check if has to import');
             var dateFrom = new Date(),
                 dateTo = new Date();
             
@@ -247,8 +246,6 @@ if (Meteor.isServer) {
             
             if (MatchesWorldcup.find({date: {$gt: dateFrom, $lt: dateTo}}).fetch().length > 0) {
                 importWorldcup();
-            } else {
-                console.log('no need for update');
             }
         },
         
