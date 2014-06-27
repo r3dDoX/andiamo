@@ -6,6 +6,7 @@ var hasBeenShown = false,
     nextMatchesHasBeenShown = false,
     allTipsHasBeenShown = false,
     pillSessionKey = 'selectedWorldcupPill',
+    allTipsLimitSessionKey = 'numberOfAllTips',
     groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     sessionKeyGroup = 'selectedGroup',
     groupPrefix = 'Group ',
@@ -298,8 +299,22 @@ Template.imageTeamWorldcup.teamFlag = function (teamName) {
 
 // -------------------------------- ALL TIPS --------------------------------
 
+Template.allTipsWorldcup.created = function () {
+    Session.set(allTipsLimitSessionKey, 10);
+};
+
+Template.allTipsWorldcup.events({
+    'click button': function (event) {
+        Session.set(allTipsLimitSessionKey, 64);
+    }
+});
+
 Template.allTipsWorldcup.matches = function () {
-    return MatchesWorldcup.find({date: {$lt: new Date()}}, {fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1}, sort: {date: -1}}).fetch();
+    return MatchesWorldcup.find({date: {$lt: new Date()}}, {
+        fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1},
+        sort: {date: -1},
+        limit: Session.get(allTipsLimitSessionKey)
+    }).fetch();
 };
 
 Template.allTipsWorldcup.users = function () {
