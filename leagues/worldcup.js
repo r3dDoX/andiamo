@@ -244,7 +244,7 @@ if (Meteor.isServer) {
             dateFrom.setMinutes(-200);
             dateTo.setMinutes(-105);
             
-            if (MatchesWorldcup.find({date: {$gt: dateFrom, $lt: dateTo}}).fetch().length > 0) {
+            if (MatchesWorldcup.find({date: {$gt: dateFrom, $lt: dateTo}, isFinished: false}).fetch().length > 0) {
                 importWorldcup();
             }
         },
