@@ -250,6 +250,11 @@ if (Meteor.isServer) {
             } else {
                 console.log('no need for update');
             }
+        },
+        
+        scheduleFunction = function (functionToCall, milliseconds) {
+            functionToCall();
+            Meteor.setTimeout(scheduleFunction.bind(undefined, functionToCall, milliseconds), milliseconds);
         };
 
     //publish collections
@@ -286,6 +291,8 @@ if (Meteor.isServer) {
         TablesWorldcup._ensureIndex({'id': 1});
         FlagsWorldcup._ensureIndex({'team': 1});
         TipsWorldcup._ensureIndex({'match': 1, 'user': 1});
+        
+        scheduleFunction(checkIfHasToImport, 300000);
     });
 }
 
