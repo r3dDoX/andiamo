@@ -1,5 +1,5 @@
 /*jslint node: true, nomen: true */
-/*global Meteor, MatchesWorldcup:true, TablesWorldcup:true, FlagsWorldcup:true, TipsWorldcup:true, StandingsWorldcup:true, check */
+/*global Cron, Meteor, MatchesWorldcup:true, TablesWorldcup:true, FlagsWorldcup:true, TipsWorldcup:true, StandingsWorldcup:true, check */
 
 MatchesWorldcup = new Meteor.Collection('matchesWorldcup');
 TablesWorldcup = new Meteor.Collection('tablesWorldcup');
@@ -235,6 +235,21 @@ if (Meteor.isServer) {
             parseTables();
             parseMatches();
             updateStandingsTable();
+        },
+        
+        checkIfHasToImport = function () {
+            console.log('check if has to import');
+            var dateFrom = new Date(),
+                dateTo = new Date();
+            
+            dateFrom.setMinutes(-200);
+            dateTo.setMinutes(-105);
+            
+            if (MatchesWorldcup.find({date: {$gt: dateFrom, $lt: dateTo}}).fetch().length > 0) {
+                importWorldcup();
+            } else {
+                console.log('no need for update');
+            }
         };
 
     //publish collections
