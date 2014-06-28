@@ -182,7 +182,9 @@ Template.rankingSelectboxWorldcup.teams = function (rank) {
     });
 };
 
-Template.rankingSelectboxWorldcup.cannotTipRanking = !canTipRanking;
+Template.rankingSelectboxWorldcup.cannotTipRanking = function () {
+    return !canTipRanking();
+};
 
 // -------------------------------- GROUP STAGE --------------------------------
 
