@@ -1,5 +1,5 @@
 /*jslint node: true, nomen: true */
-/*global Cron, Meteor, MatchesWorldcup:true, TablesWorldcup:true, FlagsWorldcup:true, TipsWorldcup:true, StandingsWorldcup:true, check */
+/*global Cron, Deps, Meteor, MatchesWorldcup:true, TablesWorldcup:true, FlagsWorldcup:true, TipsWorldcup:true, TipsWorldcupForUser:true, StandingsWorldcup:true, check */
 
 MatchesWorldcup = new Meteor.Collection('matchesWorldcup');
 TablesWorldcup = new Meteor.Collection('tablesWorldcup');
@@ -150,6 +150,8 @@ if (Meteor.isServer) {
                 throw new Meteor.Error(500, "The Match has already begun. You cannot tip anymore!");
             }
             
+            tip.user = this.userId;
+            
             TipsWorldcup.upsert({ match: tip.match, user: tip.user }, { $set: tip });
         },
         
@@ -161,6 +163,8 @@ if (Meteor.isServer) {
             if (now >= firstRoundOf16Match.date) {
                 throw new Meteor.Error(500, "The Group Stage is already over. You cannot tip anymore!");
             }
+            
+            tip.user = this.userId;
             
             TipsWorldcup.upsert({ user: tip.user, rank: tip.rank}, { $set: tip });
         },
@@ -294,9 +298,13 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
-    Meteor.subscribe('matchesWorldcup');
-    Meteor.subscribe('tablesWorldcup');
-    Meteor.subscribe('tipsWorldcup');
-    Meteor.subscribe('standingsWorldcup');
-    Meteor.subscribe('flagsWorldcup');
+    'use strict';
+    
+    Deps.autorun(function () {
+        Meteor.subscribe('matchesWorldcup');
+        Meteor.subscribe('tablesWorldcup');
+        Meteor.subscribe('tipsWorldcup');
+        Meteor.subscribe('standingsWorldcup');
+        Meteor.subscribe('flagsWorldcup');
+    });
 }

@@ -137,7 +137,7 @@ Template.worldcup.canTipRanking = canTipRanking;
 Template.rankingWorldcup.events({
     'change select': function (event) {
         var selectElement = event.target,
-            tip = TipsWorldcup.findOne({user: Meteor.userId(), rank: selectElement.name}) || {user: Meteor.userId(), rank: selectElement.name};
+            tip = TipsWorldcup.findOne({user: Meteor.userId(), rank: selectElement.name}) || {rank: selectElement.name};
         
         tip.team = selectElement.value;
         
@@ -278,7 +278,7 @@ Template.matchWorldcup.events({
 });
 
 Template.matchWorldcup.tip = function () {
-    return TipsWorldcup.findOne({ match: this.id, user: Meteor.userId() }) || { match: this.id, user: Meteor.userId() };
+    return TipsWorldcup.findOne({ match: this.id, user: Meteor.userId() }) || { match: this.id };
 };
 
 Template.matchWorldcup.getCssClass = function (points) {
