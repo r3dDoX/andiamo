@@ -55,11 +55,11 @@ Template.allTipsWorldcup.isShown = function () {
 function toggleFadeEffect(element, className) {
     var classList = element.parentNode.classList,
         removeSuccessStyle = function (event) {
-            classList.remove('has-success');
+            classList.remove(className);
             element.removeEventListener(removeSuccessStyle);
         };
     
-    classList.add('has-success');
+    classList.add(className);
     element.addEventListener('transitionend', removeSuccessStyle);
 }
 
