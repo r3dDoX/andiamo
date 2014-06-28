@@ -118,7 +118,7 @@ function isFinals() {
 }
 
 function canTipRanking() {
-    var firstRoundOf16Match = MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: -1}, fields: {date: 1}});
+    var firstRoundOf16Match = MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: 1}, fields: {date: 1}});
     
     if (firstRoundOf16Match) {
         return firstRoundOf16Match.date > new Date();

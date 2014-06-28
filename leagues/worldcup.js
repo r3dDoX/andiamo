@@ -156,7 +156,7 @@ if (Meteor.isServer) {
         saveRankingTip = function (tip) {
             check(tip, Object);
             var now = new Date(),
-                firstRoundOf16Match = MatchesWorldcup.findOne({group: 'Round of 16'}, {sort: {date: -1}, fields: {date: 1}});
+                firstRoundOf16Match = MatchesWorldcup.findOne({group: 'Round of 16'}, {sort: {date: 1}, fields: {date: 1}});
             
             if (now >= firstRoundOf16Match.date) {
                 throw new Meteor.Error(500, "The Group Stage is already over. You cannot tip anymore!");
