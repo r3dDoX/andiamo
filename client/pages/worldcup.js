@@ -326,7 +326,7 @@ Template.allTipsWorldcup.users = function () {
 Template.allTipsWorldcup.rankingTips = function () {
     var rankingTips = {};
     
-    TipsWorldcup.find({rank: {$not: undefined}, user: this._id}).fetch().forEach(function (element) {
+    TipsWorldcup.find({rank: {$exists: true}, user: this._id}).fetch().forEach(function (element) {
         rankingTips[element.rank] = element.team;
     });
     
