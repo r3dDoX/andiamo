@@ -323,6 +323,16 @@ Template.allTipsWorldcup.users = function () {
     return Meteor.users.find({}, {fields: {'_id': 1, username: 1}, sort: {username: 1}}).fetch();
 };
 
+Template.allTipsWorldcup.rankingTips = function () {
+    var rankingTips = {};
+    
+    TipsWorldcup.find({rank: {$not: undefined}, user: this._id}).fetch().forEach(function (element) {
+        rankingTips[element.rank] = element.team;
+    });
+    
+    return rankingTips;
+};
+
 Template.allTipsWorldcup.tip = function (matchId) {
     return TipsWorldcup.findOne({user: this._id, match: matchId}) || {};
 };

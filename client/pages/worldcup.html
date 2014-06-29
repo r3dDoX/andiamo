@@ -312,6 +312,22 @@
                             <th class="text-center">{{username}}</th>
                         {{/each}}
                     </tr>
+                    <tr>
+                        <td>
+                            1.<br/>
+                            2.<br/>
+                            3.<br/>
+                        </td>
+                        {{#each users}}
+                            <td class="text-center">
+                                {{#with rankingTips}}
+                                    {{first}}<br />
+                                    {{second}}<br />
+                                    {{third}}<br />
+                                {{/with}}
+                            </td>
+                        {{/each}}
+                    </tr>
                 </thead>
                 <tbody>
                     {{#each matches}}
