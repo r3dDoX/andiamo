@@ -321,7 +321,7 @@ if (Meteor.isServer) {
     });
     
     Meteor.publish('tipsWorldcup', function () {
-        return TipsWorldcup.find();
+        return TipsWorldcup.find({user: this.userId}, {fields: {user: 0}});
     });
     
     Meteor.publish('standingsWorldcup', function () {
