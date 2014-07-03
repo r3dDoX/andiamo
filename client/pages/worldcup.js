@@ -7,6 +7,7 @@ var hasBeenShown = false,
     allTipsHasBeenShown = false,
     pillSessionKey = 'selectedWorldcupPill',
     allTipsLimitSessionKey = 'numberOfAllTips',
+    allTipsTableSessionKey = 'allTipsTable',
     groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
     sessionKeyGroup = 'selectedGroup',
     groupPrefix = 'Group ',
@@ -311,30 +312,14 @@ Template.allTipsWorldcup.events({
     }
 });
 
-Template.allTipsWorldcup.matches = function () {
-    return MatchesWorldcup.find({date: {$lt: new Date()}}, {
-        fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1},
-        sort: {date: -1},
-        limit: Session.get(allTipsLimitSessionKey)
-    }).fetch();
-};
-
-Template.allTipsWorldcup.users = function () {
-    return Meteor.users.find({}, {fields: {'_id': 1, username: 1}, sort: {username: 1}}).fetch();
-};
-
-Template.allTipsWorldcup.rankingTips = function () {
-    var rankingTips = {};
+Template.allTipsWorldcup.allTipsTable = function () {
+    var limit = Session.get(allTipsLimitSessionKey);
     
-    TipsWorldcup.find({rank: {$exists: true}, user: this._id}).fetch().forEach(function (element) {
-        rankingTips[element.rank] = element.team;
+    Meteor.call('getAllTipsTable', limit, function(error, result) {
+        Session.set(allTipsTableSessionKey, result);
     });
-    
-    return rankingTips;
-};
 
-Template.allTipsWorldcup.tip = function (matchId) {
-    return TipsWorldcup.findOne({user: this._id, match: matchId}) || {};
+    return Session.get(allTipsTableSessionKey);
 };
 
 Template.allTipsWorldcup.getCssClass = function (points) {

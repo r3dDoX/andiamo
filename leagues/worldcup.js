@@ -256,6 +256,59 @@ if (Meteor.isServer) {
         scheduleFunction = function (functionToCall, milliseconds) {
             functionToCall();
             Meteor.setTimeout(scheduleFunction.bind(undefined, functionToCall, milliseconds), milliseconds);
+        },
+        
+        getRankingTipsForUser = function (user) {
+            var rankings = [];
+            
+            TipsWorldcup.find({user: user._id, rank: {$exists: true}}).fetch().forEach(function (tip) {
+                if (tip.rank === 'first') {
+                    rankings[0] = tip.team;
+                } else if (tip.rank === 'second') {
+                    rankings[1] = tip.team;
+                } else {
+                    rankings[2] = tip.team;
+                }
+            });
+            
+            return rankings;
+        },
+        
+        getAllTipsTable = function (limit) {
+            check(limit, Number);
+            
+            var table = {header: [], rankings: [], matches: []},
+                offset = 1,
+                startedMatches = MatchesWorldcup.find({date: {$lt: new Date()}}, {
+                    fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1},
+                    sort: {date: -1},
+                    limit: limit
+                }),
+                tip,
+                cell;
+
+            table.header[0] = 'Match';
+            table.rankings[0] = ['1.', '2.', '3.'];
+            
+            startedMatches.forEach(function (match, index) {
+                table.matches[index] = [];
+                table.matches[index][0] = { matchString: true, text: match.homeTeam + ' ' + match.homeScore + ' - ' + match.awayScore + ' ' + match.awayTeam };
+                
+                Meteor.users.find({}, {sort: {username: 1}}).fetch().forEach(function (user, userIndex) {
+                    tip = TipsWorldcup.findOne({match: match.id, user: user._id}, {fields: {_id: 0, homeTeam: 1, awayTeam: 1, points: 1}}) || {homeTeam: '', awayTeam: '', points: ''};
+                    
+                    cell = {
+                        text: tip.homeTeam + ' - ' + tip.awayTeam,
+                        points: tip.points
+                    };
+                    
+                    table.header[userIndex + offset] = table.header[userIndex + offset] || user.username;
+                    table.rankings[userIndex + offset] = table.rankings[userIndex + offset] || getRankingTipsForUser(user);
+                    table.matches[index][userIndex + offset] = cell;
+                });
+            });
+            
+            return table;
         };
 
     //publish collections
@@ -283,7 +336,8 @@ if (Meteor.isServer) {
     Meteor.methods({
         'importWorldcup': importWorldcup,
         'saveTip': saveTip,
-        'saveRankingTip': saveRankingTip
+        'saveRankingTip': saveRankingTip,
+        'getAllTipsTable': getAllTipsTable
     });
     
     //make indexes to speed up queries

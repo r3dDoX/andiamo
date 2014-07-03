@@ -304,46 +304,41 @@
 <template name="allTipsWorldcup">
     {{#if isShown}}
         <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Match</th>
-                        {{#each users}}
-                            <th class="text-center">{{username}}</th>
-                        {{/each}}
-                    </tr>
-                    <tr>
-                        <td>
-                            1.<br/>
-                            2.<br/>
-                            3.<br/>
-                        </td>
-                        {{#each users}}
-                            <td class="text-center">
-                                {{#with rankingTips}}
-                                    {{first}}<br />
-                                    {{second}}<br />
-                                    {{third}}<br />
-                                {{/with}}
-                            </td>
-                        {{/each}}
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each matches}}
+            {{#with allTipsTable}}
+                <table class="table table-striped">
+                    <thead>
                         <tr>
-                            <td>{{homeTeam}} {{homeScore}} - {{awayScore}} {{awayTeam}}</td>
-                            {{#each users}}
-                                {{#with tip ../id}}
-                                    <td class="text-center">
-                                        <span class="{{getCssClass points}}">{{homeTeam}} - {{awayTeam}}</span>
-                                    </td>
-                                {{/with}}
+                            {{#each header}}
+                                <th>{{.}}</th>
                             {{/each}}
                         </tr>
-                    {{/each}}
-                </tbody>
-            </table>
+                        <tr>
+                            {{#each rankings}}
+                                <td>
+                                    {{#each .}}
+                                        {{.}}<br />
+                                    {{/each}}
+                                </td>
+                            {{/each}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each matches}}
+                            <tr>
+                                {{#each .}}
+                                    <td>
+                                        {{#if matchString}}
+                                            {{text}}
+                                        {{else}}
+                                            <span class="{{getCssClass points}}">{{text}}</span>
+                                        {{/if}}
+                                    </td>
+                                {{/each}}
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            {{/with}}
             <button type="button" class="btn btn-default">Show All</button>
         </div>
     {{/if}}
