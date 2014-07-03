@@ -309,6 +309,8 @@ Template.allTipsWorldcup.created = function () {
 Template.allTipsWorldcup.events({
     'click button': function (event) {
         Session.set(allTipsLimitSessionKey, 64);
+        event.target.disabled = 'disabled';
+        document.getElementById('allTipsWorldcupProgressBar').classList.remove('hide');
     }
 });
 
@@ -317,6 +319,7 @@ Template.allTipsWorldcup.allTipsTable = function () {
     
     Meteor.call('getAllTipsTable', limit, function(error, result) {
         Session.set(allTipsTableSessionKey, result);
+        document.getElementById('allTipsWorldcupProgressBar').classList.add('hide');
     });
 
     return Session.get(allTipsTableSessionKey);
