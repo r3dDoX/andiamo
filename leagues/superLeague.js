@@ -187,6 +187,32 @@ if (Meteor.isServer) {
             });
             
             return table;
+        },
+    
+        saveTip = function (tip) {
+            check(tip, Object);
+            var now = new Date(),
+                match = MatchesSuperLeague.findOne({ id: tip.match});
+            
+            if (now >= match.date) {
+                throw new Meteor.Error(500, "The Match has already begun. You cannot tip anymore!");
+            }
+            
+            tip.user = this.userId;
+            
+            TipsSuperLeague.upsert({ match: tip.match, user: tip.user }, { $set: tip });
+        },
+        
+        saveRankingTip = function (tip) {
+            check(tip, Object);
+
+            if (new Date() >= new Date('2014-08-01')) {
+                throw new Meteor.Error(500, "The Group Stage is already over. You cannot tip anymore!");
+            }
+            
+            tip.user = this.userId;
+            
+            TipsSuperLeague.upsert({ user: tip.user, rank: tip.rank}, { $set: tip });
         };
 
     //publish collections
@@ -208,7 +234,9 @@ if (Meteor.isServer) {
 
     //export Methods
     Meteor.methods({
-        'importSuperLeague': importSuperLeague
+        'importSuperLeague': importSuperLeague,
+        'saveTipSuperLeague': saveTip,
+        'saveRankingTipSuperLeague': saveRankingTip
     });
     
     //make indexes to speed up queries

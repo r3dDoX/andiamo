@@ -82,7 +82,7 @@ Template.rankingSuperLeague.events({
         
         delete tip._id; //Won't update with _id set
         
-        Meteor.call('saveRankingTip', tip, function (error, result) {
+        Meteor.call('saveRankingTipSuperLeague', tip, function (error, result) {
             if (error) {
                 showErrorSave(selectElement, error);
             } else {
@@ -165,7 +165,7 @@ Template.matchSuperLeague.events({
 
             tip[inputElement.name] = Number(inputElement.value);
 
-            Meteor.call('saveTip', tip, function (error, result) {
+            Meteor.call('saveTipSuperLeague', tip, function (error, result) {
                 if (error) {
                     showErrorSave(inputElement, error);
                 } else {
