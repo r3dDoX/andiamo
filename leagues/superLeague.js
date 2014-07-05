@@ -207,10 +207,8 @@ if (Meteor.isServer) {
             check(tip, Object);
 
             if (new Date() >= new Date('2014-08-01')) {
-                throw new Meteor.Error(500, "The Group Stage is already over. You cannot tip anymore!");
+                throw new Meteor.Error(500, "You cannot tip this anymore!");
             }
-            
-            tip.user = this.userId;
             
             TipsSuperLeague.upsert({ user: tip.user, rank: tip.rank}, { $set: tip });
         };
@@ -255,7 +253,7 @@ if (Meteor.isClient) {
     Deps.autorun(function () {
         Meteor.subscribe('matchesSuperLeague');
         Meteor.subscribe('tablesSuperLeague');
-        Meteor.subscribe('TipsSuperLeague');
+        Meteor.subscribe('tipsSuperLeague');
         Meteor.subscribe('standingsSuperLeague');
     });
 }

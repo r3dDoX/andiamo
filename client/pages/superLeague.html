@@ -43,7 +43,7 @@
                                                 </a>
                                             </h4>
                                         </div>
-                                        <div id="groupStage" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
+                                        <div id="groupStage" class="panel-collapse collapse in">
                                             <div class="panel-body">
                                                 {{ > matchdaySuperLeague }}
                                             </div>
@@ -69,13 +69,13 @@
     <div class="row">
         <div class="col-sm-6">
             <form class="form-inline" role="form">
-                <label class="control-label" for="rankingFirst">Champion&nbsp;</label>
+                <label class="control-label" for="rankingChampion">Champion&nbsp;</label>
                 {{ > rankingSelectboxSuperLeague rank='champion' }}
             </form>
         </div>
         <div class="col-sm-6">
             <form class="form-inline" role="form">
-                <label class="control-label" for="rankingSecond">Relegation&nbsp;</label>
+                <label class="control-label" for="rankingRelegation">Relegation&nbsp;</label>
                 {{ > rankingSelectboxSuperLeague rank='relegation' }}
             </form>
         </div>
@@ -84,7 +84,7 @@
 
 <template name="rankingSelectboxSuperLeague">
     {{#with rank}}
-        <select class="form-control" id="rankingFirst" name="{{.}}" disabled={{cannotTipRanking}} >
+        <select class="form-control" name="{{.}}" disabled={{cannotTipRanking}} >
             {{#each teams . }}
                 {{#if selected}}
                     <option selected="selected">{{name}}</option>
