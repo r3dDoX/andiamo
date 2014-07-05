@@ -60,15 +60,18 @@ if (Meteor.isServer) {
                     actMatch.homeTeam = teams[$('.home-team.team', matchElement).text()];
                     actMatch.awayTeam = teams[$('.guest-team.team', matchElement).text()];
 
-                    dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+(\d\d):(\d\d)/g.exec($('.date', matchElement).text());
+                    dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+((\d\d):(\d\d))?/g.exec($('.date', matchElement).text());
                     dateParts[2] = Number(dateParts[2]) - 1; //JavaScript Months start at 0
                     dateParts[3] = '20' + dateParts[3]; //JavaScript parses two digit years as 19**
-                    actMatch.date = new Date(dateParts[3], dateParts[2], dateParts[1], dateParts[4], dateParts[5]);
+                    actMatch.date = new Date(dateParts[3], dateParts[2], dateParts[1]);
+                    
+                    if (dateParts[4]) {
+                        actMatch.date.setHours(dateParts[5]);
+                        actMatch.date.setMinutes(dateParts[6]);
+                    }
                     
                     scoreParts = $('.score', matchElement).text().split(':');
                     if (isNaN(Number(scoreParts[0]))) {
-                        actMatch.homeScore = undefined;
-                        actMatch.awayScore = undefined;
                         actMatch.isFinished = false;
                     } else {
                         actMatch.homeScore = Number(scoreParts[0]);
