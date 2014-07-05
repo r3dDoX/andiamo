@@ -199,7 +199,6 @@ if (Meteor.isServer) {
             }
             
             tip.user = this.userId;
-            
             TipsSuperLeague.upsert({ match: tip.match, user: tip.user }, { $set: tip });
         },
         
@@ -210,6 +209,7 @@ if (Meteor.isServer) {
                 throw new Meteor.Error(500, "You cannot tip this anymore!");
             }
             
+            tip.user = this.userId;
             TipsSuperLeague.upsert({ user: tip.user, rank: tip.rank}, { $set: tip });
         };
 

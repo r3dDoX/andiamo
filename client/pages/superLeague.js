@@ -105,6 +105,12 @@ Template.rankingSelectboxSuperLeague.teams = function (rank) {
     
     return tables.sort(function (a, b) {
         return a.name.localeCompare(b.name);
+    }).map(function (element) {
+        if (tip && tip.team === element.name) {
+            element.selected = true;
+        }
+        
+        return element;
     });
 };
 
