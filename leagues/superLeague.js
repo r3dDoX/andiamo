@@ -94,7 +94,7 @@ if (Meteor.isServer) {
     });
     
     Meteor.publish('tipsSuperLeague', function () {
-        return TipsSuperLeague.find();
+        return TipsSuperLeague.find({ user: this.userId }, { fields: { user: 0 }});
     });
 
     //export Methods
