@@ -6,11 +6,11 @@ Template.navbar.menuElements = function () {
     return [
         {
             text: 'My Tips',
-            pageId: 'worldcup'
+            pageId: 'superLeague'
         },
         {
             text: 'Import',
-            pageId: 'importWorldcup'
+            pageId: 'importSuperLeague'
         }
     ];
 };

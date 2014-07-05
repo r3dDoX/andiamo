@@ -30,7 +30,7 @@
                                         </div>
                                         <div id="ranking" class="panel-collapse collapse{{#if canTipRanking}} in{{/if}}">
                                             <div class="panel-body">
-                                                {{ > rankingWorldcup }}
+                                                {{ > rankingSuperLeague }}
                                             </div>
                                         </div>
                                     </div>
@@ -38,85 +38,24 @@
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
                                                 <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
-                                                    Group Stage
+                                                    Matchday
                                                     <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
                                                 </a>
                                             </h4>
                                         </div>
                                         <div id="groupStage" class="panel-collapse collapse{{#if isGroupStage}} in{{/if}}">
                                             <div class="panel-body">
-                                                {{ > groupsWorldcup }}
-                                            </div>
-                                            {{ > groupTableWorldcup }}
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#roundOf16">
-                                                    Round of 16
-                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="roundOf16" class="panel-collapse collapse{{#if isRoundOf16}} in{{/if}}">
-                                            <div class="panel-body">
-                                                {{ > roundOf16Worldcup }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#quarterFinals">
-                                                    Quarter Finals
-                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="quarterFinals" class="panel-collapse collapse{{#if isQuarterFinals}} in{{/if}}">
-                                            <div class="panel-body">
-                                                {{ > quarterFinalsWorldcup }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#semiFinals">
-                                                    Semi Finals
-                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="semiFinals" class="panel-collapse collapse{{#if isSemiFinals}} in{{/if}}">
-                                            <div class="panel-body">
-                                                {{ > semiFinalsWorldcup }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#finals">
-                                                    Finals
-                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="finals" class="panel-collapse collapse{{#if isFinals}} in{{/if}}">
-                                            <div class="panel-body">
-                                                {{ > finalsWorldcup }}
+                                                {{ > matchdaySuperLeague }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="nextMatches">
-                                {{ > nextMatchesWorldcup }}
+                                {{ > nextMatchesSuperLeague }}
                             </div>
                             <div class="tab-pane" id="allTips">
-                                {{ > allTipsWorldcup }}
+                                {{ > allTipsSuperLeague }}
                             </div>
                         </div>
                     </div>
@@ -126,30 +65,30 @@
     </div>
 </template>
 
-<template name="rankingWorldcup">
+<template name="rankingSuperLeague">
     <div class="row">
         <div class="col-sm-4">
             <form class="form-inline" role="form">
                 <label class="control-label" for="rankingFirst">First&nbsp;</label>
-                {{ > rankingSelectboxWorldcup rank='first' }}
+                {{ > rankingSelectboxSuperLeague rank='first' }}
             </form>
         </div>
         <div class="col-sm-4">
             <form class="form-inline" role="form">
                 <label class="control-label" for="rankingSecond">Second&nbsp;</label>
-                {{ > rankingSelectboxWorldcup rank='second' }}
+                {{ > rankingSelectboxSuperLeague rank='second' }}
             </form>
         </div>
         <div class="col-sm-4">
             <form class="form-inline" role="form">
                 <label class="control-label" for="rankingThird">Third&nbsp;</label>
-                {{ > rankingSelectboxWorldcup rank='third' }}
+                {{ > rankingSelectboxSuperLeague rank='third' }}
             </form>
         </div>
     </div>
 </template>
 
-<template name="rankingSelectboxWorldcup">
+<template name="rankingSelectboxSuperLeague">
     {{#with rank}}
         <select class="form-control" id="rankingFirst" name="{{.}}" disabled={{cannotTipRanking}} >
             {{#each teams . }}
@@ -163,12 +102,12 @@
     {{/with}}
 </template>
 
-<template name="groupsWorldcup">
+<template name="matchdaySuperLeague">
     <div class="row">
         <div class="col-xs-12 text-center">
             <ul class="pagination">
-                {{#each groups}}
-                    <li class="{{#if isSelectedGroup}}active{{/if}}">
+                {{#each matchdays}}
+                    <li class="{{#if isSelectedMatchday}}active{{/if}}">
                         <a href="#">{{.}}</a>
                     </li>
                 {{/each}}
@@ -177,94 +116,32 @@
     </div>
     <div class="row">
         {{#each matches}}
-            {{ > matchWorldcup }}
+            {{ > matchSuperLeague }}
         {{/each}}
     </div>
 </template>
 
-<template name="groupTableWorldcup">
-    {{#with table}}
-        <table class="table group-table">
-            <thead>
-                <tr>
-                    <th>Teams</th>
-                    <th class="text-center">Played</th>
-                    <th class="text-center hidden-xs">Wins</th>
-                    <th class="text-center hidden-xs">Draws</th>
-                    <th class="text-center hidden-xs">Losses</th>
-                    <th class="text-center">Points</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each teams}}
-                    <tr>
-                        <td>{{ > imageTeamWorldcup teamName=name}}&nbsp;&nbsp;{{name}}</td>
-                        <td class="text-center">{{matchPlayed}}</td>
-                        <td class="text-center hidden-xs">{{win}}</td>
-                        <td class="text-center hidden-xs">{{draw}}</td>
-                        <td class="text-center hidden-xs">{{lost}}</td>
-                        <td class="text-center">{{points}}</td>
-                    </tr>
-                {{/each}}
-            </tbody>
-        </table>
-    {{/with}}
-</template>
-
-<template name="roundOf16Worldcup">
-    <div class="row">
-        {{#each matches}}
-            {{ > matchWorldcup }}
-        {{/each}}
-    </div>
-</template>
-
-<template name="quarterFinalsWorldcup">
-    <div class="row">
-        {{#each matches}}
-            {{ > matchWorldcup }}
-        {{/each}}
-    </div>
-</template>
-
-<template name="semiFinalsWorldcup">
-    <div class="row">
-        {{#each matches}}
-            {{ > matchWorldcup }}
-        {{/each}}
-    </div>
-</template>
-
-<template name="finalsWorldcup">
-    <div class="row">
-        {{#each matches}}
-            {{ > matchWorldcup }}
-        {{/each}}
-    </div>
-</template>
-
-<template name="nextMatchesWorldcup">
+<template name="nextMatchesSuperLeague">
     {{#if isShown}}
         {{#each matches}}
-            {{ > matchWorldcup }}
+            {{ > matchSuperLeague }}
         {{/each}}
     {{/if}}
 </template>
 
-<template name="matchWorldcup">
+<template name="matchSuperLeague">
     <div class="col-sm-6">
-        <div class="panel panel-default match-worldcup">
+        <div class="panel panel-default match">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     {{date}}
-                    <small class="pull-right hidden-xs">{{location.venue}}</small>
                 </h4>
             </div>
             {{#with tip}}
                 <div class="panel-body {{getCssClass}}">
                     <div class="row team">
                         <div class="col-xs-3 col-sm-2">
-                            {{ > imageTeamWorldcup teamName=../homeTeam}}
+                            <img />
                         </div>
                         <div class="col-xs-6 col-sm-7">
                             <p class="lead" title="{{homeTeam}}">
@@ -278,7 +155,7 @@
                     <hr />
                     <div class="row team">
                         <div class="col-xs-3 col-sm-2">
-                            {{ > imageTeamWorldcup teamName=../awayTeam}}
+                            <img />
                         </div>
                         <div class="col-xs-6 col-sm-7">
                             <p class="lead" title="{{awayTeam}}">
@@ -295,13 +172,7 @@
     </div>
 </template>
 
-<template name="imageTeamWorldcup">
-    {{#with teamFlag teamName}}
-        <img src="{{imgSrc}}" />
-    {{/with}}
-</template>
-
-<template name="allTipsWorldcup">
+<template name="allTipsSuperLeague">
     {{#if isShown}}
         <div class="table-responsive">
             {{#with allTipsTable}}
@@ -345,7 +216,7 @@
                 <button type="button" class="btn btn-default">Show All</button>
             </div>
             <div class="col-xs-8">
-                <div id="allTipsWorldcupProgressBar" class="progress progress-striped active">
+                <div id="allTipsSuperLeagueProgressBar" class="progress progress-striped active">
                     <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                         <span class="sr-only">Loading...</span>
                     </div>

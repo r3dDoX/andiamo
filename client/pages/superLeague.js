@@ -1,41 +1,34 @@
 /*jslint node: true, nomen: true*/
-/*global MatchesWorldcup, TablesWorldcup, FlagsWorldcup, TipsWorldcup, Session, Template, Meteor */
+/*global MatchesSuperLeague, TablesSuperLeague, TipsSuperLeague, Session, Template, Meteor */
 'use strict';
 
 var hasBeenShown = false,
     nextMatchesHasBeenShown = false,
     allTipsHasBeenShown = false,
-    pillSessionKey = 'selectedWorldcupPill',
+    pillSessionKey = 'selectedSuperLeaguePill',
     allTipsLimitSessionKey = 'numberOfAllTips',
     allTipsTableSessionKey = 'allTipsTable',
-    groups = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
-    sessionKeyGroup = 'selectedGroup',
-    groupPrefix = 'Group ',
-    groupRegex = /Group\s[A-H]/,
-    roundOf16 = 'Round of 16',
-    quarterFinals = 'Quarter-finals',
-    semiFinals = 'Semi-finals',
-    smallFinal = 'Play-off for third place',
-    bigFinal = 'Final';
+    sessionKeyMatchday = 'selectedMatchday',
+    matchdays = ['«',1,2,3,4,5,'»'];
 
 // -------------------------------- SHOW -----------------------------------
 
-Template.worldcup.events({
+Template.superLeague.events({
     'click .nav-pills a': function (event) {
         var pillId = event.target.id;
         Session.set(pillSessionKey, pillId);
     }
 });
 
-Template.worldcup.isShown = function () {
-    if (!hasBeenShown && Session.get('selectedMenuElement') === 'worldcup') {
+Template.superLeague.isShown = function () {
+    if (!hasBeenShown && Session.get('selectedMenuElement') === 'superLeague') {
         hasBeenShown = true;
     }
     
     return hasBeenShown;
 };
 
-Template.nextMatchesWorldcup.isShown = function () {
+Template.nextMatchesSuperLeague.isShown = function () {
     if (!nextMatchesHasBeenShown && Session.get(pillSessionKey) === 'pillNextMatches') {
         nextMatchesHasBeenShown = true;
     }
@@ -43,7 +36,7 @@ Template.nextMatchesWorldcup.isShown = function () {
     return nextMatchesHasBeenShown;
 };
 
-Template.allTipsWorldcup.isShown = function () {
+Template.allTipsSuperLeague.isShown = function () {
     if (!allTipsHasBeenShown && Session.get(pillSessionKey) === 'pillAllTips') {
         allTipsHasBeenShown = true;
     }
@@ -72,73 +65,18 @@ function showErrorSave(element, error) {
     toggleFadeEffect(element, 'has-error');
 }
 
-function isGroupStage() {
-    var lastGroupMatch = MatchesWorldcup.findOne({group: groupRegex}, {sort: {date: -1}, fields: {date: 1}});
-
-    if (lastGroupMatch) {
-        return lastGroupMatch.date > new Date();
-    }
-}
-
-function isRoundOf16() {
-    var lastGroupMatch = MatchesWorldcup.findOne({group: groupRegex}, {sort: {date: -1}, fields: {date: 1}}),
-        lastMatch =  MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: -1}, fields: {date: 1}}),
-        date = new Date();
-    
-    if (lastGroupMatch && lastMatch) {
-        return date > lastGroupMatch.date && date <= lastMatch.date;
-    }
-}
-
-function isQuarterFinals() {
-    var lastRoundOf16Match = MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: -1}, fields: {date: 1}}),
-        lastQuarterFinalMatch = MatchesWorldcup.findOne({group: quarterFinals}, {sort: {date: -1}, fields: {date: 1}}),
-        date = new Date();
-    
-    if (lastRoundOf16Match && lastQuarterFinalMatch) {
-        return date > lastRoundOf16Match.date && date <= lastQuarterFinalMatch.date;
-    }
-}
-
-function isSemiFinals() {
-    var lastQuartFinalMatch = MatchesWorldcup.findOne({group: quarterFinals}, {sort: {date: -1}, fields: {date: 1}}),
-        lastSemiFinalMatch = MatchesWorldcup.findOne({group: semiFinals}, {sort: {date: -1}, fields: {date: 1}}),
-        date = new Date();
-    
-    if (lastQuartFinalMatch && lastSemiFinalMatch) {
-        return date > lastQuartFinalMatch.date && date <= lastSemiFinalMatch.date;
-    }
-}
-
-function isFinals() {
-    var lastSemiFinalsMatch =  MatchesWorldcup.findOne({group: semiFinals}, {sort: {date: -1}, fields: {date: 1}});
-
-    if (lastSemiFinalsMatch) {
-        return lastSemiFinalsMatch.date < new Date();
-    }
-}
-
 function canTipRanking() {
-    var firstRoundOf16Match = MatchesWorldcup.findOne({group: roundOf16}, {sort: {date: 1}, fields: {date: 1}});
-    
-    if (firstRoundOf16Match) {
-        return firstRoundOf16Match.date > new Date();
-    }
+    return new Date('2014-08-01') >= new Date();
 }
 
-Template.worldcup.isGroupStage = isGroupStage;
-Template.worldcup.isRoundOf16 = isRoundOf16;
-Template.worldcup.isQuarterFinals = isQuarterFinals;
-Template.worldcup.isSemiFinals = isSemiFinals;
-Template.worldcup.isFinals = isFinals;
-Template.worldcup.canTipRanking = canTipRanking;
+Template.superLeague.canTipRanking = canTipRanking;
 
 // -------------------------------- RANKING --------------------------------
 
-Template.rankingWorldcup.events({
+Template.rankingSuperLeague.events({
     'change select': function (event) {
         var selectElement = event.target,
-            tip = TipsWorldcup.findOne({rank: selectElement.name}) || {rank: selectElement.name};
+            tip = TipsSuperLeague.findOne({rank: selectElement.name}) || {rank: selectElement.name};
         
         tip.team = selectElement.value;
         
@@ -161,53 +99,36 @@ Template.rankingWorldcup.events({
     }
 });
 
-Template.rankingSelectboxWorldcup.teams = function (rank) {
-    var tables = TablesWorldcup.find({}, {fields: {teams: 1}}).fetch(),
-        tip = TipsWorldcup.findOne({rank: rank}),
-        teams = [];
-        
-    tables.forEach(function (tableElement, index, array) {
-        tableElement.teams.forEach(function (team, index, array) {
-            var teamObject = {name: team.name};
-            
-            if (tip && tip.team === team.name) {
-                teamObject.selected = true;
-            }
-            
-            teams.push(teamObject);
-        });
-    });
+Template.rankingSelectboxSuperLeague.teams = function (rank) {
+    var tables = TablesSuperLeague.find({}, {fields: {name: 1}}).fetch(),
+        tip = TipsSuperLeague.findOne({rank: rank});
     
-    return teams.sort(function (a, b) {
+    return tables.sort(function (a, b) {
         return a.name.localeCompare(b.name);
     });
 };
 
-Template.rankingSelectboxWorldcup.cannotTipRanking = function () {
+Template.rankingSelectboxSuperLeague.cannotTipRanking = function () {
     return !canTipRanking();
 };
 
 // -------------------------------- GROUP STAGE --------------------------------
 
-Template.groupsWorldcup.events({
+Template.matchdaySuperLeague.events({
     'click .pagination a': function () {
-        Session.set(sessionKeyGroup, this);
+        Session.set(sessionKeyMatchday, this);
     }
 });
 
-Template.groupsWorldcup.groups = function () {
-    return groups;
+Template.matchdaySuperLeague.matchdays = function () {
+    return matchdays;
 };
 
-Template.groupsWorldcup.isSelectedGroup = function () {
-    if (!Session.get(sessionKeyGroup)) {
-        Session.set(sessionKeyGroup, groups[0]);
+Template.matchdaySuperLeague.isSelectedMatchday = function () {
+    if (!Session.get(sessionKeyMatchday)) {
+        Session.set(sessionKeyMatchday, matchdays[0]);
     }
-    return Session.get(sessionKeyGroup) === this;
-};
-
-Template.groupTableWorldcup.table = function () {
-    return TablesWorldcup.findOne({name: groupPrefix + Session.get(sessionKeyGroup)});
+    return Session.get(sessionKeyMatchday) === this;
 };
 
 // -------------------------------- MATCHES --------------------------------
@@ -217,34 +138,22 @@ function mapDateToString(it) {
     return it;
 }
 
-function matchesForGroup(groupName) {
-    return MatchesWorldcup.find({group: groupName}, {sort: {date: 1}}).fetch().map(mapDateToString);
+function matchesForMatchday(matchday) {
+    return MatchesSuperLeague.find({matchday: matchday}, {sort: {date: 1}}).fetch().map(mapDateToString);
 }
 
-Template.groupsWorldcup.matches = function () {
-    return matchesForGroup(groupPrefix + Session.get(sessionKeyGroup));
+Template.matchdaySuperLeague.matches = function () {
+    return matchesForMatchday(Session.get(sessionKeyMatchday));
 };
 
-Template.roundOf16Worldcup.matches = matchesForGroup.bind(undefined, roundOf16);
-Template.quarterFinalsWorldcup.matches = matchesForGroup.bind(undefined, quarterFinals);
-Template.semiFinalsWorldcup.matches = matchesForGroup.bind(undefined, semiFinals);
-
-Template.finalsWorldcup.matches = function () {
-    return MatchesWorldcup.find({$or: [{group: smallFinal}, {group: bigFinal}]}, {sort: {date: 1}}).fetch().map(mapDateToString);
-};
-
-Template.nextMatchesWorldcup.matches = function () {
-    return MatchesWorldcup.find({date: {$gte: new Date()}}, {sort: {date: 1}, limit: 10}).fetch().map(mapDateToString);
+Template.nextMatchesSuperLeague.matches = function () {
+    return MatchesSuperLeague.find({date: {$gte: new Date()}}, {sort: {date: 1}, limit: 10}).fetch().map(mapDateToString);
 };
 
 
 // -------------------------------- MATCH -------------------------------- 
 
-Template.matchWorldcup.created = function () {
-    this.data.tip = TipsWorldcup.findOne({ match: this.data.id }, { fields:  { '_id': 0 }});
-};
-
-Template.matchWorldcup.events({
+Template.matchSuperLeague.events({
     'keyup input, change input': function (event) {
         var inputElement = event.target,
             tip = this;
@@ -267,7 +176,7 @@ Template.matchWorldcup.events({
     },
     
     'mousedown input, touchstart input, focus input': function (event) {
-        if (MatchesWorldcup.findOne({id: this.match}, {fields: {date: 1}}).date <= new Date()) {
+        if (MatchesSuperLeague.findOne({id: this.match}, {fields: {date: 1}}).date <= new Date()) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
@@ -278,11 +187,11 @@ Template.matchWorldcup.events({
     }
 });
 
-Template.matchWorldcup.tip = function () {
-    return TipsWorldcup.findOne({ match: this.id }) || { match: this.id };
+Template.matchSuperLeague.tip = function () {
+    return TipsSuperLeague.findOne({ match: this.id }) || { match: this.id };
 };
 
-Template.matchWorldcup.getCssClass = function (points) {
+Template.matchSuperLeague.getCssClass = function (points) {
     switch (this.points) {
     case 0:
         return 'bg-danger';
@@ -294,19 +203,13 @@ Template.matchWorldcup.getCssClass = function (points) {
     }
 };
 
-// -------------------------------- IMAGE --------------------------------
-
-Template.imageTeamWorldcup.teamFlag = function (teamName) {
-    return FlagsWorldcup.findOne({ team: teamName }, { fields: { imgSrc: 1 }}) || {};
-};
-
 // -------------------------------- ALL TIPS --------------------------------
 
-Template.allTipsWorldcup.created = function () {
+Template.allTipsSuperLeague.created = function () {
     Session.set(allTipsLimitSessionKey, 10);
 };
 
-Template.allTipsWorldcup.events({
+Template.allTipsSuperLeague.events({
     'click button': function (event) {
         Session.set(allTipsLimitSessionKey, 64);
         event.target.disabled = 'disabled';
@@ -314,18 +217,18 @@ Template.allTipsWorldcup.events({
     }
 });
 
-Template.allTipsWorldcup.allTipsTable = function () {
+Template.allTipsSuperLeague.allTipsTable = function () {
     var limit = Session.get(allTipsLimitSessionKey);
     
     Meteor.call('getAllTipsTable', limit, function(error, result) {
         Session.set(allTipsTableSessionKey, result);
-        document.getElementById('allTipsWorldcupProgressBar').classList.add('hide');
+        document.getElementById('allTipsSuperLeagueProgressBar').classList.add('hide');
     });
 
     return Session.get(allTipsTableSessionKey);
 };
 
-Template.allTipsWorldcup.getCssClass = function (points) {
+Template.allTipsSuperLeague.getCssClass = function (points) {
     var cssClass = 'label ';
     
     switch (points) {

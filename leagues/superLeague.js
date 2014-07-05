@@ -1,9 +1,10 @@
 /*jslint node: true */
-/*global Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true */
+/*global Deps, Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true, StandingsSuperLeague: true */
 
 MatchesSuperLeague = new Meteor.Collection('matchesSuperLeague');
 TablesSuperLeague = new Meteor.Collection('tablesSuperLeague');
 TipsSuperLeague = new Meteor.Collection('tipsSuperLeague');
+StandingsSuperLeague = new Meteor.Collection('standingsSuperLeague');
 
 if (Meteor.isServer) {
     'use strict';
@@ -96,9 +97,24 @@ if (Meteor.isServer) {
     Meteor.publish('tipsSuperLeague', function () {
         return TipsSuperLeague.find({ user: this.userId }, { fields: { user: 0 }});
     });
+    
+    Meteor.publish('standingsSuperLeague', function () {
+        return StandingsSuperLeague.find();
+    });
 
     //export Methods
     Meteor.methods({
         'importSuperLeague': importSuperLeague
+    });
+}
+
+if (Meteor.isClient) {
+    'use strict';
+    
+    Deps.autorun(function () {
+        Meteor.subscribe('matchesSuperLeague');
+        Meteor.subscribe('tablesSuperLeague');
+        Meteor.subscribe('TipsSuperLeague');
+        Meteor.subscribe('standingsSuperLeague');
     });
 }
