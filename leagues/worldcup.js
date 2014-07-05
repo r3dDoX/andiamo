@@ -274,6 +274,14 @@ if (Meteor.isServer) {
             return rankings;
         },
         
+        getScoreString = function(score) {
+            if (isNaN(score)) {
+                return '';
+            }
+            
+            return score;
+        },
+        
         getAllTipsTable = function (limit) {
             check(limit, Number);
             
@@ -292,7 +300,7 @@ if (Meteor.isServer) {
             
             startedMatches.forEach(function (match, index) {
                 table.matches[index] = [];
-                table.matches[index][0] = { matchString: true, text: match.homeTeam + ' ' + (match.homeScore || '') + ' - ' + (match.awayScore || '') + ' ' + match.awayTeam };
+                table.matches[index][0] = { matchString: true, text: match.homeTeam + ' ' + getScoreString(match.homeScore) + ' - ' + getScoreString(match.awayScore) + ' ' + match.awayTeam };
                 
                 Meteor.users.find({}, {sort: {username: 1}}).fetch().forEach(function (user, userIndex) {
                     tip = TipsWorldcup.findOne({match: match.id, user: user._id}, {fields: {_id: 0, homeTeam: 1, awayTeam: 1, points: 1}}) || {homeTeam: '', awayTeam: '', points: ''};
