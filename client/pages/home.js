@@ -1,5 +1,5 @@
-/*jslint node: true, nomen: true, plusplus: true */
-/*global Meteor, Template, StandingsWorldcup:true */
+/*jslint node: true, nomen: true, plusplus: true, browser: true */
+/*global Meteor, Template, StandingsSuperLeague:true */
 'use strict';
 
 var scrollElementId = 'home',
@@ -29,7 +29,7 @@ Template.standingsTable.userRankings = function () {
     var rank = 0,
         lastPoints;
     
-    return StandingsWorldcup.find({}, { sort: {points: -1}}).fetch().map(function (userStanding) {
+    return StandingsSuperLeague.find({}, { sort: {points: -1}}).fetch().map(function (userStanding) {
         if (userStanding.points === lastPoints) {
             userStanding.rank = rank;
         } else {

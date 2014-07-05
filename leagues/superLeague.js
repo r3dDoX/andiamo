@@ -1,5 +1,5 @@
 /*jslint node: true */
-/*global Deps, Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true, StandingsSuperLeague: true */
+/*global check, Deps, Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true, StandingsSuperLeague: true */
 
 MatchesSuperLeague = new Meteor.Collection('matchesSuperLeague');
 TablesSuperLeague = new Meteor.Collection('tablesSuperLeague');
@@ -86,6 +86,74 @@ if (Meteor.isServer) {
 
         importSuperLeague = function () {
             parseMatches();
+        },
+        
+        checkIfHasToImport = function () {
+            var dateFrom = new Date(),
+                dateTo = new Date();
+            
+            dateFrom.setMinutes(-200);
+            dateTo.setMinutes(-105);
+            
+            if (MatchesSuperLeague.find({date: {$gt: dateFrom, $lt: dateTo}, isFinished: false}).fetch().length > 0) {
+                importSuperLeague();
+            }
+        },
+        
+        scheduleFunction = function (functionToCall, milliseconds) {
+            functionToCall();
+            Meteor.setTimeout(scheduleFunction.bind(undefined, functionToCall, milliseconds), milliseconds);
+        },
+        
+        getRankingTipsForUser = function (user) {
+            var rankings = [];
+            
+            TipsSuperLeague.find({user: user._id, rank: {$exists: true}}).fetch().forEach(function (tip) {
+                if (tip.rank === 'champion') {
+                    rankings[0] = tip.team;
+                } else {
+                    rankings[1] = tip.team;
+                }
+            });
+            
+            return rankings;
+        },
+        
+        getAllTipsTable = function (limit) {
+            check(limit, Number);
+            
+            var table = {header: [], rankings: [], matches: []},
+                offset = 1,
+                startedMatches = MatchesSuperLeague.find({date: {$lt: new Date()}}, {
+                    fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1},
+                    sort: {date: -1},
+                    limit: limit
+                }),
+                tip,
+                cell;
+
+            table.header[0] = 'Match';
+            table.rankings[0] = ['1.', '10.'];
+            
+            startedMatches.forEach(function (match, index) {
+                table.matches[index] = [];
+                table.matches[index][0] = { matchString: true, text: match.homeTeam + ' ' + (match.homeScore || '') + ' - ' + (match.awayScore || '') + ' ' + match.awayTeam };
+                
+                Meteor.users.find({}, {sort: {username: 1}}).fetch().forEach(function (user, userIndex) {
+                    tip = TipsSuperLeague.findOne({match: match.id, user: user._id}, {fields: {_id: 0, homeTeam: 1, awayTeam: 1, points: 1}}) || {homeTeam: '', awayTeam: '', points: ''};
+                    
+                    cell = {
+                        text: tip.homeTeam + ' - ' + tip.awayTeam,
+                        points: tip.points
+                    };
+                    
+                    table.header[userIndex + offset] = table.header[userIndex + offset] || user.username;
+                    table.rankings[userIndex + offset] = table.rankings[userIndex + offset] || getRankingTipsForUser(user);
+                    table.matches[index][userIndex + offset] = cell;
+                });
+            });
+            
+            return table;
         };
 
     //publish collections
@@ -108,6 +176,15 @@ if (Meteor.isServer) {
     //export Methods
     Meteor.methods({
         'importSuperLeague': importSuperLeague
+    });
+    
+    //make indexes to speed up queries
+    Meteor.startup(function () {
+        MatchesSuperLeague._ensureIndex({'id': 1, 'date': 1, 'isFinished': 1});
+        TablesSuperLeague._ensureIndex({'shortName': 1});
+        TipsSuperLeague._ensureIndex({'match': 1, 'user': 1});
+        
+        scheduleFunction(checkIfHasToImport, 300000);
     });
 }
 

@@ -9,7 +9,7 @@ var hasBeenShown = false,
     allTipsLimitSessionKey = 'numberOfAllTips',
     allTipsTableSessionKey = 'allTipsTable',
     sessionKeyMatchday = 'selectedMatchday',
-    matchdays = ['«',1,2,3,4,5,'»'];
+    matchdays = ['«',1,2,3,4,5,6,7,'»'];
 
 // -------------------------------- SHOW -----------------------------------
 
@@ -126,7 +126,7 @@ Template.matchdaySuperLeague.matchdays = function () {
 
 Template.matchdaySuperLeague.isSelectedMatchday = function () {
     if (!Session.get(sessionKeyMatchday)) {
-        Session.set(sessionKeyMatchday, matchdays[0]);
+        Session.set(sessionKeyMatchday, matchdays[1]);
     }
     return Session.get(sessionKeyMatchday) === this;
 };

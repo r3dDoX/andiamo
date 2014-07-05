@@ -67,22 +67,16 @@
 
 <template name="rankingSuperLeague">
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <form class="form-inline" role="form">
-                <label class="control-label" for="rankingFirst">First&nbsp;</label>
-                {{ > rankingSelectboxSuperLeague rank='first' }}
+                <label class="control-label" for="rankingFirst">Champion&nbsp;</label>
+                {{ > rankingSelectboxSuperLeague rank='champion' }}
             </form>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <form class="form-inline" role="form">
-                <label class="control-label" for="rankingSecond">Second&nbsp;</label>
-                {{ > rankingSelectboxSuperLeague rank='second' }}
-            </form>
-        </div>
-        <div class="col-sm-4">
-            <form class="form-inline" role="form">
-                <label class="control-label" for="rankingThird">Third&nbsp;</label>
-                {{ > rankingSelectboxSuperLeague rank='third' }}
+                <label class="control-label" for="rankingSecond">Relegation&nbsp;</label>
+                {{ > rankingSelectboxSuperLeague rank='relegation' }}
             </form>
         </div>
     </div>
