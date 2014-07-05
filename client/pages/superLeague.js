@@ -9,7 +9,7 @@ var hasBeenShown = false,
     allTipsLimitSessionKey = 'numberOfAllTips',
     allTipsTableSessionKey = 'allTipsTable',
     sessionKeyMatchday = 'selectedMatchday',
-    matchdays = ['«',1,2,3,4,5,6,7,'»'];
+    matchdays = 36;
 
 // -------------------------------- SHOW -----------------------------------
 
@@ -118,7 +118,27 @@ Template.rankingSelectboxSuperLeague.cannotTipRanking = function () {
     return !canTipRanking();
 };
 
-// -------------------------------- GROUP STAGE --------------------------------
+// -------------------------------- MATCHDAY --------------------------------
+
+function calcPaginationArray(actMatchday) {
+    var paginationSize = 7,
+        previousChar = '«',
+        nextChar = '»',
+        matchdayArray = [];
+    
+    if (actMatchday < 4) {
+        matchdayArray = [1,2,3,4,5,6,7];
+    } else if (actMatchday > matchdays - 5) {
+        matchdayArray = [matchdays - 6, matchdays - 5, matchdays - 4, matchdays - 3, matchdays - 2, matchdays - 1, matchdays];
+    } else {
+        matchdayArray = [actMatchday - 2, actMatchday - 1, actMatchday, actMatchday + 1, actMatchday + 2, actMatchday + 3, actMatchday + 4];
+    }
+    
+    matchdayArray.unshift(previousChar);
+    matchdayArray.push(nextChar);
+    
+    return matchdayArray;
+}
 
 Template.matchdaySuperLeague.events({
     'click .pagination a': function () {
@@ -127,13 +147,15 @@ Template.matchdaySuperLeague.events({
 });
 
 Template.matchdaySuperLeague.matchdays = function () {
-    return matchdays;
+    var nextMatch = MatchesSuperLeague.findOne({date: {$gt: new Date()}}, {fields : {matchday: 1}, sort: {date: 1}}) || {matchday: 1},
+        actMatchday = nextMatch.matchday;
+    
+    Session.set(sessionKeyMatchday, actMatchday);
+    
+    return calcPaginationArray(actMatchday);
 };
 
 Template.matchdaySuperLeague.isSelectedMatchday = function () {
-    if (!Session.get(sessionKeyMatchday)) {
-        Session.set(sessionKeyMatchday, matchdays[1]);
-    }
     return Session.get(sessionKeyMatchday) === this;
 };
 
