@@ -52,7 +52,7 @@ if (Meteor.isServer) {
             teams = parseTables($);
 
             $('section#games .matchday').each(function (index, matchdayElement) {
-                matchday = /(\d+)\.\s/g.exec($('.info', matchdayElement).text())[1];
+                matchday = Number(/(\d+)\.\s/g.exec($('.info', matchdayElement).text())[1]);
                 $('.match', matchdayElement).each(function (index, matchElement) {
                     actMatch = {};
                     actMatch.id = $(matchElement).data('match');
