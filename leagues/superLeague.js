@@ -10,6 +10,37 @@ if (Meteor.isServer) {
     'use strict';
     
     var cheerio = Meteor.require('cheerio'),
+        
+        compareScore = function (homeTeam, awayTeam) {
+            return homeTeam < awayTeam ? -1 : homeTeam > awayTeam ? 1 : 0;
+        },
+
+        getPointsFromMatchTip = function (match, tip) {
+            var points = 0;
+
+            if (compareScore(match.homeScore, match.awayScore) === compareScore(tip.homeTeam, tip.awayTeam)) {
+                points += 2;
+
+                if (match.homeScore - match.awayScore === tip.homeTeam - tip.awayTeam) {
+                    points += 1;
+
+                    if (match.homeScore === tip.homeTeam && match.awayScore === tip.awayTeam) {
+                        points += 2;
+                    }
+                }
+            }
+
+            return points;
+        },
+        
+        updateTipsForMatch = function (match) {
+            var tips = TipsSuperLeague.find({match: match.id}, {fields: {_id: 0}}).fetch() || [];
+            
+            tips.forEach(function (tip) {
+                tip.points = getPointsFromMatchTip(match, tip);
+                TipsSuperLeague.update({match: tip.match, user: tip.user}, {$set: tip});
+            });
+        },
 
         parseTables = function ($) {
             var teams = {},
@@ -77,6 +108,8 @@ if (Meteor.isServer) {
                         actMatch.homeScore = Number(scoreParts[0]);
                         actMatch.awayScore = Number(scoreParts[1]);
                         actMatch.isFinished = true;
+                        
+                        updateTipsForMatch(actMatch);
                     }
 
                     MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
