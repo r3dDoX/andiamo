@@ -9,7 +9,13 @@ var hasBeenShown = false,
     allTipsLimitSessionKey = 'numberOfAllTips',
     allTipsTableSessionKey = 'allTipsTable',
     sessionKeyMatchday = 'selectedMatchday',
-    matchdays = 36;
+    sessionKeyMatchdayArray = 'matchdayArray',
+    matchdays = 36,
+    matchdayArray = [],
+    previousChar = '«',
+    nextChar = '»',
+    paginationSize = 7,
+    paginationSteps = 5;
 
 // -------------------------------- SHOW -----------------------------------
 
@@ -121,10 +127,7 @@ Template.rankingSelectboxSuperLeague.cannotTipRanking = function () {
 // -------------------------------- MATCHDAY --------------------------------
 
 function calcPaginationArray(actMatchday) {
-    var paginationSize = 7,
-        previousChar = '«',
-        nextChar = '»',
-        matchdayArray = [];
+    var matchdayArray = [];
     
     if (actMatchday < 4) {
         matchdayArray = [1,2,3,4,5,6,7];
@@ -140,19 +143,77 @@ function calcPaginationArray(actMatchday) {
     return matchdayArray;
 }
 
-Template.matchdaySuperLeague.events({
-    'click .pagination a': function () {
-        Session.set(sessionKeyMatchday, this);
-    }
-});
+function isPaginationChar(char) {
+    return char === nextChar || char === previousChar;
+}
 
-Template.matchdaySuperLeague.matchdays = function () {
+function paginationBack() {
+    var matchdayArray = Session.get(sessionKeyMatchdayArray),
+        stepsToJump = paginationSteps;
+    
+    if (matchdayArray[1] <= paginationSteps) {
+        stepsToJump = matchdayArray[1] - 1;
+    }
+    
+    matchdayArray = matchdayArray.map(function(element) {
+        if (!isPaginationChar(element)) {
+            element -= stepsToJump;
+        }
+
+        return element;
+    });
+
+    Session.set(sessionKeyMatchday, matchdayArray[matchdayArray.length - 2]);
+    Session.set(sessionKeyMatchdayArray, matchdayArray);
+}
+
+function paginationForward() {
+    var matchdayArray = Session.get(sessionKeyMatchdayArray),
+        stepsToJump = paginationSteps,
+        lastArrayElement = matchdayArray[matchdayArray.length - 2];
+    
+    if (lastArrayElement >= matchdays - 5) {
+        stepsToJump = matchdays - lastArrayElement;
+    }
+    
+    matchdayArray = matchdayArray.map(function(element) {
+        if (!isPaginationChar(element)) {
+            element += stepsToJump;
+        }
+
+        return element;
+    });
+
+    Session.set(sessionKeyMatchday, matchdayArray[1]);
+    Session.set(sessionKeyMatchdayArray, matchdayArray);
+}
+
+Template.matchdaySuperLeague.created = function() {
     var nextMatch = MatchesSuperLeague.findOne({date: {$gt: new Date()}}, {fields : {matchday: 1}, sort: {date: 1}}) || {matchday: 1},
         actMatchday = nextMatch.matchday;
     
     Session.set(sessionKeyMatchday, actMatchday);
-    
-    return calcPaginationArray(actMatchday);
+    Session.set(sessionKeyMatchdayArray, calcPaginationArray(actMatchday));
+};
+
+Template.matchdaySuperLeague.events({
+    'click .pagination a': function () {
+        switch (this) {
+            case previousChar:
+                paginationBack();
+                break;
+            case nextChar:
+                paginationForward();
+                break;
+            default:
+                Session.set(sessionKeyMatchday, this);
+                break;
+        }
+    }
+});
+
+Template.matchdaySuperLeague.matchdays = function () {
+    return Session.get(sessionKeyMatchdayArray);
 };
 
 Template.matchdaySuperLeague.isSelectedMatchday = function () {
