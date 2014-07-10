@@ -220,6 +220,10 @@ Template.matchdaySuperLeague.isSelectedMatchday = function () {
     return Session.get(sessionKeyMatchday) === this;
 };
 
+Template.matchdayTableSuperLeague.teams = function () {
+    return TablesSuperLeague.find({}, {sort: {rank: 1}}).fetch();
+};
+
 // -------------------------------- MATCHES --------------------------------
 
 function mapDateToString(it) {

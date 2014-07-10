@@ -47,6 +47,7 @@
                                             <div class="panel-body">
                                                 {{ > matchdaySuperLeague }}
                                             </div>
+                                            {{ > matchdayTableSuperLeague }}
                                         </div>
                                     </div>
                                 </div>
@@ -113,6 +114,37 @@
             {{ > matchSuperLeague }}
         {{/each}}
     </div>
+</template>
+
+<template name="matchdayTableSuperLeague">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th class="text-center">Games</th>
+                <th class="text-center hidden-xs">Wins</th>
+                <th class="text-center hidden-xs">Draws</th>
+                <th class="text-center hidden-xs">Losses</th>
+                <th class="text-center">+/-</th>
+                <th class="text-center">Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each teams}}
+                <tr>
+                    <td>{{rank}}</td>
+                    <td>{{name}}</td>
+                    <td class="text-center">{{matchPlayed}}</td>
+                    <td class="text-center hidden-xs">{{win}}</td>
+                    <td class="text-center hidden-xs">{{draw}}</td>
+                    <td class="text-center hidden-xs">{{lost}}</td>
+                    <td class="text-center">{{goalDifference}}</td>
+                    <td class="text-center">{{points}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </template>
 
 <template name="nextMatchesSuperLeague">
