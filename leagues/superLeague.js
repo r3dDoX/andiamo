@@ -1,10 +1,11 @@
 /*jslint node: true */
-/*global check, Deps, Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true, StandingsSuperLeague: true */
+/*global check, Deps, Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true, StandingsSuperLeague: true, FlagsSuperLeague: true */
 
 MatchesSuperLeague = new Meteor.Collection('matchesSuperLeague');
 TablesSuperLeague = new Meteor.Collection('tablesSuperLeague');
 TipsSuperLeague = new Meteor.Collection('tipsSuperLeague');
 StandingsSuperLeague = new Meteor.Collection('standingsSuperLeague');
+FlagsSuperLeague = new Meteor.Collection('flagsSuperLeague');
 
 if (Meteor.isServer) {
     'use strict';
@@ -49,8 +50,8 @@ if (Meteor.isServer) {
 
             $('.content-container table tbody tr').each(function (index, teamElement) {
                 actTeam = {};
+                
                 actTeamLink = $('td a', teamElement);
-
                 actTeam.id = actTeamLink.parent().data('teamdata');
                 actTeam.shortName = $('span.short-name', actTeamLink).text();
                 actTeam.name = $('span.name', actTeamLink).text();
@@ -92,27 +93,30 @@ if (Meteor.isServer) {
                     actMatch.awayTeam = teams[$('.guest-team.team', matchElement).text()];
 
                     dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+((\d\d):(\d\d))?/g.exec($('.date', matchElement).text());
-                    dateParts[2] = Number(dateParts[2]) - 1; //JavaScript Months start at 0
-                    dateParts[3] = '20' + dateParts[3]; //JavaScript parses two digit years as 19**
-                    actMatch.date = new Date(dateParts[3], dateParts[2], dateParts[1]);
                     
-                    if (dateParts[4]) {
-                        actMatch.date.setHours(dateParts[5]);
-                        actMatch.date.setMinutes(dateParts[6]);
-                    }
-                    
-                    scoreParts = $('.score', matchElement).text().split(':');
-                    if (isNaN(Number(scoreParts[0]))) {
-                        actMatch.isFinished = false;
-                    } else {
-                        actMatch.homeScore = Number(scoreParts[0]);
-                        actMatch.awayScore = Number(scoreParts[1]);
-                        actMatch.isFinished = true;
-                        
-                        updateTipsForMatch(actMatch);
-                    }
+                    if (dateParts) {
+                        dateParts[2] = Number(dateParts[2]) - 1; //JavaScript Months start at 0
+                        dateParts[3] = '20' + dateParts[3]; //JavaScript parses two digit years as 19**
+                        actMatch.date = new Date(dateParts[3], dateParts[2], dateParts[1]);
 
-                    MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
+                        if (dateParts[4]) {
+                            actMatch.date.setHours(dateParts[5]);
+                            actMatch.date.setMinutes(dateParts[6]);
+                        }
+
+                        scoreParts = $('.score', matchElement).text().split(':');
+                        if (isNaN(Number(scoreParts[0]))) {
+                            actMatch.isFinished = false;
+                        } else {
+                            actMatch.homeScore = Number(scoreParts[0]);
+                            actMatch.awayScore = Number(scoreParts[1]);
+                            actMatch.isFinished = true;
+
+                            updateTipsForMatch(actMatch);
+                        }
+
+                        MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
+                    }
                 });
             });
         },
@@ -229,6 +233,10 @@ if (Meteor.isServer) {
     Meteor.publish('standingsSuperLeague', function () {
         return StandingsSuperLeague.find();
     });
+    
+    Meteor.publish('flagsSuperLeague', function () {
+        return FlagsSuperLeague.find();
+    });
 
     //export Methods
     Meteor.methods({
@@ -255,5 +263,6 @@ if (Meteor.isClient) {
         Meteor.subscribe('tablesSuperLeague');
         Meteor.subscribe('tipsSuperLeague');
         Meteor.subscribe('standingsSuperLeague');
+        Meteor.subscribe('flagsSuperLeague');
     });
 }
