@@ -244,7 +244,8 @@ if (Meteor.isServer) {
     Meteor.methods({
         'importSuperLeague': importSuperLeague,
         'saveTipSuperLeague': saveTip,
-        'saveRankingTipSuperLeague': saveRankingTip
+        'saveRankingTipSuperLeague': saveRankingTip,
+        'getAllTipsTable': getAllTipsTable
     });
     
     //make indexes to speed up queries

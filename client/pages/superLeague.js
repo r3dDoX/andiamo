@@ -1,4 +1,4 @@
-/*jslint node: true, nomen: true*/
+/*jslint node: true, nomen: true, browser: true*/
 /*global MatchesSuperLeague, TablesSuperLeague, TipsSuperLeague, Session, Template, Meteor */
 'use strict';
 
@@ -317,7 +317,7 @@ Template.allTipsSuperLeague.events({
 
 Template.allTipsSuperLeague.allTipsTable = function () {
     var limit = Session.get(allTipsLimitSessionKey);
-    
+
     Meteor.call('getAllTipsTable', limit, function(error, result) {
         Session.set(allTipsTableSessionKey, result);
         document.getElementById('allTipsSuperLeagueProgressBar').classList.add('hide');
