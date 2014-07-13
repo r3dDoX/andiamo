@@ -91,7 +91,7 @@ if (Meteor.isServer) {
                     actMatch.matchday = matchday;
                     actMatch.homeTeamShort = $('.home-team.team', matchElement).text();
                     actMatch.homeTeam = teams[actMatch.homeTeamShort];
-                    actMatch.awayTeamShort = $('.guest-team.team', matchElement).text()
+                    actMatch.awayTeamShort = $('.guest-team.team', matchElement).text();
                     actMatch.awayTeam = teams[actMatch.awayTeamShort];
 
                     dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+((\d\d):(\d\d))?/g.exec($('.date', matchElement).text());
@@ -105,20 +105,20 @@ if (Meteor.isServer) {
                             actMatch.date.setHours(dateParts[5]);
                             actMatch.date.setMinutes(dateParts[6]);
                         }
-
-                        scoreParts = $('.score', matchElement).text().split(':');
-                        if (isNaN(Number(scoreParts[0]))) {
-                            actMatch.isFinished = false;
-                        } else {
-                            actMatch.homeScore = Number(scoreParts[0]);
-                            actMatch.awayScore = Number(scoreParts[1]);
-                            actMatch.isFinished = true;
-
-                            updateTipsForMatch(actMatch);
-                        }
-
-                        MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
                     }
+
+                    scoreParts = $('.score', matchElement).text().split(':');
+                    if (isNaN(Number(scoreParts[0]))) {
+                        actMatch.isFinished = false;
+                    } else {
+                        actMatch.homeScore = Number(scoreParts[0]);
+                        actMatch.awayScore = Number(scoreParts[1]);
+                        actMatch.isFinished = true;
+
+                        updateTipsForMatch(actMatch);
+                    }
+
+                    MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
                 });
             });
         },

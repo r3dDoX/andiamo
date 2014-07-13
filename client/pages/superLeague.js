@@ -227,7 +227,12 @@ Template.matchdayTableSuperLeague.teams = function () {
 // -------------------------------- MATCHES --------------------------------
 
 function mapDateToString(it) {
-    it.date = it.date.toLocaleString();
+    if (it.date) {
+        it.date = it.date.toLocaleString();
+    } else {
+        it.date = 'Not fixed yet!';
+    }
+    
     return it;
 }
 

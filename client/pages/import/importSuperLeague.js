@@ -9,7 +9,11 @@ Template.importSuperLeague.matches = function () {
     var matches = MatchesSuperLeague.find().fetch();
     
     matches.map(function (element) {
-        element.date = element.date.toDateString();
+        if (element.date) {
+            element.date = element.date.toDateString();
+        }
+        
+        return element;
     });
     
     return matches;
