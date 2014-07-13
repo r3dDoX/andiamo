@@ -89,8 +89,10 @@ if (Meteor.isServer) {
                     actMatch = {};
                     actMatch.id = $(matchElement).data('match');
                     actMatch.matchday = matchday;
-                    actMatch.homeTeam = teams[$('.home-team.team', matchElement).text()];
-                    actMatch.awayTeam = teams[$('.guest-team.team', matchElement).text()];
+                    actMatch.homeTeamShort = $('.home-team.team', matchElement).text();
+                    actMatch.homeTeam = teams[actMatch.homeTeamShort];
+                    actMatch.awayTeamShort = $('.guest-team.team', matchElement).text()
+                    actMatch.awayTeam = teams[actMatch.awayTeamShort];
 
                     dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+((\d\d):(\d\d))?/g.exec($('.date', matchElement).text());
                     

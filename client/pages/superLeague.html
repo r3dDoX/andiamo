@@ -167,7 +167,7 @@
                 <div class="panel-body {{getCssClass}}">
                     <div class="row team">
                         <div class="col-xs-3 col-sm-2">
-                            <img />
+                            {{ > flagSuperLeague name=../homeTeamShort }}
                         </div>
                         <div class="col-xs-6 col-sm-7">
                             <p class="lead" title="{{homeTeam}}">
@@ -181,7 +181,7 @@
                     <hr />
                     <div class="row team">
                         <div class="col-xs-3 col-sm-2">
-                            <img />
+                            {{ > flagSuperLeague name=../awayTeamShort }}
                         </div>
                         <div class="col-xs-6 col-sm-7">
                             <p class="lead" title="{{awayTeam}}">
@@ -196,6 +196,10 @@
             {{/with}}
         </div>
     </div>
+</template>
+
+<template name="flagSuperLeague">
+    <img src="/flags/{{name}}.png" />
 </template>
 
 <template name="allTipsSuperLeague">
