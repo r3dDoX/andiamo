@@ -14,8 +14,8 @@ var hasBeenShown = false,
     matchdayArray = [],
     previousChar = '«',
     nextChar = '»',
-    paginationSize = 7,
-    paginationSteps = 5;
+    paginationSize = 5,
+    paginationSteps = 4;
 
 // -------------------------------- SHOW -----------------------------------
 
@@ -130,11 +130,11 @@ function calcPaginationArray(actMatchday) {
     var matchdayArray = [];
     
     if (actMatchday < 4) {
-        matchdayArray = [1,2,3,4,5,6,7];
+        matchdayArray = [1,2,3,4,5];
     } else if (actMatchday > matchdays - 5) {
-        matchdayArray = [matchdays - 6, matchdays - 5, matchdays - 4, matchdays - 3, matchdays - 2, matchdays - 1, matchdays];
+        matchdayArray = [matchdays - 4, matchdays - 3, matchdays - 2, matchdays - 1, matchdays];
     } else {
-        matchdayArray = [actMatchday - 2, actMatchday - 1, actMatchday, actMatchday + 1, actMatchday + 2, actMatchday + 3, actMatchday + 4];
+        matchdayArray = [actMatchday - 1, actMatchday, actMatchday + 1, actMatchday + 2, actMatchday + 3];
     }
     
     matchdayArray.unshift(previousChar);
