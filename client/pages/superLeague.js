@@ -249,39 +249,66 @@ Template.nextMatchesSuperLeague.matches = function () {
 };
 
 
-// -------------------------------- MATCH -------------------------------- 
+// -------------------------------- MATCH --------------------------------
+
+function saveTip(tip, team, score, inputElement) {
+    if (isNaN(score)) {
+        showErrorSave(inputElement, 'Value is not number');
+    } else {
+        delete tip._id; //Won't update with _id set
+
+        tip[team] = Number(score);
+
+        Meteor.call('saveTipSuperLeague', tip, function (error, result) {
+            if (error) {
+                showErrorSave(inputElement, error);
+            } else {
+                showSuccessfulSave(inputElement);
+            }
+        });
+    }
+}
+
+function canSaveTip(id) {
+    return MatchesSuperLeague.findOne({id: id}, {fields: {date: 1}}).date > new Date();
+}
+
+function disableIfStarted(match, event) {
+    if (!canSaveTip(match.id)) {
+        event.preventDefault();
+        event.target.disabled = 'disabled';
+    }
+}
 
 Template.matchSuperLeague.events({
     'keyup input, change input': function (event) {
         var inputElement = event.target,
-            tip = this;
+            tip = this.tip;
         
-        if (isNaN(inputElement.value)) {
-            showErrorSave(inputElement, 'Value is not number');
-        } else {
-            delete tip._id; //Won't update with _id set
-
-            tip[inputElement.name] = Number(inputElement.value);
-
-            Meteor.call('saveTipSuperLeague', tip, function (error, result) {
-                if (error) {
-                    showErrorSave(inputElement, error);
-                } else {
-                    showSuccessfulSave(inputElement);
-                }
-            });
-        }
+        saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
     
-    'mousedown input, touchstart input, focus input': function (event) {
-        if (MatchesSuperLeague.findOne({id: this.match}, {fields: {date: 1}}).date <= new Date()) {
+    'mousedown input, touchstart input, focus input, mouseup button, touchup button': function (event) {
+        if (!canSaveTip(this.match.id)) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
     },
     
-    'click input': function (event) {
-        event.target.select();
+    'mouseup button, touchup button': function (event) {
+        if (canSaveTip(this.match.id)) {
+            var tip = this.tip,
+                button = event.target,
+                inputElement = button.parentNode.parentNode.querySelector('input'),
+                score = Number(inputElement.value);
+
+            if (button.dataset.sub) {
+                if(--score < 0) score = 0;
+                saveTip(this.tip, this.team, score, inputElement);
+            } else {
+                saveTip(this.tip, this.team, ++score, inputElement);
+            }
+        }
     }
 });
 

@@ -166,30 +166,30 @@
             {{#with tip}}
                 <div class="panel-body {{getCssClass}}">
                     <div class="row team">
-                        <div class="col-xs-3 col-sm-2">
+                        <div class="col-xs-2 col-sm-2 text-center">
                             {{ > flagSuperLeague name=../homeTeamShort }}
                         </div>
-                        <div class="col-xs-6 col-sm-7">
+                        <div class="col-xs-5 col-sm-5">
                             <p class="lead" title="{{homeTeam}}">
                                 {{../homeTeam}}
                             </p>
                         </div>
-                        <div class="col-xs-3 col-sm-3">
-                            <input class="form-control" disabled={{../isFinished}} type="number" name="homeTeam" placeholder="#" min="0" value="{{homeTeam}}">
+                        <div class="col-xs-5 col-sm-5">
+                            {{ > tipInputSuperLeague team='homeTeam' score=homeTeam match=.. tip=. }}
                         </div>
                     </div>
                     <hr />
                     <div class="row team">
-                        <div class="col-xs-3 col-sm-2">
+                        <div class="col-xs-2 col-sm-2 text-center">
                             {{ > flagSuperLeague name=../awayTeamShort }}
                         </div>
-                        <div class="col-xs-6 col-sm-7">
+                        <div class="col-xs-5 col-sm-5">
                             <p class="lead" title="{{awayTeam}}">
                                 {{../awayTeam}}
                             </p>
                         </div>
-                        <div class="col-xs-3 col-sm-3">
-                            <input class="form-control" disabled={{../isFinished}} type="number" name="awayTeam" placeholder="#" min="0" value="{{awayTeam}}">
+                        <div class="col-xs-5 col-sm-5">
+                            {{ > tipInputSuperLeague team='awayTeam' score=awayTeam match=.. tip=. }}
                         </div>
                     </div>
                 </div>
@@ -200,6 +200,18 @@
 
 <template name="flagSuperLeague">
     <img src="/flags/{{name}}.png" />
+</template>
+
+<template name="tipInputSuperLeague">
+    <div class="input-group pull-right tipInputSuperLeague">
+        <span class="input-group-btn">
+            <button class="btn btn-default btn-md" type="button" disabled={{match.isFinished}} data-sub="true">-</button>
+        </span>
+        <input type="text" class="form-control input-md text-center" placeholder="#" name="{{team}}" value="{{score}}" disabled={{match.isFinished}}>
+        <span class="input-group-btn">
+            <button class="btn btn-default btn-md" type="button" disabled={{match.isFinished}} data-add="true">+</button>
+        </span>
+    </div>
 </template>
 
 <template name="allTipsSuperLeague">
