@@ -89,7 +89,7 @@ ul.pagination {
     margin: 0 0 10px 0;
 }
 
-.panel.panel-default.match-worldcup {
+.panel.panel-default.match {
     margin-bottom: 15px;
     box-shadow: inset 0px 0px 10px -5px rgba(0, 0, 0, 0.5);
     
@@ -100,19 +100,25 @@ ul.pagination {
     .team {
         img {
             height: 34px;
-            margin-right: 10px;
-            
-            border-radius: 5px;
-            border: 1px solid #ddd;
-            box-shadow: 0px 0px 20px -5px rgba(0, 0, 0, 0.3);
         }
         
         p.lead {
+            height: 34px;
+            line-height: 34px;
             padding-left: 5px;
             margin-bottom: 0;
             overflow-x: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+        
+        div.tipInputSuperLeague {
+            max-width: 100px;
+            
+            input {
+                padding-left: 6px;
+                padding-right: 6px;
+            }
         }
         
         .has-success {
@@ -124,13 +130,6 @@ ul.pagination {
     }
 }
 
-table.group-table {
-    img {
-        height: 18px;
-        border-radius: 2px;
-    }
-}
-
-#allTipsWorldcupProgressBar {
+#allTipsSuperLeagueProgressBar {
     margin-top: 5px;
 }
