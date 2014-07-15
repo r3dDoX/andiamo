@@ -288,7 +288,7 @@ Template.matchSuperLeague.events({
         saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
     
-    'mousedown input, touchstart input, focus input, mouseup button, touchup button': function (event) {
+    'mousedown input, touchstart input, focus input, mousedown button, touchdown button': function (event) {
         if (!canSaveTip(this.match.id)) {
             event.preventDefault();
             event.target.disabled = 'disabled';
@@ -296,18 +296,18 @@ Template.matchSuperLeague.events({
     },
     
     'mouseup button, touchup button': function (event) {
-        if (canSaveTip(this.match.id)) {
-            var tip = this.tip,
-                button = event.target,
-                inputElement = button.parentNode.parentNode.querySelector('input'),
-                score = Number(inputElement.value);
+        var tip = this.tip,
+            button = event.target,
+            inputElement = button.parentNode.parentNode.querySelector('input'),
+            score = Number(inputElement.value);
 
-            if (button.dataset.sub) {
-                if(--score < 0) score = 0;
-                saveTip(this.tip, this.team, score, inputElement);
-            } else {
-                saveTip(this.tip, this.team, ++score, inputElement);
-            }
+        if (button.dataset.sub) {
+            if(--score < 0) score = 0;
+            saveTip(this.tip, this.team, score, inputElement);
+            inputElement.value = score;
+        } else {
+            saveTip(this.tip, this.team, ++score, inputElement);
+            inputElement.value = score;
         }
     }
 });
