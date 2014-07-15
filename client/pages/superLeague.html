@@ -170,7 +170,10 @@
                             {{ > flagSuperLeague name=../homeTeamShort }}
                         </div>
                         <div class="col-xs-4 col-sm-5">
-                            <p class="lead" title="{{homeTeam}}">
+                            <p class="lead visible-xs" title="{{homeTeam}}">
+                                {{../homeTeamShort}}
+                            </p>
+                            <p class="lead hidden-xs" title="{{homeTeam}}">
                                 {{../homeTeam}}
                             </p>
                         </div>
@@ -184,7 +187,10 @@
                             {{ > flagSuperLeague name=../awayTeamShort }}
                         </div>
                         <div class="col-xs-4 col-sm-5">
-                            <p class="lead" title="{{awayTeam}}">
+                            <p class="lead visible-xs" title="{{homeTeam}}">
+                                {{../awayTeamShort}}
+                            </p>
+                            <p class="lead hidden-xs" title="{{awayTeam}}">
                                 {{../awayTeam}}
                             </p>
                         </div>
