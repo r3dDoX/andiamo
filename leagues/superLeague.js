@@ -79,6 +79,7 @@ if (Meteor.isServer) {
                 matchday,
                 actMatch,
                 dateParts,
+                dateString,
                 scoreParts;
 
             teams = parseTables($);
@@ -97,14 +98,13 @@ if (Meteor.isServer) {
                     dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+((\d\d):(\d\d))?/g.exec($('.date', matchElement).text());
                     
                     if (dateParts) {
-                        dateParts[2] = Number(dateParts[2]) - 1; //JavaScript Months start at 0
-                        dateParts[3] = '20' + dateParts[3]; //JavaScript parses two digit years as 19**
-                        actMatch.date = new Date(dateParts[3], dateParts[2], dateParts[1]);
+                        dateString = '20' + dateParts[3] + '-' + dateParts[2] + '-' + dateParts[1];
 
                         if (dateParts[4]) {
-                            actMatch.date.setHours(dateParts[5]);
-                            actMatch.date.setMinutes(dateParts[6]);
-                        }
+                            dateString += ' ' + dateParts[5] + ':' + dateParts[6] + ':00';
+                        }                        
+                        
+                        actMatch.date = new Date(dateString + ' GMT+0200');
                     }
 
                     scoreParts = $('.score', matchElement).text().split(':');
