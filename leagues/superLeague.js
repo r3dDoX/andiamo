@@ -98,10 +98,10 @@ if (Meteor.isServer) {
                     dateParts = /(\d\d)\.(\d\d)\.(\d\d)\s+((\d\d):(\d\d))?/g.exec($('.date', matchElement).text());
                     
                     if (dateParts) {
-                        dateString = '20' + dateParts[3] + '-' + dateParts[2] + '-' + dateParts[1];
+                        dateString = ['20' + dateParts[3], dateParts[2], dateParts[1]].join('-');
 
                         if (dateParts[4]) {
-                            dateString += ' ' + dateParts[5] + ':' + dateParts[6] + ':00';
+                            dateString += [' ' + dateParts[5], dateParts[6], '00'].join(':');
                         }                        
                         
                         actMatch.date = new Date(dateString + ' GMT+0200');
