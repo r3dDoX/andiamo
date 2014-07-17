@@ -71,6 +71,10 @@ if (Meteor.isServer) {
 
             return teams;
         },
+        
+        isNotDst = function(month, day) {
+            return month === 10 && day >= 26 || month > 10 || month < 3 || month === 3 && day < 29;
+        },
 
         parseMatches = function () {
             var uri = 'http://www.sfl.ch/superleague/matchcenter/',
@@ -80,6 +84,7 @@ if (Meteor.isServer) {
                 actMatch,
                 dateParts,
                 dateString,
+                timeZone,
                 scoreParts;
 
             teams = parseTables($);
@@ -100,11 +105,17 @@ if (Meteor.isServer) {
                     if (dateParts) {
                         dateString = ['20' + dateParts[3], dateParts[2], dateParts[1]].join('-');
 
+                        if (isNotDst(Number(dateParts[2]), Number(dateParts[1]))) {
+                            timeZone = ' GMT+0100';
+                        } else {
+                            timeZone = ' GMT+0200';
+                        }
+                        
                         if (dateParts[4]) {
                             dateString += [' ' + dateParts[5], dateParts[6], '00'].join(':');
                         }                        
                         
-                        actMatch.date = new Date(dateString + ' GMT+0200');
+                        actMatch.date = new Date(dateString + timeZone);
                     }
 
                     scoreParts = $('.score', matchElement).text().split(':');
