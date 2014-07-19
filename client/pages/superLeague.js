@@ -338,7 +338,7 @@ Template.allTipsSuperLeague.events({
     'click button': function (event) {
         Session.set(allTipsLimitSessionKey, 64);
         event.target.disabled = 'disabled';
-        document.getElementById('allTipsWorldcupProgressBar').classList.remove('hide');
+        document.getElementById('allTipsSuperLeagueProgressBar').classList.remove('hide');
     }
 });
 
