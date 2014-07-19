@@ -134,9 +134,29 @@ if (Meteor.isServer) {
                 });
             });
         },
+        
+        countPoints = function (sum, item) {
+            return (sum.points || sum) + item.points;
+        },
+        
+        updateStandingsTable = function () {
+            var usersWithRanking = Meteor.users.find({}).fetch(),
+                rank = 0,
+                lastPoints;
+
+            usersWithRanking.forEach(function (user) {
+                var tips = TipsSuperLeague.find({user: user._id, points: {$exists: true}}).fetch() || [],
+                    points = tips.reduce(countPoints, 0);
+
+                user.points = points;
+                
+                StandingsSuperLeague.upsert({ username: user.username }, { $set: { username: user.username, points: points} });
+            });
+        },
 
         importSuperLeague = function () {
             parseMatches();
+            updateStandingsTable();
         },
         
         checkIfHasToImport = function () {
