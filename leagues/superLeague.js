@@ -10,7 +10,8 @@ FlagsSuperLeague = new Meteor.Collection('flagsSuperLeague');
 if (Meteor.isServer) {
     'use strict';
     
-    var cheerio = Meteor.require('cheerio'),
+    var rankingTipsUntil = new Date('2014-8-1'),
+        cheerio = Meteor.require('cheerio'),
         
         compareScore = function (homeTeam, awayTeam) {
             return homeTeam < awayTeam ? -1 : homeTeam > awayTeam ? 1 : 0;
@@ -187,17 +188,26 @@ if (Meteor.isServer) {
                     sort: {date: -1},
                     limit: limit
                 }),
+                sortedUsers = Meteor.users.find({}, {sort: {username: 1}}).fetch(),
                 tip,
                 cell;
 
             table.header[0] = 'Match';
             table.rankings[0] = ['1.', '10.'];
             
+            sortedUsers.forEach(function(user, userIndex) {
+                table.header[userIndex + offset] = user.username;
+                
+                if (new Date() > rankingTipsUntil) {
+                    table.rankings[userIndex + offset] = getRankingTipsForUser(user);
+                }
+            });
+            
             startedMatches.forEach(function (match, index) {
                 table.matches[index] = [];
                 table.matches[index][0] = { matchString: true, text: match.homeTeam + ' ' + getScoreString(match.homeScore) + ' - ' + getScoreString(match.awayScore) + ' ' + match.awayTeam };
                 
-                Meteor.users.find({}, {sort: {username: 1}}).fetch().forEach(function (user, userIndex) {
+                sortedUsers.forEach(function (user, userIndex) {
                     tip = TipsSuperLeague.findOne({match: match.id, user: user._id}, {fields: {_id: 0, homeTeam: 1, awayTeam: 1, points: 1}}) || {homeTeam: '', awayTeam: '', points: ''};
                     
                     cell = {
@@ -205,8 +215,6 @@ if (Meteor.isServer) {
                         points: tip.points
                     };
                     
-                    table.header[userIndex + offset] = table.header[userIndex + offset] || user.username;
-                    table.rankings[userIndex + offset] = table.rankings[userIndex + offset] || getRankingTipsForUser(user);
                     table.matches[index][userIndex + offset] = cell;
                 });
             });
@@ -230,7 +238,7 @@ if (Meteor.isServer) {
         saveRankingTip = function (tip) {
             check(tip, Object);
 
-            if (new Date() >= new Date('2014-08-01')) {
+            if (new Date() >= rankingTipsUntil) {
                 throw new Meteor.Error(500, "You cannot tip this anymore!");
             }
             
