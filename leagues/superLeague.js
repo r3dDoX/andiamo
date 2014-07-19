@@ -120,14 +120,14 @@ if (Meteor.isServer) {
                     }
 
                     scoreParts = $('.score', matchElement).text().split(':');
-                    if ($('.live', matchElement).length) {
+                    if (isNaN(Number(scoreParts[0])) || $('.live', matchElement).length) {
+                        actMatch.isFinished = false;
+                    } else {
                         actMatch.homeScore = Number(scoreParts[0]);
                         actMatch.awayScore = Number(scoreParts[1]);
                         actMatch.isFinished = true;
 
                         updateTipsForMatch(actMatch);
-                    } else {
-                        actMatch.isFinished = false;
                     }
 
                     MatchesSuperLeague.upsert({ id: actMatch.id }, { $set: actMatch });
