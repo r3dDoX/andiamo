@@ -197,7 +197,9 @@ Template.matchdaySuperLeague.created = function() {
 };
 
 Template.matchdaySuperLeague.events({
-    'click .pagination a': function () {
+    'click .pagination a': function (event) {
+        event.preventDefault();
+        
         switch (this) {
             case previousChar:
                 paginationBack();
