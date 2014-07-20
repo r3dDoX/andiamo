@@ -287,8 +287,6 @@ Template.matchSuperLeague.events({
         var inputElement = event.target,
             tip = this.tip;
         
-        console.log(this);
-        
         saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
     
