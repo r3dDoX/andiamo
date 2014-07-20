@@ -160,11 +160,9 @@ if (Meteor.isServer) {
         },
         
         checkIfHasToImport = function () {
-            var dateFrom = new Date(),
-                dateTo = new Date();
-            
-            dateFrom.setMinutes(-200);
-            dateTo.setMinutes(-105);
+            var date = new Date(),
+                dateFrom = new Date(date.getTime() - 200*60000),
+                dateTo = new Date(date.getTime() - 105*60000);
             
             if (MatchesSuperLeague.find({date: {$gt: dateFrom, $lt: dateTo}, isFinished: false}).fetch().length > 0) {
                 importSuperLeague();
