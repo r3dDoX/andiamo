@@ -2,6 +2,11 @@
     width: device-width;
 }
 
+@white: #FFF;
+@grey-dark: #555;
+@grey-mid: #999;
+@green-main: #50BB81;
+
 html, body {
     height: 100%;
     width: 100%;
@@ -13,60 +18,60 @@ body {
 
 .navbar.navbar-default {
     padding: 20px 0 0;
-    background-color: #50BB81;
-    border-color: #50BB81;
+    background-color: @green-main;
+    border-color: @green-main;
     
     a, a:active, a:hover, a:focus {
-        color: #FFF;
+        color: @white;
     }
     
     .navbar-collapse {
         &.in, &.collapsing {
-            background-color: #FFF;
+            background-color: @white;
             
             .navbar-nav li {
                 a {
-                    color: #999;
+                    color: @grey-mid;
                 }
                 
                 .dropdown-menu li a {
-                    color: #999;
+                    color: @grey-mid;
                 }
             }
         }
         
         .navbar-nav li {
             a {
-                color: #FFF;
+                color: @white;
             }
             
             &.dropdown.open a{
-                color: #555;
+                color: @grey-dark;
             }
 
             &.active {
                 a, a:hover, a:focus {
-                    color: #555;
+                    color: @grey-dark;
                 }
             }
 
             .dropdown-menu li a {
-                color: #555;
+                color: @grey-dark;
             }
         }
     }
     
     .navbar-toggle {
-        border-color: #FFF;
+        border-color: @white;
         
         .icon-bar {
-            background-color: #FFF;
+            background-color: @white;
         }
     }
 }
 
 .header {
-    background-color: #50BB81;
+    background-color: @green-main;
     padding: 5em 0 5em;
     margin-bottom: 50px;
     
@@ -76,9 +81,9 @@ body {
         height: 144px;
         font-size: 108px;
         line-height: 140px;
-        color: #FFF;
+        color: @white;
         display: block;
-        border: 1px solid #FFF;
+        border: 1px solid @white;
         border-radius: 10px;
         text-align: center;
     }
