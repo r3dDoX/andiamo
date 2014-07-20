@@ -230,9 +230,9 @@ Template.matchdayTableSuperLeague.teams = function () {
 
 function mapDateToString(it) {
     if (it.date) {
-        it.date = it.date.toLocaleString();
+        it.dateString = it.date.toLocaleString();
     } else {
-        it.date = 'Not fixed yet!';
+        it.dateString = 'Not fixed yet!';
     }
     
     return it;
@@ -271,12 +271,12 @@ function saveTip(tip, team, score, inputElement) {
     }
 }
 
-function canSaveTip(id) {
-    return MatchesSuperLeague.findOne({id: id}, {fields: {date: 1}}).date > new Date();
+function canSaveTip(match) {
+    return match.date > new Date();
 }
 
 function disableIfStarted(match, event) {
-    if (!canSaveTip(match.id)) {
+    if (!canSaveTip(match)) {
         event.preventDefault();
         event.target.disabled = 'disabled';
     }
@@ -287,11 +287,13 @@ Template.matchSuperLeague.events({
         var inputElement = event.target,
             tip = this.tip;
         
+        console.log(this);
+        
         saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
     
     'mousedown input, touchstart input, focus input, mousedown button, touchdown button': function (event) {
-        if (!canSaveTip(this.match.id)) {
+        if (!canSaveTip(this.match)) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
