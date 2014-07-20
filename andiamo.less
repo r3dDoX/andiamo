@@ -8,29 +8,85 @@ html, body {
 }
 
 body {
-    padding-top: 50px;
+    padding-top: 70px;
 }
 
 .navbar.navbar-default {
-    background-color: rgba(240, 240, 240, 0.9);
+    padding: 20px 0 0;
+    background-color: #50BB81;
+    border-color: #50BB81;
     
-    li.active a, li.active a:hover, li.active a:focus {
-        background-color: transparent;
-        color: #000;
+    a, a:active, a:hover, a:focus {
+        color: #FFF;
+    }
+    
+    .navbar-collapse {
+        &.in, &.collapsing {
+            background-color: #FFF;
+            
+            .navbar-nav li {
+                a {
+                    color: #999;
+                }
+                
+                .dropdown-menu li a {
+                    color: #999;
+                }
+            }
+        }
+        
+        .navbar-nav li {
+            a {
+                color: #FFF;
+            }
+            
+            &.dropdown.open a{
+                color: #555;
+            }
+
+            &.active {
+                a, a:hover, a:focus {
+                    color: #555;
+                }
+            }
+
+            .dropdown-menu li a {
+                color: #555;
+            }
+        }
+    }
+    
+    .navbar-toggle {
+        border-color: #FFF;
+        
+        .icon-bar {
+            background-color: #FFF;
+        }
     }
 }
 
 .header {
-    background-color: white;
-    background-position: 50% 50%;
-    background-repeat: no-repeat;
-    background-size: auto;
-    box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
-    padding: 6em 0 6em;
-
-    h1 {
+    background-color: #50BB81;
+    padding: 5em 0 5em;
+    margin-bottom: 50px;
+    
+    span {
+        margin: 0 auto 30px;
+        width: 144px;
+        height: 144px;
+        font-size: 108px;
+        line-height: 140px;
+        color: #FFF;
+        display: block;
+        border: 1px solid #FFF;
+        border-radius: 10px;
         text-align: center;
-        text-shadow: 0px 0px 5px rgba(255, 255, 255, 8);
+    }
+
+    p {
+        text-align: center;
+        color: #F0F4F4;
+        font-size: 24px;
     }
 }
 
