@@ -188,13 +188,15 @@ function paginationForward() {
     Session.set(sessionKeyMatchdayArray, matchdayArray);
 }
 
-Template.matchdaySuperLeague.created = function() {
+function getMatchdayArray() {
     var nextMatch = MatchesSuperLeague.findOne({date: {$gt: new Date()}}, {fields : {matchday: 1}, sort: {date: 1}}) || {matchday: 1},
         actMatchday = nextMatch.matchday;
     
     Session.set(sessionKeyMatchday, actMatchday);
     Session.set(sessionKeyMatchdayArray, calcPaginationArray(actMatchday));
-};
+    
+    return Session.get(sessionKeyMatchdayArray);
+}
 
 Template.matchdaySuperLeague.events({
     'click .pagination a': function (event) {
@@ -215,7 +217,7 @@ Template.matchdaySuperLeague.events({
 });
 
 Template.matchdaySuperLeague.matchdays = function () {
-    return Session.get(sessionKeyMatchdayArray);
+    return getMatchdayArray();
 };
 
 Template.matchdaySuperLeague.isSelectedMatchday = function () {
