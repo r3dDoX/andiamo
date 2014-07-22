@@ -234,7 +234,7 @@ Template.matchdayTableSuperLeague.teams = function () {
 
 function mapDateToString(it) {
     if (it.date) {
-        it.dateString = it.date.toDateString() + ' ' + it.date.getHours() + ':' + it.date.getMinutes();
+        it.dateString = it.date.toDateString() + ' ' + it.date.getHours() + ':' + (it.date.getMinutes() < 10 ? '0' : '') + it.date.getMinutes();
     } else {
         it.dateString = 'Not fixed yet!';
     }
