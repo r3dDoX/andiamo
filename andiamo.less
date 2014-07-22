@@ -112,8 +112,8 @@ body {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
-        -webkit-transition: -webkit-transform .5s ease-in;
-        transition: transform .5s ease-in;
+        -webkit-transition: -webkit-transform .5s ease-in, opacity .5s ease, visibility .5s ease;
+        transition: transform .5s ease-in, opacity .5s ease, visibility .5s ease;
 
         -webkit-transform: translateX(100%);
         transform: translateX(100%);
@@ -121,16 +121,22 @@ body {
         &.left {
             -webkit-transform: translateX(-100%);
             transform: translateX(-100%);
+            opacity: 0;
+            visibility: hidden;
         }
 
         &.center {
             -webkit-transform: translateX(0%);
             transform: translateX(0%);
+            opacity: 1;
+            visibility: visible;
         }
 
         &.right {
             -webkit-transform: translateX(100%);
             transform: translateX(100%);
+            opacity: 0;
+            visibility: hidden;
         }
     }
 }
