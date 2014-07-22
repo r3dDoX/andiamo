@@ -307,7 +307,7 @@ Template.matchSuperLeague.events({
             inputElement = button.parentNode.parentNode.querySelector('input'),
             score = Number(inputElement.value);
 
-        if (button.dataset.sub) {
+        if (button.getAttribute('data-sub')) {
             if(--score < 0) score = 0;
             saveTip(this.tip, this.team, score, inputElement);
             inputElement.value = score;
