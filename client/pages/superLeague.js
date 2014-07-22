@@ -97,7 +97,7 @@ Template.rankingSuperLeague.events({
         });
     },
     
-    'mousedown select, touchstart select, focus select': function (event) {
+    'mousedown select, touchstart select, pointerdown select, MSPointerDown select, focus select': function (event) {
         if (!canTipRanking()) {
             event.preventDefault();
             event.target.disabled = 'disabled';
@@ -294,14 +294,14 @@ Template.matchSuperLeague.events({
         saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
     
-    'mousedown input, touchstart input, focus input, mousedown button, touchdown button': function (event) {
+    'mousedown input, touchstart input, pointerdown input, MSPointerDown input, focus input, mousedown button, touchdown button, pointerdown button, MSPointerDown button, focus button': function (event) {
         if (!canSaveTip(this.match)) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
     },
     
-    'mouseup button, touchup button': function (event) {
+    'mouseup button, touchup button, pointerup button, MSPointerUp button': function (event) {
         var tip = this.tip,
             button = event.target,
             inputElement = button.parentNode.parentNode.querySelector('input'),
