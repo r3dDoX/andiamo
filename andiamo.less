@@ -19,60 +19,6 @@ body {
     padding-top: 70px;
 }
 
-.navbar.navbar-default {
-    padding: 20px 0 0;
-    background-color: @green-main;
-    border-color: @green-main;
-    
-    a, a:active, a:hover, a:focus {
-        color: @white;
-    }
-    
-    .navbar-collapse {
-        &.in, &.collapsing {
-            background-color: @white;
-            
-            .navbar-nav li {
-                a {
-                    color: @grey-mid;
-                }
-                
-                .dropdown-menu li a {
-                    color: @grey-mid;
-                }
-            }
-        }
-        
-        .navbar-nav li {
-            a {
-                color: @white;
-            }
-            
-            &.dropdown.open a{
-                color: @grey-dark;
-            }
-
-            &.active {
-                a, a:hover, a:focus {
-                    color: @grey-dark;
-                }
-            }
-
-            .dropdown-menu li a {
-                color: @grey-dark;
-            }
-        }
-    }
-    
-    .navbar-toggle {
-        border-color: @white;
-        
-        .icon-bar {
-            background-color: @white;
-        }
-    }
-}
-
 .header {
     background-color: @green-main;
     padding: 5em 0 5em;
