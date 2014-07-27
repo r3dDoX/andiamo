@@ -6,9 +6,9 @@
 standard-app-packages
 http
 less
-backbone
 accounts-password
 audit-argument-checks
 kadira
 npm
 appcache
+iron-router

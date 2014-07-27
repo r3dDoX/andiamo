@@ -17,18 +17,14 @@
 
 <body>
     {{#if currentUser}}
-        {{ > loggedIn }}
+        {{ > navbar }}
+
+        <div id="pages" class="pages">
+            {{ > home }}
+            {{ > superLeague }}
+            {{ > importSuperLeague }}
+        </div>
     {{else}}
         {{ > login }}
     {{/if}}
 </body>
-
-<template name="loggedIn">
-    {{ > navbar }}
-
-    <div id="pages" class="pages">
-        {{ > home }}
-        {{ > superLeague }}
-        {{ > importSuperLeague }}
-    </div>
-</template>

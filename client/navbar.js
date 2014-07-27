@@ -24,15 +24,15 @@ Template.navbar.events({
         var linkElement = $(event.target),
             collapseElement = linkElement.parents('.navbar-collapse');
         
-        event.preventDefault();
+        //event.preventDefault();
         
         if (collapseElement.hasClass('in')) {
             collapseElement.removeClass('in');
         }
         
-        Router.navigate("pages/" + linkElement.attr('data-pageId'), {
+        /*Router.navigate("pages/" + linkElement.attr('data-pageId'), {
             trigger: true
-        });
+        });*/
     },
     'click #logout' : function (event) {
         Meteor.logout();
