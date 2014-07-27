@@ -9,6 +9,4 @@ if (Meteor.isClient) {
         
         document.getElementsByTagName('head')[0].appendChild(msViewportStyle);
     }
-    
-    Meteor.AppCache.config({onlineOnly: ['/styles/bootstrap-3.2.0']});
 }
