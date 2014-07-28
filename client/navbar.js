@@ -21,18 +21,11 @@ Template.navbarElement.isSelectedMenuElement = function (actualId) {
 
 Template.navbar.events({
     'click a.navbar-brand, click a.elementLink' : function (event) {
-        var linkElement = $(event.target),
-            collapseElement = linkElement.parents('.navbar-collapse');
-        
-        //event.preventDefault();
-        
+        var collapseElement = $(event.target).parents('.navbar-collapse');
+                
         if (collapseElement.hasClass('in')) {
             collapseElement.removeClass('in');
         }
-        
-        /*Router.navigate("pages/" + linkElement.attr('data-pageId'), {
-            trigger: true
-        });*/
     },
     'click #logout' : function (event) {
         Meteor.logout();
