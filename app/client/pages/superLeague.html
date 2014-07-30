@@ -214,7 +214,7 @@
         <span class="input-group-btn">
             <button class="btn btn-default btn-md" type="button" disabled={{match.isFinished}} data-sub="true">-</button>
         </span>
-        <input type="text" class="form-control input-md text-center" placeholder="#" name="{{team}}" value="{{score}}" disabled={{match.isFinished}}>
+        <input id="{{team}}{{match.id}}" type="text" class="form-control input-md text-center" placeholder="#" name="{{team}}" value="{{score}}" disabled={{match.isFinished}}>
         <span class="input-group-btn">
             <button class="btn btn-default btn-md" type="button" disabled={{match.isFinished}} data-add="true">+</button>
         </span>

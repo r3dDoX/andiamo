@@ -15,7 +15,8 @@ var hasBeenShown = false,
     previousChar = '«',
     nextChar = '»',
     paginationSize = 5,
-    paginationSteps = 4;
+    paginationSteps = 4,
+    updateScoreTimeout = {};
 
 // -------------------------------- SHOW -----------------------------------
 
@@ -286,6 +287,17 @@ function disableIfStarted(match, event) {
     }
 }
 
+function updateScore(saveFunction, inputId) {
+    var activeTimeout = updateScoreTimeout[inputId];
+    
+    if (activeTimeout) window.clearTimeout(activeTimeout);
+    
+    updateScoreTimeout[inputId] = window.setTimeout(function() {
+        saveFunction();
+        delete updateScoreTimeout[inputId];
+    }, 500);
+}
+
 Template.matchSuperLeague.events({
     'keyup input, change input': function (event) {
         var inputElement = event.target,
@@ -309,12 +321,12 @@ Template.matchSuperLeague.events({
 
         if (button.getAttribute('data-sub')) {
             if(--score < 0) score = 0;
-            saveTip(this.tip, this.team, score, inputElement);
-            inputElement.value = score;
         } else {
-            saveTip(this.tip, this.team, ++score, inputElement);
-            inputElement.value = score;
+            ++score;
         }
+        
+        inputElement.value = score;
+        updateScore(saveTip.bind(this, this.tip, this.team, score, inputElement), inputElement.id);
     }
 });
 
