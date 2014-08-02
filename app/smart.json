@@ -1,6 +1,7 @@
 {
   "packages": {
     "kadira": {},
-    "iron-router": {}
+    "iron-router": {},
+    "roles": {}
   }
 }

@@ -3,7 +3,8 @@
   "dependencies": {
     "basePackages": {
       "kadira": {},
-      "iron-router": {}
+      "iron-router": {},
+      "roles": {}
     },
     "packages": {
       "kadira": {
@@ -13,8 +14,13 @@
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
-        "tag": "v0.8.1",
-        "commit": "74e867557fd9cb81173e048e5f81cf4a0a1160a8"
+        "tag": "v0.8.2",
+        "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
+      },
+      "roles": {
+        "git": "https://github.com/alanning/meteor-roles.git",
+        "tag": "v1.2.10",
+        "commit": "7ccb35de0a6cb0c9a0c3666badd04757e39c09a6"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
