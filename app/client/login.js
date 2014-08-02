@@ -1,4 +1,4 @@
-/*jslint node: true */
+/*jslint node: true, browser: true */
 /*global Accounts, Meteor, Template */
 'use strict';
 
@@ -57,6 +57,8 @@ function registerNewUser() {
             'email' : registrationForm.querySelector('input[name=email]').value,
             'password' : password.value
         });
+        
+        Meteor.call('addUserRoles');
     } else {
         password.parentNode.classList.add(errorClass);
         repeatPassword.parentNode.classList.add(errorClass);
