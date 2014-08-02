@@ -23,6 +23,10 @@
             {{ > home }}
             {{ > superLeague }}
             {{ > importSuperLeague }}
+            
+            {{#if isInRole 'admin'}}
+                {{> admin}}  
+            {{/if}}
         </div>
     {{else}}
         {{ > login }}

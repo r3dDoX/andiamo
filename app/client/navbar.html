@@ -48,7 +48,9 @@
 </template>
 
 <template name="navbarElement">
-    <li class="{{#if isSelectedMenuElement pageId}}active{{/if}}">
-        <a href="/pages/{{pageId}}" data-pageId="{{pageId}}" class="elementLink">{{text}}</a>
-    </li>
+    {{#if maySeeElement roles}}
+        <li class="{{#if isSelectedMenuElement pageId}}active{{/if}}">
+            <a href="/pages/{{pageId}}" data-pageId="{{pageId}}" class="elementLink">{{text}}</a>
+        </li>
+    {{/if}}
 </template>

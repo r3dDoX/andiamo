@@ -1,16 +1,23 @@
 /*jslint node: true */
-/*global Meteor, Template, Session, Router, $ */
+/*global Meteor, Template, Session, Router, $, Roles */
 'use strict';
 
 Template.navbar.menuElements = function () {
     return [
         {
             text: 'My Tips',
-            pageId: 'superLeague'
+            pageId: 'superLeague',
+            roles: []
         },
         {
             text: 'Import',
-            pageId: 'importSuperLeague'
+            pageId: 'importSuperLeague',
+            roles: []
+        },
+        {
+            text: 'Admin',
+            pageId: 'admin',
+            roles: ['admin']
         }
     ];
 };
@@ -31,3 +38,11 @@ Template.navbar.events({
         Meteor.logout();
     }
 });
+
+Template.navbarElement.maySeeElement = function (roles) {
+    roles = [].concat(roles); // ensure array
+    
+    if(roles.length === 0) return true;
+
+    return Roles.userIsInRole(Meteor.user(), roles);
+};
