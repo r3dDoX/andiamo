@@ -54,6 +54,7 @@ if (Meteor.isServer) {
                 
                 actTeamLink = $('td a', teamElement);
                 actTeam.id = actTeamLink.parent().data('teamdata');
+                actTeam.link = 'http://www.sfl.ch' + actTeamLink.attr('href');
                 actTeam.shortName = $('span.short-name', actTeamLink).text();
                 actTeam.name = $('span.name', actTeamLink).text();
                 actTeam.rank = Number($('td:first-child', teamElement).text());
