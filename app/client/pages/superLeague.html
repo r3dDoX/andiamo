@@ -134,7 +134,7 @@
             {{#each teams}}
                 <tr>
                     <td>{{rank}}</td>
-                    <td>{{name}}</td>
+                    <td><a href="{{link}}" target="_blank">{{name}}</a></td>
                     <td class="text-center">{{matchPlayed}}</td>
                     <td class="text-center hidden-xs">{{win}}</td>
                     <td class="text-center hidden-xs">{{draw}}</td>
@@ -170,7 +170,7 @@
                         <div class="col-xs-2 col-sm-2 text-center">
                             {{ > flagSuperLeague name=../homeTeamShort }}
                         </div>
-                        <div class="col-xs-4 col-sm-5">
+                        <div class="col-xs-4 col-sm-5 teamname" data-toggle="popover" data-placement="bottom">
                             <p class="lead visible-xs" title="{{homeTeam}}">
                                 {{../homeTeamShort}}
                             </p>
@@ -187,7 +187,7 @@
                         <div class="col-xs-2 col-sm-2 text-center">
                             {{ > flagSuperLeague name=../awayTeamShort }}
                         </div>
-                        <div class="col-xs-4 col-sm-5">
+                        <div class="col-xs-4 col-sm-5 teamname" data-toggle="popover" data-placement="bottom">
                             <p class="lead visible-xs" title="{{homeTeam}}">
                                 {{../awayTeamShort}}
                             </p>

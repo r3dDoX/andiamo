@@ -1,5 +1,5 @@
 /*jslint node: true, nomen: true, browser: true*/
-/*global MatchesSuperLeague, TablesSuperLeague, TipsSuperLeague, Session, Template, Meteor */
+/*global MatchesSuperLeague, TablesSuperLeague, TipsSuperLeague, Session, Template, Meteor, $ */
 'use strict';
 
 var hasBeenShown = false,
@@ -344,6 +344,46 @@ Template.matchSuperLeague.getCssClass = function (points) {
     case 5:
         return 'bg-success';
     }
+};
+
+function getTeamPopOverTitle() {
+    var teamName = $('p:last-child', this).text().trim(),
+        teamLink = TablesSuperLeague.findOne({name: teamName}, {fields: {link: 1}}).link;
+    
+    return '<a href="' + teamLink + '" target="_blank">View on SFL</a>';
+}
+
+function getTeamPopOver() {
+    var teamName = $('p:last-child', this).text().trim(),
+        teamLink = TablesSuperLeague.findOne({name: teamName}, {fields: {link: 1}}).link,
+        matches = MatchesSuperLeague.find({
+            $or: [{homeTeam: teamName}, {awayTeam: teamName}], 
+            isFinished: true
+        }, {
+            limit: 3, 
+            sort: {date: -1}
+        }).fetch(),
+        html = '';
+    
+    matches.forEach(function(match) {
+        html += '<div>' + 
+            match.homeTeam + ' ' + 
+            match.homeScore + ' : ' + 
+            match.awayScore + ' ' + 
+            match.awayTeam + '</div>';
+    });
+        
+    return html;
+}
+
+Template.matchSuperLeague.rendered = function() {
+    $(this.findAll('.teamname')).popover({
+        animation: true,
+        container: 'body',
+        content: getTeamPopOver,
+        title: getTeamPopOverTitle,
+        html: true
+    });
 };
 
 // -------------------------------- ALL TIPS --------------------------------

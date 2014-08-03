@@ -7,6 +7,7 @@
 @white: #FFF;
 @grey-dark: #555;
 @grey-mid: #999;
+@grey-light: #aaa;
 @green-main: #50BB81;
 @blue-main: #5071b1;
 
@@ -114,6 +115,10 @@ ul.pagination {
             height: 34px;
         }
         
+        .teamname {
+            cursor: pointer;
+        }
+        
         p.lead {
             height: 34px;
             line-height: 34px;
@@ -144,4 +149,21 @@ ul.pagination {
 
 #allTipsSuperLeagueProgressBar {
     margin-top: 5px;
+}
+
+.popover {
+    h3 {
+        text-align: center;
+        font-size: 16px;
+    }
+    .popover-content {
+        div {
+            padding: 5px;
+            border-bottom: 1px solid @grey-light;
+            
+            &:last-child {
+                border: none;
+            }
+        }
+    }
 }
