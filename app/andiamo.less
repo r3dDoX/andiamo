@@ -7,7 +7,7 @@
 @white: #FFF;
 @grey-dark: #555;
 @grey-mid: #999;
-@grey-light: #aaa;
+@grey-light: #ccc;
 @green-main: #50BB81;
 @blue-main: #5071b1;
 
@@ -153,16 +153,24 @@ ul.pagination {
 
 .popover {
     h3 {
-        text-align: center;
         font-size: 16px;
+        text-align: center;
     }
+    
     .popover-content {
         div {
-            padding: 5px;
+            text-align: center;
+            white-space: nowrap;
+            padding: 10px;
             border-bottom: 1px solid @grey-light;
+            
+            &:first-child {
+                padding-top: 5px;
+            }
             
             &:last-child {
                 border: none;
+                padding-bottom: 5px;
             }
         }
     }

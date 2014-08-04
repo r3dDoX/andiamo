@@ -352,10 +352,13 @@ function getTeamPopOver() {
         html = '';
     
     matches.forEach(function(match) {
+        var score = (match.homeTeam === teamName) ? match.homeScore - match.awayScore : match.awayScore - match.homeScore,
+            cssClass = (score > 0) ? 'label-success' : (score === 0) ? 'label-warning' : 'label-danger';
+                
         html += '<div>' + 
-            match.homeTeam + ' ' + 
+            match.homeTeam + ' <span class="label ' + cssClass + '">' + 
             match.homeScore + ' : ' + 
-            match.awayScore + ' ' + 
+            match.awayScore + '</span> ' + 
             match.awayTeam + '</div>';
     });
         
