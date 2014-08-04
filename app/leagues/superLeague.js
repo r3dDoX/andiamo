@@ -237,7 +237,7 @@ if (Meteor.isServer) {
                 match = MatchesSuperLeague.findOne({ id: tip.match});
             
             if (now >= match.date) {
-                throw new Meteor.Error(500, "The Match has already begun. You cannot tip anymore!");
+                throw new Meteor.Error(500, 'The Match has already begun. You cannot tip anymore!');
             }
             
             tip.user = this.userId;
@@ -248,7 +248,7 @@ if (Meteor.isServer) {
             check(tip, Object);
 
             if (new Date() >= rankingTipsUntil) {
-                throw new Meteor.Error(500, "You cannot tip this anymore!");
+                throw new Meteor.Error(500, 'You cannot tip this anymore!');
             }
             
             tip.user = this.userId;
