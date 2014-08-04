@@ -1,5 +1,3 @@
-/*jslint node: true */
-/*global Meteor, Template */
 'use strict';
 
 Template.importButton.events({
@@ -13,7 +11,7 @@ Template.importButton.events({
         classList.add('btn-primary');
         classList.add('disabled');
         
-        Meteor.call(pageId, function (error, success) {
+        Meteor.call(pageId, function (error) {
             classList.remove('disabled');
             classList.remove('btn-primary');
             

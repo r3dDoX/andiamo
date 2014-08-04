@@ -1,5 +1,3 @@
-/*jslint node: true */
-/*global Meteor, Template, Session, Router, $, Roles */
 'use strict';
 
 Template.navbar.menuElements = function () {
@@ -34,7 +32,7 @@ Template.navbar.events({
             collapseElement.removeClass('in');
         }
     },
-    'click #logout' : function (event) {
+    'click #logout' : function () {
         Meteor.logout();
     }
 });
@@ -42,7 +40,7 @@ Template.navbar.events({
 Template.navbarElement.maySeeElement = function (roles) {
     roles = [].concat(roles); // ensure array
     
-    if(roles.length === 0) return true;
+    if(roles.length === 0) { return true; }
 
     return Roles.userIsInRole(Meteor.user(), roles);
 };

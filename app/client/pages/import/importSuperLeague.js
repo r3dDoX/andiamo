@@ -1,5 +1,3 @@
-/*jslint node: true */
-/*global Meteor, Template, MatchesSuperLeague, TablesSuperLeague */
 'use strict';
 
 Meteor.subscribe('matchesSuperLeague');

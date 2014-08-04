@@ -1,5 +1,3 @@
-/*jslint node: true, browser: true */
-/*global Meteor, Template, Session, $ */
 'use strict';
 
 var hasBeenShown = false;

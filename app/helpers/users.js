@@ -1,5 +1,3 @@
-/*jslint node: true, nomen: true */
-/*global check, Meteor, Roles, StandingsSuperLeague */
 'use strict';
 
 if (Meteor.isServer) {

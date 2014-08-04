@@ -1,5 +1,3 @@
-/*jslint node: true, nomen: true, browser: true*/
-/*global MatchesSuperLeague, TablesSuperLeague, TipsSuperLeague, Session, Template, Meteor, $ */
 'use strict';
 
 var hasBeenShown = false,
@@ -11,10 +9,8 @@ var hasBeenShown = false,
     sessionKeyMatchday = 'selectedMatchday',
     sessionKeyMatchdayArray = 'matchdayArray',
     matchdays = 36,
-    matchdayArray = [],
     previousChar = '«',
     nextChar = '»',
-    paginationSize = 5,
     paginationSteps = 4,
     updateScoreTimeout = {};
 
@@ -55,7 +51,7 @@ Template.allTipsSuperLeague.isShown = function () {
 
 function toggleFadeEffect(element, className) {
     var classList = element.parentNode.classList,
-        removeSuccessStyle = function (event) {
+        removeSuccessStyle = function () {
             classList.remove(className);
             element.removeEventListener(removeSuccessStyle);
         };
@@ -68,7 +64,7 @@ function showSuccessfulSave(element) {
     toggleFadeEffect(element, 'has-success');
 }
 
-function showErrorSave(element, error) {
+function showErrorSave(element) {
     toggleFadeEffect(element, 'has-error');
 }
 
@@ -89,7 +85,7 @@ Template.rankingSuperLeague.events({
         
         delete tip._id; //Won't update with _id set
         
-        Meteor.call('saveRankingTipSuperLeague', tip, function (error, result) {
+        Meteor.call('saveRankingTipSuperLeague', tip, function (error) {
             if (error) {
                 showErrorSave(selectElement, error);
             } else {
@@ -266,7 +262,7 @@ function saveTip(tip, team, score, inputElement) {
 
         tip[team] = Number(score);
 
-        Meteor.call('saveTipSuperLeague', tip, function (error, result) {
+        Meteor.call('saveTipSuperLeague', tip, function (error) {
             if (error) {
                 showErrorSave(inputElement, error);
             } else {
@@ -280,17 +276,10 @@ function canSaveTip(match) {
     return match.date > new Date();
 }
 
-function disableIfStarted(match, event) {
-    if (!canSaveTip(match)) {
-        event.preventDefault();
-        event.target.disabled = 'disabled';
-    }
-}
-
 function updateScore(saveFunction, inputId) {
     var activeTimeout = updateScoreTimeout[inputId];
     
-    if (activeTimeout) window.clearTimeout(activeTimeout);
+    if (activeTimeout) { window.clearTimeout(activeTimeout); }
     
     updateScoreTimeout[inputId] = window.setTimeout(function() {
         saveFunction();
@@ -300,8 +289,7 @@ function updateScore(saveFunction, inputId) {
 
 Template.matchSuperLeague.events({
     'keyup input, change input': function (event) {
-        var inputElement = event.target,
-            tip = this.tip;
+        var inputElement = event.target;
         
         saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
@@ -314,13 +302,12 @@ Template.matchSuperLeague.events({
     },
     
     'mouseup button, touchup button': function (event) {
-        var tip = this.tip,
-            button = event.target,
+        var button = event.target,
             inputElement = button.parentNode.parentNode.querySelector('input'),
             score = Number(inputElement.value);
 
         if (button.getAttribute('data-sub')) {
-            if(--score < 0) score = 0;
+            if(--score < 0) { score = 0; }
         } else {
             ++score;
         }
@@ -334,7 +321,7 @@ Template.matchSuperLeague.tip = function () {
     return TipsSuperLeague.findOne({ match: this.id }) || { match: this.id };
 };
 
-Template.matchSuperLeague.getCssClass = function (points) {
+Template.matchSuperLeague.getCssClass = function () {
     switch (this.points) {
     case 0:
         return 'bg-danger';
@@ -355,7 +342,6 @@ function getTeamPopOverTitle() {
 
 function getTeamPopOver() {
     var teamName = $('p:last-child', this).text().trim(),
-        teamLink = TablesSuperLeague.findOne({name: teamName}, {fields: {link: 1}}).link,
         matches = MatchesSuperLeague.find({
             $or: [{homeTeam: teamName}, {awayTeam: teamName}], 
             isFinished: true

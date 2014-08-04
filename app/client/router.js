@@ -1,5 +1,3 @@
-/*jslint node: true, browser: true */
-/*global Router, Session, Meteor, Template */
 'use strict';
 
 function slidePages(pageToNavigate) {

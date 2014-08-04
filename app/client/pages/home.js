@@ -1,5 +1,3 @@
-/*jslint node: true, nomen: true, plusplus: true, browser: true */
-/*global Meteor, Template, StandingsSuperLeague:true */
 'use strict';
 
 Template.standingsTable.userRankings = function () {

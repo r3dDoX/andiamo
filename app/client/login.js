@@ -1,5 +1,3 @@
-/*jslint node: true, browser: true */
-/*global Accounts, Meteor, Template */
 'use strict';
 
 var usernameTimeout,
@@ -23,7 +21,7 @@ function showLoginResult(passwordInput, emailInput, error) {
     }
 }
 
-function checkFormAndLogin(event) {
+function checkFormAndLogin() {
     var loginForm = document.getElementById('loginForm'),
         emailInput = loginForm.querySelector('input[name=email]'),
         passwordInput = loginForm.querySelector('input[name=password]');

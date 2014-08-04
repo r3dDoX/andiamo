@@ -1,14 +1,6 @@
-/*jslint node: true */
-/*global check, Deps, Meteor, MatchesSuperLeague: true, TablesSuperLeague: true, TipsSuperLeague: true, StandingsSuperLeague: true, FlagsSuperLeague: true */
-
-MatchesSuperLeague = new Meteor.Collection('matchesSuperLeague');
-TablesSuperLeague = new Meteor.Collection('tablesSuperLeague');
-TipsSuperLeague = new Meteor.Collection('tipsSuperLeague');
-StandingsSuperLeague = new Meteor.Collection('standingsSuperLeague');
-FlagsSuperLeague = new Meteor.Collection('flagsSuperLeague');
+'use strict';
 
 if (Meteor.isServer) {
-    'use strict';
     
     var rankingTipsUntil = new Date('2014-8-1'),
         cheerio = Meteor.require('cheerio'),
@@ -141,9 +133,7 @@ if (Meteor.isServer) {
         },
         
         updateStandingsTable = function () {
-            var usersWithRanking = Meteor.users.find({}).fetch(),
-                rank = 0,
-                lastPoints;
+            var usersWithRanking = Meteor.users.find({}).fetch();
 
             usersWithRanking.forEach(function (user) {
                 var tips = TipsSuperLeague.find({user: user._id, points: {$exists: true}}).fetch() || [],
@@ -305,7 +295,6 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
-    'use strict';
     
     Deps.autorun(function () {
         Meteor.subscribe('matchesSuperLeague');
