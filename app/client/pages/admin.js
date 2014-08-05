@@ -1,15 +1,5 @@
 'use strict';
 
-var hasBeenShown = false;
-
-Template.admin.isShown = function () {
-    if (!hasBeenShown && Session.get('selectedMenuElement') === 'admin') {
-        hasBeenShown = true;
-    }
-    
-    return hasBeenShown;
-};
-
 Template.admin.users = function() {
     return Meteor.users.find().fetch();
 };

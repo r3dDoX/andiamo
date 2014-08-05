@@ -79,6 +79,7 @@
         "Router": false,
         "Session": false,
         "Template": false,
+        "UI": false,
         "WebApp": false,
         
         // Kadira

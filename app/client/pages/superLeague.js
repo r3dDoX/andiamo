@@ -1,7 +1,6 @@
 'use strict';
 
-var hasBeenShown = false,
-    nextMatchesHasBeenShown = false,
+var nextMatchesHasBeenShown = false,
     allTipsHasBeenShown = false,
     pillSessionKey = 'selectedSuperLeaguePill',
     allTipsLimitSessionKey = 'numberOfAllTips',
@@ -22,14 +21,6 @@ Template.superLeague.events({
         Session.set(pillSessionKey, pillId);
     }
 });
-
-Template.superLeague.isShown = function () {
-    if (!hasBeenShown && Session.get('selectedMenuElement') === 'superLeague') {
-        hasBeenShown = true;
-    }
-    
-    return hasBeenShown;
-};
 
 Template.nextMatchesSuperLeague.isShown = function () {
     if (!nextMatchesHasBeenShown && Session.get(pillSessionKey) === 'pillNextMatches') {

@@ -1,5 +1,8 @@
 'use strict';
 
+var selectedMenuElementKey = 'selectedMenuElement',
+    hasBeenShown = [];
+
 Template.navbar.menuElements = function () {
     return [
         {
@@ -21,7 +24,7 @@ Template.navbar.menuElements = function () {
 };
 
 Template.navbarElement.isSelectedMenuElement = function (actualId) {
-    return Session.get('selectedMenuElement') === actualId;
+    return Session.get(selectedMenuElementKey) === actualId;
 };
 
 Template.navbar.events({
@@ -44,3 +47,11 @@ Template.navbarElement.maySeeElement = function (roles) {
 
     return Roles.userIsInRole(Meteor.user(), roles);
 };
+
+UI.registerHelper('shouldBeDisplayed', function (templateName) {
+    if (hasBeenShown.indexOf(templateName) < 0 && Session.get(selectedMenuElementKey) === templateName) {
+        hasBeenShown.push(templateName);
+    }
+
+    return hasBeenShown.indexOf(templateName) >= 0;
+});
