@@ -43,6 +43,7 @@ Template.loginForm.events({
 
 function registerNewUser() {
     var registrationForm = document.getElementById('registrationForm'),
+        username = registrationForm.querySelector('input[name=username]').value,
         password = registrationForm.querySelector('input[name=password]'),
         repeatPassword = registrationForm.querySelector('input[name=repeatPassword]');
 
@@ -51,9 +52,10 @@ function registerNewUser() {
         repeatPassword.parentNode.classList.remove(errorClass);
 
         Accounts.createUser({
-            'username' : registrationForm.querySelector('input[name=username]').value,
+            'username' : username,
             'email' : registrationForm.querySelector('input[name=email]').value,
-            'password' : password.value
+            'password' : password.value,
+            'profile' : { name: username }
         });
         
         Meteor.call('addUserRoles');
