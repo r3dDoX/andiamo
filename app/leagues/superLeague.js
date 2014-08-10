@@ -141,7 +141,7 @@ if (Meteor.isServer) {
 
                 user.points = points;
                 
-                StandingsSuperLeague.upsert({ username: user.username }, { $set: { username: user.username, points: points} });
+                StandingsSuperLeague.upsert({ username: user.username }, { $set: { username: user.username, name: user.profile.name, points: points} });
             });
         },
 
