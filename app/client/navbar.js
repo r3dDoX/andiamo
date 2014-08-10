@@ -11,9 +11,14 @@ Template.navbar.menuElements = function () {
             roles: []
         },
         {
+            text: 'Profile',
+            pageId: 'profile',
+            roles: []
+        },
+        {
             text: 'Import',
             pageId: 'importSuperLeague',
-            roles: []
+            roles: ['admin']
         },
         {
             text: 'Admin',

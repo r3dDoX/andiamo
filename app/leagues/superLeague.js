@@ -279,6 +279,7 @@ if (Meteor.isServer) {
     //export Methods
     Meteor.methods({
         'importSuperLeague': importSuperLeague,
+        'updateStandingsTable': updateStandingsTable,
         'saveTipSuperLeague': saveTip,
         'saveRankingTipSuperLeague': saveRankingTip,
         'getAllTipsTable': getAllTipsTable

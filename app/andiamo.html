@@ -22,9 +22,10 @@
         <div id="pages" class="pages">
             {{ > home }}
             {{ > superLeague }}
-            {{ > importSuperLeague }}
+            {{ > profile }}
             
             {{#if isInRole 'admin'}}
+                {{ > importSuperLeague }}
                 {{> admin}}  
             {{/if}}
         </div>
