@@ -197,7 +197,7 @@ if (Meteor.isServer) {
                     sort: {date: -1},
                     limit: limit
                 }),
-                sortedUsers = Meteor.users.find({}, {sort: {username: 1}}).fetch(),
+                sortedUsers = Meteor.users.find({}, {sort: {'profile.name': 1}}).fetch(),
                 tip,
                 cell;
 
@@ -205,7 +205,7 @@ if (Meteor.isServer) {
             table.rankings[0] = ['1.', '10.'];
             
             sortedUsers.forEach(function(user, userIndex) {
-                table.header[userIndex + offset] = user.username;
+                table.header[userIndex + offset] = user.profile.name;
                 
                 if (new Date() > rankingTipsUntil) {
                     table.rankings[userIndex + offset] = getRankingTipsForUser(user);
