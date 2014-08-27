@@ -82,6 +82,9 @@
         "UI": false,
         "WebApp": false,
         
+        // Underscore
+        "_": false,
+        
         // Kadira
         "Kadira": false,
         

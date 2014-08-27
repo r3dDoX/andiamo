@@ -158,11 +158,6 @@ var rankingTipsUntil = new Date('2014-8-1'),
         }
     },
 
-    scheduleFunction = function (functionToCall, milliseconds) {
-        functionToCall();
-        Meteor.setTimeout(scheduleFunction.bind(undefined, functionToCall, milliseconds), milliseconds);
-    },
-
     getRankingTipsForUser = function (user) {
         var rankings = [];
 
@@ -263,5 +258,5 @@ Meteor.methods({
 });
 
 Meteor.startup(function () {
-    scheduleFunction(checkIfHasToImport, 300000);
+    global.andiamo.scheduleFunction(checkIfHasToImport, 300000);
 });
