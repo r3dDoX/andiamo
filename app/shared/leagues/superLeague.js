@@ -268,14 +268,3 @@ if (Meteor.isServer) {
         scheduleFunction(checkIfHasToImport, 300000);
     });
 }
-
-if (Meteor.isClient) {
-    
-    Deps.autorun(function () {
-        Meteor.subscribe('matchesSuperLeague');
-        Meteor.subscribe('tablesSuperLeague');
-        Meteor.subscribe('tipsSuperLeague');
-        Meteor.subscribe('standingsSuperLeague');
-        Meteor.subscribe('flagsSuperLeague');
-    });
-}

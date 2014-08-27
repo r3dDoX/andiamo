@@ -36,3 +36,15 @@ if (Meteor.isServer) {
         return FlagsSuperLeague.find();
     });
 }
+
+if (Meteor.isClient) {
+    Deps.autorun(function () {
+        'use strict';
+        
+        Meteor.subscribe('matchesSuperLeague');
+        Meteor.subscribe('tablesSuperLeague');
+        Meteor.subscribe('tipsSuperLeague');
+        Meteor.subscribe('standingsSuperLeague');
+        Meteor.subscribe('flagsSuperLeague');
+    });
+}
