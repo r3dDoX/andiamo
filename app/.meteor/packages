@@ -8,8 +8,11 @@ http
 less
 accounts-password
 audit-argument-checks
-kadira
-npm
+arunoda:kadira@2.4.9
 appcache
-iron-router
-roles
+cmather:iron-router@0.8.2
+alanning:roles@1.2.10
+meteorhacks:npm
+
+
+npm-container

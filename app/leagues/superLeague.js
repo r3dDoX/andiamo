@@ -3,7 +3,7 @@
 if (Meteor.isServer) {
     
     var rankingTipsUntil = new Date('2014-8-1'),
-        cheerio = Meteor.require('cheerio'),
+        cheerio = Meteor.npmRequire('cheerio'),
         
         compareScore = function (homeTeam, awayTeam) {
             return homeTeam < awayTeam ? -1 : homeTeam > awayTeam ? 1 : 0;
