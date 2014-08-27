@@ -255,27 +255,6 @@ if (Meteor.isServer) {
             TipsSuperLeague.upsert({ user: tip.user, rank: tip.rank}, { $set: tip });
         };
 
-    //publish collections
-    Meteor.publish('matchesSuperLeague', function () {
-        return MatchesSuperLeague.find();
-    });
-
-    Meteor.publish('tablesSuperLeague', function () {
-        return TablesSuperLeague.find();
-    });
-    
-    Meteor.publish('tipsSuperLeague', function () {
-        return TipsSuperLeague.find({ user: this.userId }, { fields: { user: 0 }});
-    });
-    
-    Meteor.publish('standingsSuperLeague', function () {
-        return StandingsSuperLeague.find();
-    });
-    
-    Meteor.publish('flagsSuperLeague', function () {
-        return FlagsSuperLeague.find();
-    });
-
     //export Methods
     Meteor.methods({
         'importSuperLeague': importSuperLeague,
