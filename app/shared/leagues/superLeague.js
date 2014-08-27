@@ -285,12 +285,7 @@ if (Meteor.isServer) {
         'getAllTipsTable': getAllTipsTable
     });
     
-    //make indexes to speed up queries
     Meteor.startup(function () {
-        MatchesSuperLeague._ensureIndex({'id': 1, 'date': 1, 'isFinished': 1});
-        TablesSuperLeague._ensureIndex({'shortName': 1});
-        TipsSuperLeague._ensureIndex({'match': 1, 'user': 1});
-        
         scheduleFunction(checkIfHasToImport, 300000);
     });
 }
