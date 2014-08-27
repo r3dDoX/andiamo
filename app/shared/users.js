@@ -1,7 +1,7 @@
 'use strict';
 
 if (Meteor.isServer) {
-    Meteor.publish("userData", function () {
+    Meteor.publish('userData', function () {
         return Meteor.users.find({}, {fields: {'_id': 1, 'username': 1}});
     });
     
@@ -20,5 +20,5 @@ if (Meteor.isServer) {
 }
 
 if (Meteor.isClient) {
-    Meteor.subscribe("userData");
+    Meteor.subscribe('userData');
 }
