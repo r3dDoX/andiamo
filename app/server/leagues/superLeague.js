@@ -39,7 +39,7 @@ var rankingTipsUntil = new Date('2014-8-1'),
             actTeam,
             actTeamLink;
 
-        $('.content-container #teamtabledata table tbody tr').each(function (index, teamElement) {
+        $('.content-container table tbody').first().children('tr').each(function (index, teamElement) {
             actTeam = {};
 
             actTeamLink = $('td a', teamElement);
