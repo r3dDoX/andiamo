@@ -129,13 +129,27 @@ var rankingTipsUntil = new Date('2014-8-1'),
     countPoints = function (sum, item) {
         return (sum.points || sum) + item.points;
     },
+    
+    countRankingTipPoints = function(user) {
+        var points = 0,
+            champion = TipsSuperLeague.findOne({ user: user._id, rank: 'champion'}) || {team: ''},
+            relegation = TipsSuperLeague.findOne({ user: user._id, rank: 'relegation'}) || {team: ''};
+        
+        if(TablesSuperLeague.findOne({}, {sort: {rank: 1}}).name === champion.team) points += 10;
+        if(TablesSuperLeague.findOne({}, {sort: {rank: -1}}).name === relegation.team) points += 10;
+        
+        return points;
+    },
 
     updateStandingsTable = function () {
-        var usersWithRanking = Meteor.users.find({}).fetch();
+        var usersWithRanking = Meteor.users.find({}).fetch(),
+            seasonFinished = MatchesSuperLeague.find({isFinished: false}).fetch().length === 0;
 
         usersWithRanking.forEach(function (user) {
             var tips = TipsSuperLeague.find({user: user._id, points: {$exists: true}}).fetch() || [],
                 points = tips.reduce(countPoints, 0);
+            
+            if (seasonFinished) points += countRankingTipPoints(user);
 
             user.points = points;
 
