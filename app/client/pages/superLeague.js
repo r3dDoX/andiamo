@@ -10,7 +10,8 @@ var nextMatchesHasBeenShown = false,
     matchdays = 36,
     previousChar = '«',
     nextChar = '»',
-    paginationSteps = 4,
+    paginationSteps = 3,
+    paginationSize = paginationSteps + 1,
     updateScoreTimeout = {};
 
 // -------------------------------- SHOW -----------------------------------
@@ -115,15 +116,16 @@ Template.rankingSelectboxSuperLeague.cannotTipRanking = function () {
 // -------------------------------- MATCHDAY --------------------------------
 
 function calcPaginationArray(actMatchday) {
-    var matchdayArray = [];
+    var matchdayArray = Array.apply(null, {length: paginationSize}),
+        i = actMatchday - 1;
     
-    if (actMatchday < 4) {
-        matchdayArray = [1,2,3,4,5];
-    } else if (actMatchday > matchdays - 5) {
-        matchdayArray = [matchdays - 4, matchdays - 3, matchdays - 2, matchdays - 1, matchdays];
-    } else {
-        matchdayArray = [actMatchday - 1, actMatchday, actMatchday + 1, actMatchday + 2, actMatchday + 3];
+    if (i < 1) {
+        i = 1;
+    } else if (i > matchdays - paginationSteps) {
+        i = matchdays - paginationSteps;
     }
+    
+    matchdayArray = matchdayArray.map(function() { return i++; });
     
     matchdayArray.unshift(previousChar);
     matchdayArray.push(nextChar);
