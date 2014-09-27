@@ -7,24 +7,26 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <table id="userTable" class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Userid</th>
-                                    <th>Username</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{#each users}}
+                        <div class="table-responsive">
+                            <table id="userTable" class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td>{{_id}}</td>
-                                        <td>{{username}}</td>
-                                        <td>{{ > userActions userId=_id }}</td>
+                                        <th>Userid</th>
+                                        <th>Username</th>
+                                        <th>Actions</th>
                                     </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {{#each users}}
+                                        <tr>
+                                            <td>{{_id}}</td>
+                                            <td>{{username}}</td>
+                                            <td>{{ > userActions userId=_id }}</td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
