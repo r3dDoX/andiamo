@@ -6,10 +6,19 @@ FlagsSuperLeague = new Meteor.Collection('flagsSuperLeague');
 
 if (Meteor.isServer) {
     // speed up mongodb with indices
-    MatchesSuperLeague._ensureIndex({'id': 1, 'date': 1, 'isFinished': 1});
-    TablesSuperLeague._ensureIndex({'shortName': 1});
-    TipsSuperLeague._ensureIndex({'match': 1, 'user': 1});
-    
+    MatchesSuperLeague._ensureIndex({
+        'id': 1,
+        'date': 1,
+        'isFinished': 1
+    });
+    TablesSuperLeague._ensureIndex({
+        'shortName': 1
+    });
+    TipsSuperLeague._ensureIndex({
+        'match': 1,
+        'user': 1
+    });
+
     //publish collections
     Meteor.publish('matchesSuperLeague', function () {
         'use strict';
@@ -20,17 +29,23 @@ if (Meteor.isServer) {
         'use strict';
         return TablesSuperLeague.find();
     });
-    
+
     Meteor.publish('tipsSuperLeague', function () {
         'use strict';
-        return TipsSuperLeague.find({ user: this.userId }, { fields: { user: 0 }});
+        return TipsSuperLeague.find({
+            user: this.userId
+        }, {
+            fields: {
+                user: 0
+            }
+        });
     });
-    
+
     Meteor.publish('standingsSuperLeague', function () {
         'use strict';
         return StandingsSuperLeague.find();
     });
-    
+
     Meteor.publish('flagsSuperLeague', function () {
         'use strict';
         return FlagsSuperLeague.find();
@@ -40,7 +55,7 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
     Deps.autorun(function () {
         'use strict';
-        
+
         Meteor.subscribe('matchesSuperLeague');
         Meteor.subscribe('tablesSuperLeague');
         Meteor.subscribe('tipsSuperLeague');
