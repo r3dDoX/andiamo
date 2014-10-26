@@ -3,55 +3,61 @@
 var selectedMenuElementKey = 'selectedMenuElement',
     hasBeenShown = [];
 
-Template.navbar.menuElements = function () {
-    return [
-        {
-            text: 'My Tips',
-            pageId: 'superLeague',
-            roles: []
-        },
-        {
-            text: 'Profile',
-            pageId: 'profile',
-            roles: []
-        },
-        {
-            text: 'Import',
-            pageId: 'importSuperLeague',
-            roles: ['admin']
-        },
-        {
-            text: 'Admin',
-            pageId: 'admin',
-            roles: ['admin']
-        }
-    ];
-};
-
-Template.navbarElement.isSelectedMenuElement = function (actualId) {
-    return Session.get(selectedMenuElementKey) === actualId;
-};
+Template.navbar.helpers({
+    menuElements: function () {
+        return [
+            {
+                text: 'My Tips',
+                pageId: 'superLeague',
+                roles: []
+            },
+            {
+                text: 'Profile',
+                pageId: 'profile',
+                roles: []
+            },
+            {
+                text: 'Import',
+                pageId: 'importSuperLeague',
+                roles: ['admin']
+            },
+            {
+                text: 'Admin',
+                pageId: 'admin',
+                roles: ['admin']
+            }
+        ];
+    }
+});
 
 Template.navbar.events({
-    'click a.navbar-brand, click a.elementLink' : function (event) {
+    'click a.navbar-brand, click a.elementLink': function (event) {
         var collapseElement = $(event.target).parents('.navbar-collapse');
-                
+
         if (collapseElement.hasClass('in')) {
             collapseElement.removeClass('in');
         }
     },
-    'click #logout' : function () {
+    'click #logout': function () {
         Meteor.logout();
     }
 });
 
-Template.navbarElement.maySeeElement = function (roles) {
-    roles = [].concat(roles); // ensure array
-    
-    if(roles.length === 0) { return true; }
+Template.navbarElement.helpers({
+    isSelectedMenuElement: function (actualId) {
+        return Session.get(selectedMenuElementKey) === actualId;
+    },
 
-    return Roles.userIsInRole(Meteor.user(), roles);
-};
+    maySeeElement: function (roles) {
+        roles = [].concat(roles); // ensure array
+
+        if (roles.length === 0) {
+            return true;
+        }
+
+        return Roles.userIsInRole(Meteor.user(), roles);
+    }
+});
 
 UI.registerHelper('shouldBeDisplayed', function (templateName) {
     if (hasBeenShown.indexOf(templateName) < 0 && Session.get(selectedMenuElementKey) === templateName) {
