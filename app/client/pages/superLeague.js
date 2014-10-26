@@ -23,22 +23,6 @@ Template.superLeague.events({
     }
 });
 
-Template.nextMatchesSuperLeague.isShown = function () {
-    if (!nextMatchesHasBeenShown && Session.get(pillSessionKey) === 'pillNextMatches') {
-        nextMatchesHasBeenShown = true;
-    }
-    
-    return nextMatchesHasBeenShown;
-};
-
-Template.allTipsSuperLeague.isShown = function () {
-    if (!allTipsHasBeenShown && Session.get(pillSessionKey) === 'pillAllTips') {
-        allTipsHasBeenShown = true;
-    }
-    
-    return allTipsHasBeenShown;
-};
-
 // -------------------------------- HELPERS --------------------------------
 
 function toggleFadeEffect(element, className) {
@@ -47,7 +31,7 @@ function toggleFadeEffect(element, className) {
             classList.remove(className);
             element.removeEventListener(removeSuccessStyle);
         };
-    
+
     classList.add(className);
     element.addEventListener('transitionend', removeSuccessStyle);
 }
@@ -64,19 +48,25 @@ function canTipRanking() {
     return new Date('2014-08-01') >= new Date();
 }
 
-Template.superLeague.canTipRanking = canTipRanking;
+Template.superLeague.helpers({
+    canTipRanking: canTipRanking
+});
 
 // -------------------------------- RANKING --------------------------------
 
 Template.rankingSuperLeague.events({
     'change select': function (event) {
         var selectElement = event.target,
-            tip = TipsSuperLeague.findOne({rank: selectElement.name}) || {rank: selectElement.name};
-        
+            tip = TipsSuperLeague.findOne({
+                rank: selectElement.name
+            }) || {
+                rank: selectElement.name
+            };
+
         tip.team = selectElement.value;
-        
+
         delete tip._id; //Won't update with _id set
-        
+
         Meteor.call('saveRankingTipSuperLeague', tip, function (error) {
             if (error) {
                 showErrorSave(selectElement, error);
@@ -85,7 +75,7 @@ Template.rankingSuperLeague.events({
             }
         });
     },
-    
+
     'mousedown select, touchstart select, focus select': function (event) {
         if (!canTipRanking()) {
             event.preventDefault();
@@ -94,42 +84,54 @@ Template.rankingSuperLeague.events({
     }
 });
 
-Template.rankingSelectboxSuperLeague.teams = function (rank) {
-    var tables = TablesSuperLeague.find({}, {fields: {name: 1}}).fetch(),
-        tip = TipsSuperLeague.findOne({rank: rank});
-    
-    return tables.sort(function (a, b) {
-        return a.name.localeCompare(b.name);
-    }).map(function (element) {
-        if (tip && tip.team === element.name) {
-            element.selected = true;
-        }
-        
-        return element;
-    });
-};
+Template.rankingSelectboxSuperLeague.helpers({
+    teams: function (rank) {
+        var tables = TablesSuperLeague.find({}, {
+                fields: {
+                    name: 1
+                }
+            }).fetch(),
+            tip = TipsSuperLeague.findOne({
+                rank: rank
+            });
 
-Template.rankingSelectboxSuperLeague.cannotTipRanking = function () {
-    return !canTipRanking();
-};
+        return tables.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        }).map(function (element) {
+            if (tip && tip.team === element.name) {
+                element.selected = true;
+            }
+
+            return element;
+        });
+    },
+
+    cannotTipRanking: function () {
+        return !canTipRanking();
+    }
+});
 
 // -------------------------------- MATCHDAY --------------------------------
 
 function calcPaginationArray(actMatchday) {
-    var matchdayArray = Array.apply(null, {length: paginationSize}),
+    var matchdayArray = Array.apply(null, {
+            length: paginationSize
+        }),
         i = actMatchday - 1;
-    
+
     if (i < 1) {
         i = 1;
     } else if (i > matchdays - paginationSteps) {
         i = matchdays - paginationSteps;
     }
-    
-    matchdayArray = matchdayArray.map(function() { return i++; });
-    
+
+    matchdayArray = matchdayArray.map(function () {
+        return i++;
+    });
+
     matchdayArray.unshift(previousChar);
     matchdayArray.push(nextChar);
-    
+
     return matchdayArray;
 }
 
@@ -140,12 +142,12 @@ function isPaginationChar(char) {
 function paginationBack() {
     var matchdayArray = Session.get(sessionKeyMatchdayArray),
         stepsToJump = paginationSteps;
-    
+
     if (matchdayArray[1] <= paginationSteps) {
         stepsToJump = matchdayArray[1] - 1;
     }
-    
-    matchdayArray = matchdayArray.map(function(element) {
+
+    matchdayArray = matchdayArray.map(function (element) {
         if (!isPaginationChar(element)) {
             element -= stepsToJump;
         }
@@ -161,12 +163,12 @@ function paginationForward() {
     var matchdayArray = Session.get(sessionKeyMatchdayArray),
         stepsToJump = paginationSteps,
         lastArrayElement = matchdayArray[matchdayArray.length - 2];
-    
+
     if (lastArrayElement >= matchdays - 5) {
         stepsToJump = matchdays - lastArrayElement;
     }
-    
-    matchdayArray = matchdayArray.map(function(element) {
+
+    matchdayArray = matchdayArray.map(function (element) {
         if (!isPaginationChar(element)) {
             element += stepsToJump;
         }
@@ -179,9 +181,22 @@ function paginationForward() {
 }
 
 function initMatchdayArray() {
-    var nextMatch = MatchesSuperLeague.findOne({date: {$gt: new Date()}}, {fields : {matchday: 1}, sort: {date: 1}}) || {matchday: 1},
+    var nextMatch = MatchesSuperLeague.findOne({
+            date: {
+                $gt: new Date()
+            }
+        }, {
+            fields: {
+                matchday: 1
+            },
+            sort: {
+                date: 1
+            }
+        }) || {
+            matchday: 1
+        },
         actMatchday = nextMatch.matchday;
-    
+
     Session.set(sessionKeyMatchday, actMatchday);
     Session.set(sessionKeyMatchdayArray, calcPaginationArray(actMatchday));
 }
@@ -189,36 +204,42 @@ function initMatchdayArray() {
 Template.matchdaySuperLeague.events({
     'click .pagination a': function (event) {
         event.preventDefault();
-        
+
         switch (this) {
-            case previousChar:
-                paginationBack();
-                break;
-            case nextChar:
-                paginationForward();
-                break;
-            default:
-                Session.set(sessionKeyMatchday, this);
-                break;
+        case previousChar:
+            paginationBack();
+            break;
+        case nextChar:
+            paginationForward();
+            break;
+        default:
+            Session.set(sessionKeyMatchday, this);
+            break;
         }
     }
 });
 
-Template.matchdaySuperLeague.matchdays = function () {
-    if(!Session.get(sessionKeyMatchday)) {
-        initMatchdayArray();
+Template.matchdaySuperLeague.helpers({
+    matchdays: function () {
+        if (!Session.get(sessionKeyMatchday)) {
+            initMatchdayArray();
+        }
+
+        return Session.get(sessionKeyMatchdayArray);
+    },
+
+    isSelectedMatchday: function () {
+        return Session.get(sessionKeyMatchday) === this;
+    },
+
+    teams: function () {
+        return TablesSuperLeague.find({}, {
+            sort: {
+                rank: 1
+            }
+        }).fetch();
     }
-    
-    return Session.get(sessionKeyMatchdayArray);
-};
-
-Template.matchdaySuperLeague.isSelectedMatchday = function () {
-    return Session.get(sessionKeyMatchday) === this;
-};
-
-Template.matchdayTableSuperLeague.teams = function () {
-    return TablesSuperLeague.find({}, {sort: {rank: 1}}).fetch();
-};
+});
 
 // -------------------------------- MATCHES --------------------------------
 
@@ -228,21 +249,48 @@ function mapDateToString(it) {
     } else {
         it.dateString = 'Not fixed yet!';
     }
-    
+
     return it;
 }
 
 function matchesForMatchday(matchday) {
-    return MatchesSuperLeague.find({matchday: matchday}, {sort: {date: 1}}).fetch().map(mapDateToString);
+    return MatchesSuperLeague.find({
+        matchday: matchday
+    }, {
+        sort: {
+            date: 1
+        }
+    }).fetch().map(mapDateToString);
 }
 
-Template.matchdaySuperLeague.matches = function () {
-    return matchesForMatchday(Session.get(sessionKeyMatchday));
-};
+Template.matchdaySuperLeague.helpers({
+    matches: function () {
+        return matchesForMatchday(Session.get(sessionKeyMatchday));
+    }
+});
 
-Template.nextMatchesSuperLeague.matches = function () {
-    return MatchesSuperLeague.find({date: {$gte: new Date()}}, {sort: {date: 1}, limit: 10}).fetch().map(mapDateToString);
-};
+Template.nextMatchesSuperLeague.helpers({
+    isShown: function () {
+        if (!nextMatchesHasBeenShown && Session.get(pillSessionKey) === 'pillNextMatches') {
+            nextMatchesHasBeenShown = true;
+        }
+
+        return nextMatchesHasBeenShown;
+    },
+
+    matches: function () {
+        return MatchesSuperLeague.find({
+            date: {
+                $gte: new Date()
+            }
+        }, {
+            sort: {
+                date: 1
+            },
+            limit: 10
+        }).fetch().map(mapDateToString);
+    }
+});
 
 
 // -------------------------------- MATCH --------------------------------
@@ -271,10 +319,12 @@ function canSaveTip(match) {
 
 function updateScore(saveFunction, inputId) {
     var activeTimeout = updateScoreTimeout[inputId];
-    
-    if (activeTimeout) { window.clearTimeout(activeTimeout); }
-    
-    updateScoreTimeout[inputId] = window.setTimeout(function() {
+
+    if (activeTimeout) {
+        window.clearTimeout(activeTimeout);
+    }
+
+    updateScoreTimeout[inputId] = window.setTimeout(function () {
         saveFunction();
         delete updateScoreTimeout[inputId];
     }, 500);
@@ -283,82 +333,102 @@ function updateScore(saveFunction, inputId) {
 Template.matchSuperLeague.events({
     'keyup input, change input': function (event) {
         var inputElement = event.target;
-        
+
         saveTip(this.tip, this.team, inputElement.value, inputElement);
     },
-    
+
     'mousedown input, touchstart input, focus input, mousedown button, touchdown button, focus button': function (event) {
         if (!canSaveTip(this.match)) {
             event.preventDefault();
             event.target.disabled = 'disabled';
         }
     },
-    
+
     'mouseup button, touchup button': function (event) {
         var button = event.target,
             inputElement = button.parentNode.parentNode.querySelector('input'),
             score = Number(inputElement.value);
 
         if (button.getAttribute('data-sub')) {
-            if(--score < 0) { score = 0; }
+            if (--score < 0) {
+                score = 0;
+            }
         } else {
             ++score;
         }
-        
+
         inputElement.value = score;
         updateScore(saveTip.bind(this, this.tip, this.team, score, inputElement), inputElement.id);
     }
 });
 
-Template.matchSuperLeague.tip = function () {
-    return TipsSuperLeague.findOne({ match: this.id }) || { match: this.id };
-};
+Template.matchSuperLeague.helpers({
+    tip: function () {
+        return TipsSuperLeague.findOne({
+            match: this.id
+        }) || {
+            match: this.id
+        };
+    },
 
-Template.matchSuperLeague.getCssClass = function () {
-    switch (this.points) {
-    case 0:
-        return 'bg-danger';
-    case 2:
-    case 3:
-        return 'bg-warning';
-    case 5:
-        return 'bg-success';
+    getCssClass: function () {
+        switch (this.points) {
+        case 0:
+            return 'bg-danger';
+        case 2:
+        case 3:
+            return 'bg-warning';
+        case 5:
+            return 'bg-success';
+        }
     }
-};
+});
 
 function getTeamPopOverTitle() {
     var teamName = $('p:last-child', this).text().trim(),
-        teamLink = TablesSuperLeague.findOne({name: teamName}, {fields: {link: 1}}).link;
-    
+        teamLink = TablesSuperLeague.findOne({
+            name: teamName
+        }, {
+            fields: {
+                link: 1
+            }
+        }).link;
+
     return '<a href="' + teamLink + '" target="_blank">View on SFL</a>';
 }
 
 function getTeamPopOver() {
     var teamName = $('p:last-child', this).text().trim(),
         matches = MatchesSuperLeague.find({
-            $or: [{homeTeam: teamName}, {awayTeam: teamName}], 
+            $or: [{
+                homeTeam: teamName
+            }, {
+                awayTeam: teamName
+            }],
             isFinished: true
         }, {
-            limit: 3, 
-            sort: {date: -1}
+            limit: 3,
+            sort: {
+                date: -1
+            }
         }).fetch(),
         html = '';
-    
-    matches.forEach(function(match) {
+
+    matches.forEach(function (match) {
         var score = (match.homeTeam === teamName) ? match.homeScore - match.awayScore : match.awayScore - match.homeScore,
             cssClass = (score > 0) ? 'label-success' : (score === 0) ? 'label-warning' : 'label-danger';
-                
-        html += '<div>' + 
-            match.homeTeam + ' <span class="label ' + cssClass + '">' + 
-            match.homeScore + ' : ' + 
-            match.awayScore + '</span> ' + 
+
+        html += '<div>' +
+            match.homeTeam + ' <span class="label ' + cssClass + '">' +
+            match.homeScore + ' : ' +
+            match.awayScore + '</span> ' +
             match.awayTeam + '</div>';
     });
-        
+
     return html;
 }
 
-Template.matchSuperLeague.rendered = function() {
+Template.matchSuperLeague.rendered = function () {
     $(this.findAll('.teamname')).popover({
         animation: true,
         container: '#superLeague',
@@ -382,29 +452,39 @@ Template.allTipsSuperLeague.events({
     }
 });
 
-Template.allTipsSuperLeague.allTipsTable = function () {
-    var limit = Session.get(allTipsLimitSessionKey);
+Template.allTipsSuperLeague.helpers({
+    isShown: function () {
+        if (!allTipsHasBeenShown && Session.get(pillSessionKey) === 'pillAllTips') {
+            allTipsHasBeenShown = true;
+        }
 
-    Meteor.call('getAllTipsTable', limit, function(error, result) {
-        Session.set(allTipsTableSessionKey, result);
-        document.getElementById('allTipsSuperLeagueProgressBar').classList.add('hide');
-    });
+        return allTipsHasBeenShown;
+    },
 
-    return Session.get(allTipsTableSessionKey);
-};
+    allTipsTable: function () {
+        var limit = Session.get(allTipsLimitSessionKey);
 
-Template.allTipsSuperLeague.getCssClass = function (points) {
-    var cssClass = 'label ';
-    
-    switch (points) {
-    case 0:
-        return cssClass + 'label-danger';
-    case 2:
-    case 3:
-        return cssClass + 'label-warning';
-    case 5:
-        return cssClass + 'label-success';
-    default:
-        return cssClass + 'label-default';
+        Meteor.call('getAllTipsTable', limit, function (error, result) {
+            Session.set(allTipsTableSessionKey, result);
+            document.getElementById('allTipsSuperLeagueProgressBar').classList.add('hide');
+        });
+
+        return Session.get(allTipsTableSessionKey);
+    },
+
+    getCssClass: function (points) {
+        var cssClass = 'label ';
+
+        switch (points) {
+        case 0:
+            return cssClass + 'label-danger';
+        case 2:
+        case 3:
+            return cssClass + 'label-warning';
+        case 5:
+            return cssClass + 'label-success';
+        default:
+            return cssClass + 'label-default';
+        }
     }
-};
+});
