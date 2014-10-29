@@ -17,8 +17,8 @@ function slidePages(pageToNavigate) {
 }
 
 Router.configure({
-    waitOn: {
-        ready: function isUserLoggedIn() {
+    waitOn: function () {
+        return function () {
             return !Meteor.loggingIn() && Meteor.user();
         }
     }
