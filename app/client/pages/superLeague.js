@@ -230,8 +230,10 @@ Template.matchdaySuperLeague.helpers({
 
     isSelectedMatchday: function () {
         return Session.get(sessionKeyMatchday) === this;
-    },
+    }
+});
 
+Template.matchdayTableSuperLeague.helpers({
     teams: function () {
         return TablesSuperLeague.find({}, {
             sort: {
