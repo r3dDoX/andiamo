@@ -16,13 +16,11 @@ function slidePages(pageToNavigate) {
     }
 }
 
-function isUserLoggedIn() {
-    return !Meteor.loggingIn() && Meteor.user();
-}
-
 Router.configure({
     waitOn: {
-        ready: isUserLoggedIn
+        ready: function isUserLoggedIn() {
+            return !Meteor.loggingIn() && Meteor.user();
+        }
     }
 }).map(function () {
     this.route('home', {
@@ -34,7 +32,7 @@ Router.configure({
 
     this.route('pages', {
         path: '/pages/:page',
-        action: function() {
+        action: function () {
             if (this.ready()) {
                 // add timeout here to let browser remove logging in screen when loading deep link
                 setTimeout(slidePages.bind(undefined, this.params.page), 5);
