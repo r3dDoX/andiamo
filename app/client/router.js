@@ -21,7 +21,9 @@ Router.configure({
         return function () {
             return !Meteor.loggingIn() && Meteor.user();
         }
-    }
+    },
+    
+    loadingTemplate: 'loading'
 }).map(function () {
     this.route('home', {
         path: '/',
