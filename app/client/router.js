@@ -18,11 +18,9 @@ function slidePages(pageToNavigate) {
 
 Router.configure({
     waitOn: function () {
-        return function () {
-            return !Meteor.loggingIn() && Meteor.user();
-        }
+        return Meteor.subscribe("userData");
     },
-    
+
     loadingTemplate: 'loading'
 }).map(function () {
     this.route('home', {
@@ -36,7 +34,7 @@ Router.configure({
         path: '/pages/:page',
         action: function () {
             if (this.ready()) {
-                // add timeout here to let browser remove logging in screen when loading deep link
+                // add timeout here to let browser remove loading screen when loading deep link
                 setTimeout(slidePages.bind(undefined, this.params.page), 5);
             }
         }
