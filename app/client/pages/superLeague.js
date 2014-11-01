@@ -14,15 +14,6 @@ var nextMatchesHasBeenShown = false,
     paginationSize = paginationSteps + 1,
     updateScoreTimeout = {};
 
-// -------------------------------- SHOW -----------------------------------
-
-Template.superLeague.events({
-    'click .nav-pills a': function (event) {
-        var pillId = event.target.id;
-        Session.set(pillSessionKey, pillId);
-    }
-});
-
 // -------------------------------- HELPERS --------------------------------
 
 function toggleFadeEffect(element, className) {
@@ -50,6 +41,13 @@ function canTipRanking() {
 
 Template.superLeague.helpers({
     canTipRanking: canTipRanking
+});
+
+Template.superLeague.events({
+    'click .nav-pills a': function (event) {
+        var pillId = event.target.id;
+        Session.set(pillSessionKey, pillId);
+    }
 });
 
 // -------------------------------- RANKING --------------------------------
