@@ -8,7 +8,6 @@ http
 less
 accounts-password
 audit-argument-checks
-arunoda:kadira
 appcache
 alanning:roles
 meteorhacks:npm
@@ -17,4 +16,5 @@ meteorhacks:npm
 npm-container
 iron:router
 meteorhacks:zones
+meteorhacks:kadira
 
