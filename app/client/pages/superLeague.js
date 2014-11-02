@@ -203,7 +203,7 @@ Template.matchdaySuperLeague.events({
     'click .pagination a': function (event) {
         event.preventDefault();
 
-        switch (this) {
+        switch (this.toString()) {
         case previousChar:
             paginationBack();
             break;
@@ -211,7 +211,7 @@ Template.matchdaySuperLeague.events({
             paginationForward();
             break;
         default:
-            Session.set(sessionKeyMatchday, this);
+            Session.set(sessionKeyMatchday, Number(this.toString()));
             break;
         }
     }
