@@ -22,7 +22,7 @@ function showSuccessfulSave(element) {
         removeSuccessStyle = function () {
             parent.removeClass('has-success');
             childButtons.removeClass('btn-success');
-            element.off(removeSuccessStyle);
+            element.off('transitionend', removeSuccessStyle);
         };
     
     parent.removeClass('has-error');
