@@ -297,7 +297,7 @@ Template.nextMatchesSuperLeague.helpers({
 
 function saveTip(tip, team, score, inputElement) {
     if (isNaN(score)) {
-        showErrorSave(inputElement, 'Value is not number');
+        showErrorSave(inputElement, 'Value is not a number');
     } else {
         delete tip._id; //Won't update with _id set
 
