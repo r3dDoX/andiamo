@@ -34,6 +34,7 @@ Router.configure({
         path: '/pages/:page',
         action: function () {
             if (this.ready()) {
+                this.render();
                 // add timeout here to let browser remove loading screen when loading deep link
                 setTimeout(slidePages.bind(undefined, this.params.page), 5);
             }
