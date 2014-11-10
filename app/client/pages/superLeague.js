@@ -15,24 +15,31 @@ var nextMatchesHasBeenShown = false,
     updateScoreTimeout = {};
 
 // -------------------------------- HELPERS --------------------------------
-
-function toggleFadeEffect(element, className) {
-    var classList = element.parentNode.classList,
-        removeSuccessStyle = function () {
-            classList.remove(className);
-            element.removeEventListener(removeSuccessStyle);
-        };
-
-    classList.add(className);
-    element.addEventListener('transitionend', removeSuccessStyle);
-}
-
 function showSuccessfulSave(element) {
-    toggleFadeEffect(element, 'has-success');
+    var element = $(element),
+        parent = element.parent(),
+        childButtons = $('button', parent),
+        removeSuccessStyle = function () {
+            parent.removeClass('has-success');
+            childButtons.removeClass('btn-success');
+            element.off(removeSuccessStyle);
+        };
+    
+    parent.removeClass('has-error');
+    childButtons.removeClass('btn-danger');
+    
+    parent.addClass('has-success');
+    childButtons.addClass('btn-success');
+    element.on('transitionend', removeSuccessStyle);
+    
 }
 
 function showErrorSave(element) {
-    toggleFadeEffect(element, 'has-error');
+    var parent = $(element).parent(),
+        childButtons = $('button', parent);
+    
+    parent.addClass('has-error');
+    childButtons.addClass('btn-danger');
 }
 
 function canTipRanking() {
@@ -296,7 +303,7 @@ Template.nextMatchesSuperLeague.helpers({
 // -------------------------------- MATCH --------------------------------
 
 function saveTip(tip, team, score, inputElement) {
-    if (isNaN(score)) {
+    if (isNaN(score) || score < 0) {
         showErrorSave(inputElement, 'Value is not a number');
     } else {
         delete tip._id; //Won't update with _id set
@@ -344,17 +351,19 @@ Template.matchSuperLeague.events({
         }
     },
 
-    'mouseup button, touchup button': function (event) {
+    'click button': function (event) {
         var button = event.target,
             inputElement = button.parentNode.parentNode.querySelector('input'),
             score = Number(inputElement.value);
 
         if (button.getAttribute('data-sub')) {
-            if (--score < 0) {
-                score = 0;
-            }
+            score--;
         } else {
-            ++score;
+            score++;
+        }
+        
+        if (isNaN(score) || score < 0) {
+            score = 0;
         }
 
         inputElement.value = score;
@@ -448,7 +457,7 @@ Template.allTipsSuperLeague.events({
     'click button': function (event) {
         Session.set(allTipsLimitSessionKey, 64);
         event.target.disabled = 'disabled';
-        document.getElementById('allTipsSuperLeagueProgressBar').classList.remove('hide');
+        $('#allTipsSuperLeagueProgressBar').removeClass('hide');
     }
 });
 
@@ -466,7 +475,7 @@ Template.allTipsSuperLeague.helpers({
 
         Meteor.call('getAllTipsTable', limit, function (error, result) {
             Session.set(allTipsTableSessionKey, result);
-            document.getElementById('allTipsSuperLeagueProgressBar').classList.add('hide');
+            $('#allTipsSuperLeagueProgressBar').addClass('hide');
         });
 
         return Session.get(allTipsTableSessionKey);
