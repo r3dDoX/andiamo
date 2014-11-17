@@ -15,8 +15,9 @@ var nextMatchesHasBeenShown = false,
     updateScoreTimeout = {};
 
 // -------------------------------- HELPERS --------------------------------
-function showSuccessfulSave(element) {
-    var element = $(element),
+
+function showSuccessfulSave(htmlElement) {
+    var element = $(htmlElement),
         parent = element.parent(),
         childButtons = $('button', parent),
         removeSuccessStyle = function () {
@@ -454,10 +455,22 @@ Template.allTipsSuperLeague.created = function () {
 };
 
 Template.allTipsSuperLeague.events({
-    'click button': function (event) {
+    'click button#showAllTips': function () {
         Session.set(allTipsLimitSessionKey, 64);
         event.target.disabled = 'disabled';
         $('#allTipsSuperLeagueProgressBar').removeClass('hide');
+    },
+    
+    'click button#refreshAllTips': function (event) {
+        var button = $(event.target),
+            limit = Session.get(allTipsLimitSessionKey);
+        
+        button.addClass('active');
+        
+        Meteor.call('getAllTipsTable', limit, function (error, result) {
+            Session.set(allTipsTableSessionKey, result);
+            button.removeClass('active');
+        });
     }
 });
 
