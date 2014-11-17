@@ -135,8 +135,13 @@ var rankingTipsUntil = new Date('2014-8-1'),
             champion = TipsSuperLeague.findOne({ user: user._id, rank: 'champion'}) || {team: ''},
             relegation = TipsSuperLeague.findOne({ user: user._id, rank: 'relegation'}) || {team: ''};
         
-        if(TablesSuperLeague.findOne({}, {sort: {rank: 1}}).name === champion.team) points += 10;
-        if(TablesSuperLeague.findOne({}, {sort: {rank: -1}}).name === relegation.team) points += 10;
+        if (TablesSuperLeague.findOne({}, {sort: {rank: 1}}).name === champion.team) { 
+            points += 10;
+        }
+        
+        if(TablesSuperLeague.findOne({}, {sort: {rank: -1}}).name === relegation.team) {
+            points += 10;
+        }
         
         return points;
     },
@@ -149,7 +154,9 @@ var rankingTipsUntil = new Date('2014-8-1'),
             var tips = TipsSuperLeague.find({user: user._id, points: {$exists: true}}).fetch() || [],
                 points = tips.reduce(countPoints, 0);
             
-            if (seasonFinished) points += countRankingTipPoints(user);
+            if (seasonFinished) {
+                points += countRankingTipPoints(user);
+            }
 
             user.points = points;
 
