@@ -234,7 +234,7 @@ var rankingTipsUntil = new Date('2014-8-1'),
                 tip = TipsSuperLeague.findOne({match: match.id, user: user._id}, {fields: {_id: 0, homeTeam: 1, awayTeam: 1, points: 1}}) || {homeTeam: '', awayTeam: '', points: ''};
 
                 cell = {
-                    text: tip.homeTeam + ' - ' + tip.awayTeam,
+                    text: (tip.homeTeam || '') + ' - ' + (tip.awayTeam || ''),
                     points: tip.points
                 };
 
