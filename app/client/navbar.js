@@ -27,6 +27,10 @@ Template.navbar.helpers({
                 roles: ['admin']
             }
         ];
+    },
+    
+    isDisconnected: function () {
+        return !Meteor.status().connected;
     }
 });
 

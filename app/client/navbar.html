@@ -1,4 +1,10 @@
 <template name="navbar">
+    {{#if isDisconnected}}
+        <div id="warningDisconnected" class="alert alert-danger alert-dismissible fade in" role="alert">
+            <h4>No connection to the server!</h4>
+            <p>As soon as the connection is back up, this message will disappear and your changes will take effect.</p>
+        </div>
+    {{/if}}
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
