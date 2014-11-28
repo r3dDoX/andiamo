@@ -1,5 +1,7 @@
 'use strict';
 
+var lastPage = '';
+
 Router.configure({
     waitOn: function () {
         return Meteor.subscribe('userData');
@@ -9,13 +11,17 @@ Router.configure({
         if (!Meteor.userId()) {
             this.render('login');
         } else {
+            $('#activePage').removeClass('flip-in-left');
+            $('#lastPage').removeClass('flip-out-right');
             this.next();
         }
     },
     
-    onStop: function() {
-        console.log(arguments);
-        console.log(this);
+    onAfterAction: function() {
+        window.setTimeout(function() {
+            $('#activePage').addClass('flip-in-left');
+            $('#lastPage').addClass('flip-out-right');
+        }, 1);
     },
 
     loadingTemplate: 'loading'
@@ -33,9 +39,13 @@ Router.configure({
         action: function () {
             var page = this.params.page;
             
-            Session.set('selectedMenuElement', page);
-            this.layout('ContentLayout');
+            this.layout('PagesLayout');
+            
+            this.render(lastPage, { to: 'lastPage' });
             this.render(page);
+            
+            lastPage = page;
+            Session.set('selectedMenuElement', page);
         }
     });
 });
