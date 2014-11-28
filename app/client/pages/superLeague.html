@@ -1,68 +1,66 @@
 <template name="superLeague">
-    <div id="superLeague" class="page right">
-        {{#if shouldBeDisplayed 'superLeague'}}
-            <div class="container">
-                <div class="row">&nbsp;</div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <ul class="nav nav-pills nav-justified">
-                            <li class="active">
-                                <a id="pillGeneral" href="#matchday" data-toggle="pill">Matchday</a>
-                            </li>
-                            <li>
-                                <a id="pillNextMatches" href="#nextMatches" data-toggle="pill">Next Matches</a>
-                            </li>
-                            <li>
-                                <a id="pillAllTips" href="#allTips" data-toggle="pill">All Tips</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="matchday">
-                                <div class="panel-group" id="mainAccordion">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#ranking">
-                                                    Ranking - Tip until 31.07.2014
-                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="ranking" class="panel-collapse collapse{{#if canTipRanking}} in{{/if}}">
-                                            <div class="panel-body">
-                                                {{ > rankingSuperLeague }}
-                                            </div>
-                                        </div>
+    <div id="superLeague" class="page">
+        <div class="container">
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="nav nav-pills nav-justified">
+                        <li class="active">
+                            <a id="pillGeneral" href="#matchday" data-toggle="pill">Matchday</a>
+                        </li>
+                        <li>
+                            <a id="pillNextMatches" href="#nextMatches" data-toggle="pill">Next Matches</a>
+                        </li>
+                        <li>
+                            <a id="pillAllTips" href="#allTips" data-toggle="pill">All Tips</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="matchday">
+                            <div class="panel-group" id="mainAccordion">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#ranking">
+                                                Ranking - Tip until 31.07.2014
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
                                     </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
-                                                    Matchday
-                                                    <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="groupStage" class="panel-collapse collapse in">
-                                            <div class="panel-body">
-                                                {{ > matchdaySuperLeague }}
-                                            </div>
-                                            {{ > matchdayTableSuperLeague }}
+                                    <div id="ranking" class="panel-collapse collapse{{#if canTipRanking}} in{{/if}}">
+                                        <div class="panel-body">
+                                            {{ > rankingSuperLeague }}
                                         </div>
                                     </div>
                                 </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#mainAccordion" href="#groupStage">
+                                                Matchday
+                                                <small class="pull-right"><span class="glyphicon glyphicon-plus"></span></small>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="groupStage" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            {{ > matchdaySuperLeague }}
+                                        </div>
+                                        {{ > matchdayTableSuperLeague }}
+                                    </div>
+                                </div>
                             </div>
-                            <div class="tab-pane" id="nextMatches">
-                                {{ > nextMatchesSuperLeague }}
-                            </div>
-                            <div class="tab-pane" id="allTips">
-                                {{ > allTipsSuperLeague }}
-                            </div>
+                        </div>
+                        <div class="tab-pane" id="nextMatches">
+                            {{ > nextMatchesSuperLeague }}
+                        </div>
+                        <div class="tab-pane" id="allTips">
+                            {{ > allTipsSuperLeague }}
                         </div>
                     </div>
                 </div>
             </div>
-        {{/if}}
+        </div>
     </div>
 </template>
 

@@ -1,7 +1,6 @@
 'use strict';
 
-var selectedMenuElementKey = 'selectedMenuElement',
-    hasBeenShown = [];
+var selectedMenuElementKey = 'selectedMenuElement';
 
 Template.navbar.helpers({
     menuElements: function () {
@@ -61,12 +60,4 @@ Template.navbarElement.helpers({
 
         return Roles.userIsInRole(Meteor.user(), roles);
     }
-});
-
-UI.registerHelper('shouldBeDisplayed', function (templateName) {
-    if (hasBeenShown.indexOf(templateName) < 0 && Session.get(selectedMenuElementKey) === templateName) {
-        hasBeenShown.push(templateName);
-    }
-
-    return hasBeenShown.indexOf(templateName) >= 0;
 });

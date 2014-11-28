@@ -1,59 +1,57 @@
 <template name="importSuperLeague">
-    <div id="importSuperLeague" class="page right">
-        {{#if shouldBeDisplayed 'importSuperLeague'}}
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-10">
-                        <h2>Import Super League</h2>
-                    </div>
-                    <div class="col-sm-2">
-                        <h2>{{ > importButton }}</h2>
-                    </div>
+    <div id="importSuperLeague" class="page">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10">
+                    <h2>Import Super League</h2>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2>Tables</h2>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <th>Rank</th>
-                                <th>Name</th>
-                                <th>Points</th>
-                            </thead>
-                            <tbody>
-                                {{#each teams}}
-                                    <tr>
-                                        <td>{{rank}}</td>
-                                        <td>{{name}}</td>
-                                        <td>{{points}}</td>
-                                    </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                        <h2>Matches</h2>
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <th>Date</th>
-                                <th>Home</th>
-                                <th>Away</th>
-                                <th colspan="2">Score</th>
-                                <th>Finished</th>
-                            </thead>
-                            <tbody>
-                                {{#each matches}}
-                                    <tr>
-                                        <td>{{date}}</td>
-                                        <td>{{homeTeam}}</td>
-                                        <td>{{awayTeam}}</td>
-                                        <td>{{homeScore}}</td>
-                                        <td>{{awayScore}}</td>
-                                        <td>{{isFinished}}</td>
-                                    </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="col-sm-2">
+                    <h2>{{ > importButton }}</h2>
                 </div>
             </div>
-        {{/if}}
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Tables</h2>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Points</th>
+                        </thead>
+                        <tbody>
+                            {{#each teams}}
+                                <tr>
+                                    <td>{{rank}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{points}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    <h2>Matches</h2>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <th>Date</th>
+                            <th>Home</th>
+                            <th>Away</th>
+                            <th colspan="2">Score</th>
+                            <th>Finished</th>
+                        </thead>
+                        <tbody>
+                            {{#each matches}}
+                                <tr>
+                                    <td>{{date}}</td>
+                                    <td>{{homeTeam}}</td>
+                                    <td>{{awayTeam}}</td>
+                                    <td>{{homeScore}}</td>
+                                    <td>{{awayScore}}</td>
+                                    <td>{{isFinished}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
