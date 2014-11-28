@@ -11,16 +11,16 @@ Router.configure({
         if (!Meteor.userId()) {
             this.render('login');
         } else {
-            $('#activePage').removeClass('flip-in-left');
-            $('#lastPage').removeClass('flip-out-right');
+            $('#activePage').removeClass('from-top');
+            $('#lastPage').removeClass('scale-down');
             this.next();
         }
     },
     
     onAfterAction: function() {
         window.setTimeout(function() {
-            $('#activePage').addClass('flip-in-left');
-            $('#lastPage').addClass('flip-out-right');
+            $('#activePage').addClass('from-top');
+            $('#lastPage').addClass('scale-down');
         }, 1);
     },
 
