@@ -1,31 +1,29 @@
 <template name="admin">
-    <div id="admin" class="page">
-        <div class="container">
-            <div class="row">
-                &nbsp;
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="table-responsive">
-                        <table id="userTable" class="table table-bordered">
-                            <thead>
+    <div class="container">
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table id="userTable" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Userid</th>
+                                <th>Username</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each users}}
                                 <tr>
-                                    <th>Userid</th>
-                                    <th>Username</th>
-                                    <th>Actions</th>
+                                    <td>{{_id}}</td>
+                                    <td>{{username}}</td>
+                                    <td>{{ > userActions userId=_id }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {{#each users}}
-                                    <tr>
-                                        <td>{{_id}}</td>
-                                        <td>{{username}}</td>
-                                        <td>{{ > userActions userId=_id }}</td>
-                                    </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                    </div>
+                            {{/each}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
