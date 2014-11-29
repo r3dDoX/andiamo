@@ -17,8 +17,7 @@ Router.configure({
     
     onAfterAction: function() {
         window.setTimeout(function() {
-            $('#activePage').addClass('animate');
-            $('#activePage').addClass('from-top');
+            $('#activePage').addClass('animate from-top');
             $('#lastPage').addClass('scale-down');
         }, 1);
     },
