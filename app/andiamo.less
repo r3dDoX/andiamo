@@ -109,14 +109,17 @@ body {
         z-index: 1;
         
         -webkit-transform: translateY(-100%);
+        transform: translateY(-100%);
         
         &.animate {
             transition: -webkit-transform .6s ease;
+            transition: transform .6s ease;
         }
         
         &.from-top {
             visibility: visible;
             -webkit-transform: translateY(0%);
+            transform: translateY(0%);
         }
     }
     
