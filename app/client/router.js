@@ -11,14 +11,13 @@ Router.configure({
         if (!Meteor.userId()) {
             this.render('login');
         } else {
-            $('#activePage').removeClass('from-top');
-            $('#lastPage').removeClass('scale-down');
             this.next();
         }
     },
     
     onAfterAction: function() {
         window.setTimeout(function() {
+            $('#activePage').addClass('animate');
             $('#activePage').addClass('from-top');
             $('#lastPage').addClass('scale-down');
         }, 1);
@@ -43,6 +42,9 @@ Router.configure({
             
             this.render(lastPage, { to: 'lastPage' });
             this.render(page);
+            
+            $('#activePage').removeClass('animate from-top');
+            $('#lastPage').removeClass('scale-down');
             
             lastPage = page;
             Session.set('selectedMenuElement', page);
