@@ -3,15 +3,14 @@
 Template.importButton.events({
     'click button#importButton': function (event) {
         var button = event.target,
-            classList = button.classList,
-            pageId = document.getElementsByClassName('page center')[0].id;
+            classList = button.classList;
         
         classList.remove('btn-error');
         classList.remove('btn-success');
         classList.add('btn-primary');
         classList.add('disabled');
         
-        Meteor.call(pageId, function (error) {
+        Meteor.call('importSuperLeague', function (error) {
             classList.remove('disabled');
             classList.remove('btn-primary');
             
