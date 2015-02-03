@@ -441,7 +441,6 @@ function getTeamPopOver() {
 Template.matchSuperLeague.rendered = function () {
     $(this.findAll('.teamname')).popover({
         animation: true,
-        container: '#superLeague',
         content: getTeamPopOver,
         title: getTeamPopOverTitle,
         html: true
