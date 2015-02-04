@@ -1,7 +1,5 @@
 'use strict';
 
-var lastPage = '';
-
 Router.configure({
     waitOn: function () {
         return Meteor.subscribe('userData');
@@ -16,14 +14,17 @@ Router.configure({
     },
     
     onAfterAction: function() {
+        //Run at end of current call stack to let pages render completely before css transitions
         window.setTimeout(function() {
             $('#activePage').addClass('animate from-top');
             $('#lastPage').addClass('scale-down');
-        }, 1);
+        }, 0);
     },
 
     loadingTemplate: 'loading'
 }).map(function () {
+    var lastPage = '';
+
     this.route('home', {
         path: '/',
         action: function () {
