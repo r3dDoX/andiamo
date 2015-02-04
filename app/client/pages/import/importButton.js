@@ -2,23 +2,18 @@
 
 Template.importButton.events({
     'click button#importButton': function (event) {
-        var button = event.target,
-            classList = button.classList;
+        var button = $(event.currentTarget);
         
-        classList.remove('btn-error');
-        classList.remove('btn-success');
-        classList.add('btn-primary');
-        classList.add('disabled');
+        button.removeClass('btn-error btn-success');
+        button.addClass('btn-primary disabled');
         
         Meteor.call('importSuperLeague', function (error) {
-            classList.remove('disabled');
-            classList.remove('btn-primary');
+            button.removeClass('btn-primary disabled');
             
             if (error) {
-                classList.add('btn-error');
-                console.log(error);
+                button.addClass('btn-error');
             } else {
-                classList.add('btn-success');
+                button.addClass('btn-success');
             }
         });
     }
