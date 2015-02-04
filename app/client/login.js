@@ -98,5 +98,6 @@ Template.registrationForm.events({
             document.getElementById('submitRegistration').click();
         }
     },
+
     'keyup input[name=username]' : checkUsernameAvailability
 });
