@@ -5,22 +5,18 @@ Meteor.subscribe('tablesSuperLeague');
 
 Template.importSuperLeague.helpers({
     matches: function () {
-        var matches = MatchesSuperLeague.find({}, {
+        return MatchesSuperLeague.find({}, {
             sort: {
                 matchday: 1,
                 date: 1
             }
-        }).fetch();
-
-        matches.map(function (element) {
+        }).fetch().map(function (element) {
             if (element.date) {
                 element.date = element.date.toDateString();
             }
 
             return element;
         });
-
-        return matches;
     },
 
     teams: function () {
