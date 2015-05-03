@@ -207,7 +207,7 @@ var rankingTipsUntil = new Date('2014-8-1'),
         var table = {header: [], rankings: [], matches: []},
             offset = 1,
             startedMatches = MatchesSuperLeague.find({date: {$lt: new Date()}}, {
-                fields: {id: 1, homeTeam: 1, awayTeam: 1, homeScore: 1, awayScore: 1},
+                fields: {id: 1, homeTeamShort: 1, awayTeamShort: 1, homeScore: 1, awayScore: 1},
                 sort: {date: -1},
                 limit: limit
             }),
@@ -228,7 +228,7 @@ var rankingTipsUntil = new Date('2014-8-1'),
 
         startedMatches.forEach(function (match, index) {
             table.matches[index] = [];
-            table.matches[index][0] = { matchString: true, text: match.homeTeam + ' ' + getScoreString(match.homeScore) + ' - ' + getScoreString(match.awayScore) + ' ' + match.awayTeam };
+            table.matches[index][0] = { matchString: true, text: match.homeTeamShort + ' ' + getScoreString(match.homeScore) + ' - ' + getScoreString(match.awayScore) + ' ' + match.awayTeamShort };
 
             sortedUsers.forEach(function (user, userIndex) {
                 tip = TipsSuperLeague.findOne({match: match.id, user: user._id}, {fields: {_id: 0, homeTeam: 1, awayTeam: 1, points: 1}}) || {homeTeam: '', awayTeam: '', points: ''};
