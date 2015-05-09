@@ -18,3 +18,4 @@ iron:router
 meteorhacks:zones
 meteorhacks:kadira
 
+meteorhacks:kadira-profiler
